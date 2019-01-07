@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmls.GUI007SDTHController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
          <menus>
-            <Menu mnemonicParsing="false" text="Townhalls" />
-            <Menu mnemonicParsing="false" text="Townhalls users" />
-            <Menu mnemonicParsing="false" text="User information" />
-            <Menu mnemonicParsing="false" text="LogOut" />
+            <Menu fx:id="mTownhall" mnemonicParsing="false" text="Townhalls" />
+            <Menu fx:id="mUsers" mnemonicParsing="false" text="Townhalls users" />
+            <Menu fx:id="mInformation" mnemonicParsing="false" text="User information" />
+            <Menu fx:id="mLogOut" mnemonicParsing="false" text="LogOut" />
          </menus>
       </MenuBar>
    </top>
@@ -32,9 +32,9 @@
             </HBox>
             <TableView prefHeight="591.0" prefWidth="892.0">
                <columns>
-                  <TableColumn maxWidth="3000.0" prefWidth="303.20006734132767" text="Name" />
-                  <TableColumn prefWidth="334.39996337890625" text="Email" />
-                  <TableColumn prefWidth="243.19998779296873" text="Telephone number" />
+                  <TableColumn fx:id="tcName" maxWidth="3000.0" prefWidth="303.20006734132767" text="Name" />
+                  <TableColumn fx:id="tcEmail" prefWidth="334.39996337890625" text="Email" />
+                  <TableColumn fx:id="tcTelephone" prefWidth="243.19998779296873" text="Telephone number" />
                </columns>
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" top="5.0" />
@@ -46,17 +46,17 @@
    <right>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefWidth="120.0" text="Add new townhall">
+            <Button fx:id="btnNewTownhall" mnemonicParsing="false" prefWidth="120.0" text="Add new townhall">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="30.0" />
                </VBox.margin>
             </Button>
-            <Button disable="true" mnemonicParsing="false" prefWidth="120.0" text="Modify townhall">
+            <Button fx:id="btnModifyTownhall" disable="true" mnemonicParsing="false" prefWidth="120.0" text="Modify townhall">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Button disable="true" mnemonicParsing="false" prefWidth="120.0" text="Delete">
+            <Button fx:id="btnDelete" disable="true" mnemonicParsing="false" prefWidth="120.0" text="Delete">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
