@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI007Controller">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
          <menus>
-            <Menu mnemonicParsing="false" text="Townhalls" />
-            <Menu mnemonicParsing="false" text="Townhalls users" />
-            <Menu mnemonicParsing="false" text="User information" />
-            <Menu mnemonicParsing="false" text="LogOut" />
+            <Menu id="mTownhalls" mnemonicParsing="false" text="Townhalls" />
+            <Menu id="mUsers" mnemonicParsing="false" text="Townhalls users" />
+            <Menu id="mInfo" mnemonicParsing="false" text="User information" />
+            <Menu id="mLogOut" mnemonicParsing="false" text="LogOut" />
          </menus>
       </MenuBar>
    </top>
@@ -30,11 +30,11 @@
                   <VBox prefHeight="104.0" prefWidth="390.0" />
                </children>
             </HBox>
-            <TableView prefHeight="591.0" prefWidth="892.0">
+            <TableView id="tableView" prefHeight="591.0" prefWidth="892.0">
                <columns>
-                  <TableColumn maxWidth="3000.0" prefWidth="303.20006734132767" text="Name" />
-                  <TableColumn prefWidth="334.39996337890625" text="Email" />
-                  <TableColumn prefWidth="243.19998779296873" text="Telephone number" />
+                  <TableColumn id="tcName" maxWidth="3000.0" prefWidth="303.20006734132767" text="Name" />
+                  <TableColumn id="tcEmail" prefWidth="334.39996337890625" text="Email" />
+                  <TableColumn id="tcTelephone" prefWidth="243.19998779296873" text="Telephone number" />
                </columns>
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" top="5.0" />
@@ -46,17 +46,17 @@
    <right>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefWidth="120.0" text="Add new townhall">
+            <Button id="btnAddTownhall" mnemonicParsing="false" prefWidth="120.0" text="Add new townhall">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="30.0" />
                </VBox.margin>
             </Button>
-            <Button disable="true" mnemonicParsing="false" prefWidth="120.0" text="Modify townhall">
+            <Button id="btnModifyTownhall" disable="true" mnemonicParsing="false" prefWidth="120.0" text="Modify townhall">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Button disable="true" mnemonicParsing="false" prefWidth="120.0" text="Delete">
+            <Button id="btnDelete" disable="true" mnemonicParsing="false" prefWidth="120.0" text="Delete">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="5.0" />
                </VBox.margin>

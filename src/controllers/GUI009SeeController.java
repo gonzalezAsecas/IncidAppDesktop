@@ -7,7 +7,7 @@ package controllers;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Lander Lluvia
  */
 public class GUI009SeeController {
     

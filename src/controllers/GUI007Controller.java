@@ -5,26 +5,23 @@
  */
 package controllers;
 
-import javabeans.UserBean;
-import javafx.scene.Parent;
-import javafx.stage.Stage;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
 
 /**
+ * FXML Controller class
  *
- * @author Jon Gonzalez
+ * @author Lander Lluvia
  */
-public class GUI007Controller {
+public class GUI007Controller implements Initializable {
 
-    void setStage(Stage logOutStage) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    void setUser(UserBean user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    void initStage(Parent root) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
     
 }
