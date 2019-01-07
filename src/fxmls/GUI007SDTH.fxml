@@ -30,7 +30,7 @@
                   <VBox prefHeight="104.0" prefWidth="390.0" />
                </children>
             </HBox>
-            <TableView prefHeight="591.0" prefWidth="892.0">
+            <TableView id="tableView" prefHeight="591.0" prefWidth="892.0">
                <columns>
                   <TableColumn fx:id="tcName" maxWidth="3000.0" prefWidth="303.20006734132767" text="Name" />
                   <TableColumn fx:id="tcEmail" prefWidth="334.39996337890625" text="Email" />
