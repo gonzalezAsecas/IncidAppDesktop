@@ -39,6 +39,12 @@ public class TownHallBean implements Serializable{
     private List<UserBean> users;
 
     public TownHallBean(){}
+    
+    public TownHallBean(String locality, String email, String telephoneNumber) {
+        this.locality = locality;
+        this.email = email;
+        this.telephoneNumber = telephoneNumber;
+    }
 
     public Integer getIdTownHall() {
         return idTownHall;

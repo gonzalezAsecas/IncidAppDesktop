@@ -5,10 +5,21 @@
  */
 package interfaces;
 
+import java.util.List;
+import javabeans.TownHallBean;
+
 /**
  *
  * @author Jon Gonzalez
  */
 public interface iTownHall {
-    
+     public TownHallBean createTownHall(TownHallBean townhall) throws CreateException;
+
+    public void editTownHall(TownHallBean townhall) throws UpdateException;
+
+    public void removeTownHall(TownHallBean townhall) throws DeleteException;
+
+    public TownHallBean findTownHallbyId(TownHallBean townhall) throws ReadException;
+
+    public List<TownHallBean> findAllTownHalls() throws ReadException;
 }

@@ -75,7 +75,6 @@ public class GUI007Controller {
         btnNewTownhall.setOnAction();
         btnModifyTownhall.setOnAction();
         btnDelete.setOnAction();
-        //TODO: cargas los datos de la tabla
         
     }
     
@@ -89,8 +88,8 @@ public class GUI007Controller {
         btnModifyTownhall.setText("_Modify Townhall");
         btnDelete.setMnemonicParsing(true);
         btnDelete.setText("_Delete");
-        //load the all data
-        //loadData(); ¿? ver loadData GUI003Controller
+        //load table data
+        //loadData(); ver ejs Javi
         LOGGER.info("Ending OnShowingHandler");
     }
     

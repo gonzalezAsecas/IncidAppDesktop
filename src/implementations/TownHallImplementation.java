@@ -6,11 +6,38 @@
 package implementations;
 
 import interfaces.iTownHall;
+import java.util.List;
+import javabeans.TownHallBean;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Lander Lluvia
  */
 public class TownHallImplementation implements iTownHall{
+
+    @Override
+    public TownHallBean createTownHall(TownHallBean townhall) throws CreateException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void editTownHall(TownHallBean townhall) throws UpdateException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void removeTownHall(TownHallBean townhall) throws DeleteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public TownHallBean findTownHallbyId(TownHallBean townhall) throws ReadException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<TownHallBean> findAllTownHalls() throws ReadException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
