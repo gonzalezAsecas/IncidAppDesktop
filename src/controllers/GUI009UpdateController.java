@@ -5,10 +5,29 @@
  */
 package controllers;
 
+import static controllers.GUI009Controller.LOGGER;
+import javabeans.TownHallBean;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+
 /**
  *
- * @author Jon Gonzalez
+ * @author Lander Lluvia
  */
-public class GUI009UpdateController {
+public class GUI009UpdateController extends GUI009Controller{
     
+    TownHallBean townhall;
+    
+    public void setTownhall(TownHallBean townhall){
+        this.townhall = townhall;
+    }
+    
+    @Override
+    public void initStage(Parent root){
+        LOGGER.info("Initializing GUI009 stage");
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setOnShowing(this::OnShowingHandlerTownHall);
+        btnAccept.setOnAction((event) -> handleAccept(event));
+    }
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmls.GUI007SDTHController">
+<BorderPane prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmls.GUI007SDTHController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
          <menus>
@@ -30,7 +30,7 @@
                   <VBox prefHeight="104.0" prefWidth="390.0" />
                </children>
             </HBox>
-            <TableView id="tableView" prefHeight="591.0" prefWidth="892.0">
+            <TableView id="tableView" fx:id="tableTownhalls" prefHeight="591.0" prefWidth="892.0">
                <columns>
                   <TableColumn fx:id="tcName" maxWidth="3000.0" prefWidth="303.20006734132767" text="Name" />
                   <TableColumn fx:id="tcEmail" prefWidth="334.39996337890625" text="Email" />

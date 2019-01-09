@@ -63,7 +63,7 @@ public class THUserGenericController {
      * @return the type of the button clicked
      */
     public ButtonType getAlert(String message){
-        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK, ButtonType.CANCEL);
+            Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK, ButtonType.CANCEL);
         return alert.showAndWait().get();
     }
     

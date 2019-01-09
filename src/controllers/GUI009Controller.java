@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 import javabeans.TownHallBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -41,6 +43,15 @@ public class GUI009Controller {
     }
 
     protected iTownHall townHallImpl = LogicFactory.getiTownHall();
+    
+    public void initStage(Parent root){
+        LOGGER.info("Initializing GUI009 stage");
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setOnShowing(this::OnShowingHandlerTownHall);
+        btnAccept.setOnAction((event) -> handleAccept(event));
+        
+    }
     
     public void OnShowingHandlerTownHall(WindowEvent event) {
         btnAccept.setMnemonicParsing(true);
