@@ -22,4 +22,6 @@ public interface iTownHall {
     public TownHallBean findTownHallbyId(TownHallBean townhall) throws ReadException;
 
     public List<TownHallBean> findAllTownHalls() throws ReadException;
+    
+    public void townHallAlreadyExists();
 }

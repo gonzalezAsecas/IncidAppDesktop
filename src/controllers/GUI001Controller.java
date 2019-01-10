@@ -229,11 +229,6 @@ public class GUI001Controller extends THUserGenericController{
                 pwPassword.requestFocus();
                 super.getAlert("The password is wrong.");
             }
-        }catch(Exception e3){
-            LOGGER.log(Level.SEVERE, e3.getMessage(), e3);
-            lblUser.setTextFill(Color.web("#237bf7"));
-            lblPass.setTextFill(Color.web("#237bf7"));
-            super.getAlert("An error with the program has ocurred.");
         }
         LOGGER.info("Ending handleLogIn");
     }
