@@ -18,10 +18,18 @@ public class GUI009UpdateController extends GUI009Controller{
     
     TownHallBean townhall;
     
+    /**
+     * 
+     * @param townhall 
+     */
     public void setTownhall(TownHallBean townhall){
         this.townhall = townhall;
     }
     
+    /**
+     * 
+     * @param root 
+     */
     @Override
     public void initStage(Parent root){
         LOGGER.info("Initializing GUI009 stage");

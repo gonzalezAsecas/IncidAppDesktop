@@ -5,6 +5,10 @@
  */
 package implementations;
 
+import exceptions.CreateException;
+import exceptions.DeleteException;
+import exceptions.ReadException;
+import exceptions.UpdateException;
 import interfaces.iTownHall;
 import java.util.List;
 import javabeans.TownHallBean;
@@ -37,6 +41,11 @@ public class TownHallImplementation implements iTownHall{
 
     @Override
     public List<TownHallBean> findAllTownHalls() throws ReadException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void townHallAlreadyExists() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

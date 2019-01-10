@@ -5,6 +5,10 @@
  */
 package interfaces;
 
+import exceptions.CreateException;
+import exceptions.DeleteException;
+import exceptions.ReadException;
+import exceptions.UpdateException;
 import java.util.List;
 import javabeans.TownHallBean;
 

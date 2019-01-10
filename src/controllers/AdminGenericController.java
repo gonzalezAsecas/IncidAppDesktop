@@ -27,11 +27,19 @@ public class AdminGenericController {
     protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
     
     protected Stage stage;
+    /**
+     * 
+     * @param stage 
+     */
     public void setStage(Stage stage){
         this.stage = stage;
     }
     
     protected UserBean user;
+    /**
+     * 
+     * @param user 
+     */
     public void setUser(UserBean user) {
         this.user = user;
     }
@@ -39,10 +47,18 @@ public class AdminGenericController {
     protected iTownHall townHallImpl = LogicFactory.getiTownHall();
     
     protected TownHallBean townhall;
+    /**
+     * 
+     * @param townhall 
+     */
     public void setTownHall(TownHallBean townhall) {
         this.townhall = townhall;
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void handleTownHalls(ActionEvent event){
         LOGGER.info("Beginning handleTownHalls()");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI007.fxml"));
@@ -65,6 +81,10 @@ public class AdminGenericController {
         LOGGER.info("Ending handleUSers()");
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void handleUsers(ActionEvent event) {
         LOGGER.info("Beginning handleUsers()");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI008.fxml"));
@@ -88,6 +108,10 @@ public class AdminGenericController {
         LOGGER.info("Ending handleUSers()");
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void handleInformation(ActionEvent event){
         LOGGER.info("Beginning handleInformation()");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI006.fxml"));
@@ -110,11 +134,20 @@ public class AdminGenericController {
         LOGGER.info("Ending handleInformation()");
     }
     
+    /**
+     * 
+     * @param message
+     * @return 
+     */
     public ButtonType getAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK, ButtonType.CANCEL);
         return alert.showAndWait().get();
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void handleLogOut(ActionEvent event){
         LOGGER.info("Begginning handleLogOut()");
         if(getAlert("Do you want to exit the application?").equals(ButtonType.OK)){

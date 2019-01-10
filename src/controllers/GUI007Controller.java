@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -56,6 +57,10 @@ public class GUI007Controller extends AdminGenericController{
     
     private ObservableList<TownHallBean> townhallData;
     
+    /**
+     * 
+     * @param root 
+     */
     public void initStage(Parent root) {
         LOGGER.info("Initializing GUI007 stage");
         Scene scene = new Scene(root);
@@ -64,6 +69,9 @@ public class GUI007Controller extends AdminGenericController{
         stage.setResizable(true);
         townhallData = FXCollections.observableArrayList(townHallImpl.findAllTownHalls());
         tableTownhalls.setItems(townhallData);
+        tcName.setCellValueFactory(new PropertyValueFactory<>("locality"));
+        tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        tcTelephone .setCellValueFactory(new PropertyValueFactory<>("telephoneNumber"));
         stage.setOnShowing(this::OnShowingHandler);
         mUsers.setOnAction((event) -> super.handleUsers(event));
         mInformation.setOnAction((event) -> super.handleInformation(event));
@@ -75,6 +83,10 @@ public class GUI007Controller extends AdminGenericController{
                 .addListener(this::handleTownhallsTable);
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void OnShowingHandler(WindowEvent event){
         LOGGER.info("Beginning OnShowingHandler()");
         mTownhall.setDisable(true);
@@ -90,7 +102,12 @@ public class GUI007Controller extends AdminGenericController{
         LOGGER.info("Ending OnShowingHandler()");
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void handleNewTownhall(ActionEvent event){
+        //TODO: como obtenemos y devolvemos los datos de la ventana?
         LOGGER.info("Begginning handleNewTownhall()");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI009.fxml"));
         Parent root;
@@ -112,7 +129,12 @@ public class GUI007Controller extends AdminGenericController{
         LOGGER.info("Ending handleNewTownhall()");
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void handleModifyTownhall(ActionEvent event){
+        //TODO: como obtenemos y devolvemos los datos de la ventana?
         LOGGER.info("Begginning handleModifyTownhall()");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI009.fxml"));
         Parent root;
@@ -137,12 +159,23 @@ public class GUI007Controller extends AdminGenericController{
         LOGGER.info("Ending handleNewTownhall()");
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void handleDelete(ActionEvent event){
         LOGGER.info("Begginning handleDelete()");
-        //TODO: eliminar la linea seleccionada
+        tableTownhalls.getItems().remove(tableTownhalls.getSelectionModel().getSelectedItem());
+        tableTownhalls.refresh();
         LOGGER.info("Ending handleDelete()");
     }
     
+    /**
+     * 
+     * @param observable
+     * @param oldValue
+     * @param newValue 
+     */
     private void handleTownhallsTable(ObservableValue observable,
             Object oldValue, Object newValue) {
         if(newValue != null) {
