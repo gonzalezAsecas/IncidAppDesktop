@@ -9,7 +9,6 @@ import interfaces.iFTP;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -26,18 +25,20 @@ public class FTPCliente implements iFTP{
      * The logger for the desktop app
      */
     protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
-    private FTPClient ftpclient = new FTPClient();
+    private final FTPClient ftpclient = new FTPClient();
     private ResourceBundle properties;
 
     @Override
     public void login() {
         LOGGER.info("Beginning login");
-        properties = ResourceBundle.getBundle("properties.ftpClientProperties");
+        properties = ResourceBundle
+                .getBundle("properties.ftpClientProperties");
         try {
             ftpclient.connect(properties.getString("ftpserver"));
-            ftpclient.login(properties.getString("ftpuser"), properties.getString("ftppassword"));
-            ftpclient.changeWorkingDirectory(properties.getString("ftpdirectory"));
-            //ftpclient.changeWorkingDirectory(pathname); //posicionarse en el directorio a usar
+            ftpclient.login(properties.getString("ftpuser"),
+                    properties.getString("ftppassword"));
+            ftpclient.changeWorkingDirectory(properties
+                    .getString("ftpdirectory"));
         } catch (IOException ex) {
             Logger.getLogger(FTPCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -61,9 +62,9 @@ public class FTPCliente implements iFTP{
     }
     
     @Override
-    public void loadFile(File file) throws IOException{
+    public void loadFile(FTPFile ftpdirecotry, File file) throws IOException{
         BufferedInputStream buffIn;
-        //ftpclient.changeWorkingDirectory(pathname); cambiar al directorio
+        ftpclient.changeWorkingDirectory("");//TO DO
         buffIn = new BufferedInputStream(new FileInputStream(file.getPath()));
         ftpclient.enterLocalPassiveMode();
         ftpclient.storeFile(file.getName(), buffIn);
@@ -71,7 +72,12 @@ public class FTPCliente implements iFTP{
 
     @Override
     public void makeDirectory() {
-        
+        try {
+            ftpclient.changeWorkingDirectory("");//TO DO
+            ftpclient.makeDirectory("");//TO DO
+        } catch (IOException ex) {
+            Logger.getLogger(FTPCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -81,6 +87,6 @@ public class FTPCliente implements iFTP{
 
     @Override
     public void delete() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 }

@@ -16,7 +16,7 @@
         <Menu fx:id="mIncidents" mnemonicParsing="false" text="Incidents" />
         <Menu fx:id="mFiles" mnemonicParsing="false" text="Files" />
         <Menu fx:id="mUserInfo" mnemonicParsing="false" text="User Information" />
-            <Menu fx:id="mLogOut" mnemonicParsing="false" text="LogOut" />
+        <Menu fx:id="mLogOut" mnemonicParsing="false" text="LogOut" />
       </menus>
     </MenuBar>
       <BorderPane prefHeight="552.0" prefWidth="1024.0" VBox.vgrow="ALWAYS">

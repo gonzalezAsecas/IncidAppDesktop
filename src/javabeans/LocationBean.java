@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -26,10 +27,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name="location", schema="incidapp")
 @XmlRootElement
+@NamedQuery(name="findAllLocations",
+            query="SELECT s FROM LocationBean s")
 public class LocationBean implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idLocation;
+    private Integer id;
     @NotNull
     private String street;
     @ManyToOne
@@ -39,12 +42,12 @@ public class LocationBean implements Serializable{
 
     public LocationBean(){}
 
-    public Integer getIdLocation() {
-        return idLocation;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdLocation(Integer idLocation) {
-        this.idLocation = idLocation;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getStreet() {
@@ -75,7 +78,7 @@ public class LocationBean implements Serializable{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.idLocation);
+        hash = 83 * hash + Objects.hashCode(this.id);
         hash = 83 * hash + Objects.hashCode(this.street);
         hash = 83 * hash + Objects.hashCode(this.townHall);
         hash = 83 * hash + Objects.hashCode(this.incidents);
@@ -97,7 +100,7 @@ public class LocationBean implements Serializable{
         if (!Objects.equals(this.street, other.street)) {
             return false;
         }
-        if (!Objects.equals(this.idLocation, other.idLocation)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (!Objects.equals(this.townHall, other.townHall)) {
@@ -111,6 +114,6 @@ public class LocationBean implements Serializable{
 
     @Override
     public String toString() {
-        return "LocationBean{" + "idLocation=" + idLocation + ", street=" + street + ", townHall=" + townHall + ", incidents=" + incidents + '}';
+        return "LocationBean{" + "id=" + id + ", street=" + street + ", townHall=" + townHall + ", incidents=" + incidents + '}';
     }
 }

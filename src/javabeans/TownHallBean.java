@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -25,27 +26,29 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name="townhall", schema="incidapp")
 @XmlRootElement
+@NamedQuery(name="findAllTownHalls", 
+            query="SELECT s FROM TownHallBean s")
 public class TownHallBean implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idTownHall;
+    private Integer id;
     @NotNull
     private String locality;
     private String email;
     private String telephoneNumber;
     @OneToMany(mappedBy="townHall")
     private List<LocationBean> locations;
-    @OneToMany(mappedBy="townHall")
+    @OneToMany(mappedBy="th")
     private List<UserBean> users;
 
     public TownHallBean(){}
 
-    public Integer getIdTownHall() {
-        return idTownHall;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdTownHall(Integer idTownHall) {
-        this.idTownHall = idTownHall;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getLocality() {
@@ -93,7 +96,7 @@ public class TownHallBean implements Serializable{
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 47 * hash + Objects.hashCode(this.idTownHall);
+        hash = 47 * hash + Objects.hashCode(this.id);
         hash = 47 * hash + Objects.hashCode(this.locality);
         hash = 47 * hash + Objects.hashCode(this.email);
         hash = 47 * hash + Objects.hashCode(this.telephoneNumber);
@@ -123,7 +126,7 @@ public class TownHallBean implements Serializable{
         if (!Objects.equals(this.telephoneNumber, other.telephoneNumber)) {
             return false;
         }
-        if (!Objects.equals(this.idTownHall, other.idTownHall)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (!Objects.equals(this.locations, other.locations)) {
@@ -137,6 +140,6 @@ public class TownHallBean implements Serializable{
 
     @Override
     public String toString() {
-        return "TownHallBean{" + "idTownHall=" + idTownHall + ", locality=" + locality + ", email=" + email + ", telephoneNumber=" + telephoneNumber + ", locations=" + locations + ", users=" + users + '}';
+        return "TownHallBean{" + "idTownHall=" + id + ", locality=" + locality + ", email=" + email + ", telephoneNumber=" + telephoneNumber + ", locations=" + locations + ", users=" + users + '}';
     }
 }

@@ -17,7 +17,7 @@ public interface iFTP {
     public void login();
     public void logout();
     public FTPFile[] showFiles();
-    public void loadFile(File file) throws IOException;
+    public void loadFile(FTPFile ftpdirectory,File file) throws IOException;
     public void makeDirectory();
     public void downloadFile(FTPFile file);
     public void delete();

@@ -8,6 +8,7 @@ package javabeans;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -19,7 +20,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -31,10 +34,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name="incident", schema="incidapp")
 @XmlRootElement
+@NamedQuery(name="findAllIncidents", query="SELECT s FROM IncidentBean s")
 public class IncidentBean implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idIncident;
+    private Integer id;
     @NotNull
     private String title;
     private byte[] photo;
@@ -42,8 +46,10 @@ public class IncidentBean implements Serializable{
     private String description;
     private String comment;
     @NotNull
-    private Timestamp createDate;
-    private Timestamp endDate;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date createDate;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date endDate;
     @NotNull
     @Enumerated(EnumType.ORDINAL)
     private Estate estate;
@@ -59,12 +65,12 @@ public class IncidentBean implements Serializable{
     
     public IncidentBean(){}
 
-    public Integer getIdIncident() {
-        return idIncident;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdIncident(Integer idIncident) {
-        this.idIncident = idIncident;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -99,19 +105,19 @@ public class IncidentBean implements Serializable{
         this.comment = comment;
     }
 
-    public Timestamp getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
-    public Timestamp getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Timestamp endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -159,7 +165,7 @@ public class IncidentBean implements Serializable{
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 11 * hash + Objects.hashCode(this.idIncident);
+        hash = 11 * hash + Objects.hashCode(this.id);
         hash = 11 * hash + Objects.hashCode(this.title);
         hash = 11 * hash + Arrays.hashCode(this.photo);
         hash = 11 * hash + Objects.hashCode(this.description);
@@ -195,7 +201,7 @@ public class IncidentBean implements Serializable{
         if (!Objects.equals(this.comment, other.comment)) {
             return false;
         }
-        if (!Objects.equals(this.idIncident, other.idIncident)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (!Arrays.equals(this.photo, other.photo)) {
@@ -227,6 +233,6 @@ public class IncidentBean implements Serializable{
 
     @Override
     public String toString() {
-        return "IncidentBean{" + "idIncident=" + idIncident + ", title=" + title + ", photo=" + photo + ", description=" + description + ", comment=" + comment + ", createDate=" + createDate + ", endDate=" + endDate + ", estate=" + estate + ", user=" + user + ", location=" + location + ", type=" + type + ", users=" + users + '}';
+        return "IncidentBean{" + "idIncident=" + id + ", title=" + title + ", photo=" + photo + ", description=" + description + ", comment=" + comment + ", createDate=" + createDate + ", endDate=" + endDate + ", estate=" + estate + ", user=" + user + ", location=" + location + ", type=" + type + ", users=" + users + '}';
     }
 }

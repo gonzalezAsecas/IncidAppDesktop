@@ -153,12 +153,14 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleLoad(ActionEvent event){
+        /*
         try{
             FTP.loadFile(file);
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "Error loading file", ex);
             super.getAlert("An error had ocurred loading the file.");
         }
+        */
     }
     
     /**
