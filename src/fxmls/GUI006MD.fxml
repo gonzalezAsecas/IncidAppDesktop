@@ -5,20 +5,26 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI006Controller.java">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="Incident" />
-        <Menu mnemonicParsing="false" text="File" />
-        <Menu mnemonicParsing="false" text="User Information" />
-            <Menu mnemonicParsing="false" text="LogOut" />
+        <Menu fx:id="mIncident" mnemonicParsing="false" text="Incident" />
+            <Menu fx:id="mTownhall" mnemonicParsing="false" text="Townhalls">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+            </Menu>
+        <Menu fx:id="mFile" mnemonicParsing="false" text="File" />
+        <Menu fx:id="mUserInformation" mnemonicParsing="false" text="User Information" />
+            <Menu fx:id="mLogOut" mnemonicParsing="false" text="LogOut" />
       </menus>
     </MenuBar>
       <HBox prefHeight="386.0" prefWidth="640.0">
@@ -28,10 +34,10 @@
                <children>
                   <Label text="Fullname:">
                      <VBox.margin>
-                        <Insets top="30.0" />
+                        <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="tfFullName">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
@@ -41,7 +47,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="tfUsername">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
@@ -51,43 +57,44 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <PasswordField>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </PasswordField>
+                  <PasswordField fx:id="pfPassword" promptText="Introduce a NEW password" />
                   <Label text="Email:">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="tfEmail">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
                   </TextField>
-                  <Label text="Localidad:">
+                  <Label fx:id="mLocation" text="Street:">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField disable="true" editable="false">
+                  <TextField fx:id="tfStreet" editable="false">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
                   </TextField>
-                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Button mnemonicParsing="false" text="Actualizar">
-                           <HBox.margin>
-                              <Insets top="10.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
+                  <Label text="Townhall:">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="tfTownhall">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" />
                </children>
             </VBox>
-            <AnchorPane prefHeight="178.0" prefWidth="201.0" />
+            <AnchorPane prefHeight="178.0" prefWidth="201.0">
+               <children>
+                  <Button fx:id="btnUpdate" layoutX="115.0" layoutY="321.0" mnemonicParsing="false" text="Update" />
+               </children></AnchorPane>
          </children>
       </HBox>
   </children>

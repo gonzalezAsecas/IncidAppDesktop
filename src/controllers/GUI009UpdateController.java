@@ -36,6 +36,10 @@ public class GUI009UpdateController extends GUI009Controller{
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setOnShowing(this::OnShowingHandlerTownHall);
+        txtFName.setText(townhall.getLocality());
+        txtFEmail.setText(townhall.getEmail());
+        txtFPhone.setText(townhall.getTelephoneNumber());
         btnAccept.setOnAction((event) -> handleAccept(event));
+        btnCancel.setOnAction((event) -> handleCancel(event));
     }
 }

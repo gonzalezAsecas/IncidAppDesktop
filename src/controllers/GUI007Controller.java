@@ -143,7 +143,6 @@ public class GUI007Controller extends AdminGenericController{
             root = (Parent)loader.load();
             Stage gui009Stage = new Stage();
             GUI009UpdateController controller = loader.getController();
-            //TODO: coger datos de la linea seleccionada
             controller.setTownhall(selectedth);
             controller.setStage(gui009Stage);
             controller.initStage(root);

@@ -7,260 +7,149 @@ package javabeans;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Lander Lluvia
  */
-@MappedSuperclass
-@Table(name="person", schema="incidapp")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idPerson;
-    @NotNull
-    private String login;
-    @NotNull
-    private String email;
-    @NotNull
-    private String password;
-    private String fullName;
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
-    private Status status;
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
-    private Privilege privilege;
-    @NotNull
-    private Timestamp lastAccess;
-    @NotNull
-    private Timestamp lastPasswordChange;
-    private String dni;
-    private String street;
-    @ManyToOne
-    private TownHallBean townHall;
-    @OneToMany(mappedBy="user")
-    private List<IncidentBean> incidents;
-    @ManyToMany(mappedBy="users")
-    private List<IncidentBean> signatureIncidents;
+    //private SimpleIntegerProperty idPerson;
+    private SimpleStringProperty login;
+    private SimpleStringProperty email;
+    private SimpleStringProperty password;
+    private SimpleStringProperty fullName;
+    private SimpleObjectProperty<Status> status;
+    private SimpleObjectProperty<Privilege> privilege;
+    private SimpleObjectProperty<Date> lastAccess;
+    private SimpleObjectProperty<Date> lastPasswordChange;
+    private SimpleStringProperty dni;
+    private SimpleStringProperty street;
+    private SimpleObjectProperty<TownHallBean> townHall;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
     
+    public UserBean() {
+        this.login = new SimpleStringProperty();
+        this.email = new SimpleStringProperty();
+        this.password = new SimpleStringProperty();
+        this.fullName = new SimpleStringProperty();
+        this.status = new SimpleObjectProperty<Status>();
+        this.privilege = new SimpleObjectProperty<Privilege>();
+        this.lastAccess = new SimpleObjectProperty<Date>();
+        this.lastPasswordChange = new SimpleObjectProperty<Date>();
+        this.dni = new SimpleStringProperty();
+        this.street = new SimpleStringProperty();
+        this.townHall = new SimpleObjectProperty<TownHallBean>();
+    }
+    
+    public UserBean(String login, String email, String password, String fullName,
+            Date lastPasswordChange, String street, TownHallBean townhall){
+        this.login = new SimpleStringProperty(login);
+        this.email = new SimpleStringProperty(email);
+        this.password = new SimpleStringProperty(password);
+        this.fullName = new SimpleStringProperty(fullName);
+        this.lastPasswordChange = new SimpleObjectProperty<Date>(lastPasswordChange);
+        this.street = new SimpleStringProperty(street);
+        this.townHall = new SimpleObjectProperty<TownHallBean>(townhall);
+        
+    }
     
     public String getLogin() {
-        return login;
+        return this.login.get();
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        this.login.set(login);
     }
 
     public String getPassword() {
-        return password;
+        return this.password.get();
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password.set(password);
     }
 
     public String getEmail() {
-        return email;
+        return this.email.get();
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email.set(email);
     }
 
     public String getFullName() {
-        return fullName;
+        return this.fullName.get();
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.fullName.set(fullName);
     }
 
     public Status getStatus() {
-        return status;
+        return this.status.get();
     }
 
     public void setStatus(Status status) {
-        this.status = status;
+        this.status.set(status);
     }
 
     public Privilege getPrivilege() {
-        return privilege;
+        return this.privilege.get();
     }
 
     public void setPrivilege(Privilege privilege) {
-        this.privilege = privilege;
+        this.privilege.set(privilege);
     }
 
-    public Timestamp getLastAccess() {
-        return lastAccess;
+    public Date getLastAccess() {
+        return this.lastAccess.get();
     }
 
-    public void setLastAccess(Timestamp lastAccess) {
-        this.lastAccess = lastAccess;
+    public void setLastAccess(Date lastAccess) {
+        this.lastAccess.set(lastAccess);
     }
 
-    public Timestamp getLastPasswordChange() {
-        return lastPasswordChange;
+    public Date getLastPasswordChange() {
+        return this.lastPasswordChange.get();
     }
 
-    public void setLastPasswordChange(Timestamp lastPasswordChange) {
-        this.lastPasswordChange = lastPasswordChange;
-    }
-
-    public Integer getIdPerson() {
-        return idPerson;
-    }
-
-    public void setIdPerson(Integer idPerson) {
-        this.idPerson = idPerson;
-    }
-
-    public UserBean() {
+    public void setLastPasswordChange(Date lastPasswordChange) {
+        this.lastPasswordChange.set(lastPasswordChange);
     }
 
     public String getDni() {
-        return dni;
+        return this.dni.get();
     }
 
     public void setDni(String dni) {
-        this.dni = dni;
+        this.dni.set(dni);
     }
 
     public String getStreet() {
-        return street;
+        return this.street.get();
     }
 
     public void setStreet(String street) {
-        this.street = street;
+        this.street.set(street);
     }
 
     public TownHallBean getTownHall() {
-        return townHall;
+        return this.townHall.get();
     }
 
     public void setTownHall(TownHallBean townHall) {
-        this.townHall = townHall;
-    }
-
-    @XmlTransient
-    public List<IncidentBean> getIncidents() {
-        return incidents;
-    }
-
-    public void setIncidents(List<IncidentBean> incidents) {
-        this.incidents = incidents;
-    }
-
-    @XmlTransient
-    public List<IncidentBean> getSignatureIncidents() {
-        return signatureIncidents;
-    }
-
-    public void setSignatureIncidents(List<IncidentBean> signatureIncidents) {
-        this.signatureIncidents = signatureIncidents;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.idPerson);
-        hash = 37 * hash + Objects.hashCode(this.login);
-        hash = 37 * hash + Objects.hashCode(this.email);
-        hash = 37 * hash + Objects.hashCode(this.password);
-        hash = 37 * hash + Objects.hashCode(this.fullName);
-        hash = 37 * hash + Objects.hashCode(this.status);
-        hash = 37 * hash + Objects.hashCode(this.privilege);
-        hash = 37 * hash + Objects.hashCode(this.lastAccess);
-        hash = 37 * hash + Objects.hashCode(this.lastPasswordChange);
-        hash = 37 * hash + Objects.hashCode(this.dni);
-        hash = 37 * hash + Objects.hashCode(this.street);
-        hash = 37 * hash + Objects.hashCode(this.townHall);
-        hash = 37 * hash + Objects.hashCode(this.incidents);
-        hash = 37 * hash + Objects.hashCode(this.signatureIncidents);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final UserBean other = (UserBean) obj;
-        if (!Objects.equals(this.login, other.login)) {
-            return false;
-        }
-        if (!Objects.equals(this.email, other.email)) {
-            return false;
-        }
-        if (!Objects.equals(this.password, other.password)) {
-            return false;
-        }
-        if (!Objects.equals(this.fullName, other.fullName)) {
-            return false;
-        }
-        if (!Objects.equals(this.dni, other.dni)) {
-            return false;
-        }
-        if (!Objects.equals(this.street, other.street)) {
-            return false;
-        }
-        if (!Objects.equals(this.idPerson, other.idPerson)) {
-            return false;
-        }
-        if (this.status != other.status) {
-            return false;
-        }
-        if (this.privilege != other.privilege) {
-            return false;
-        }
-        if (!Objects.equals(this.lastAccess, other.lastAccess)) {
-            return false;
-        }
-        if (!Objects.equals(this.lastPasswordChange, other.lastPasswordChange)) {
-            return false;
-        }
-        if (!Objects.equals(this.townHall, other.townHall)) {
-            return false;
-        }
-        if (!Objects.equals(this.incidents, other.incidents)) {
-            return false;
-        }
-        if (!Objects.equals(this.signatureIncidents, other.signatureIncidents)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "PersonBean{" + "idPerson=" + idPerson + ", login=" + login + ", email=" + email + ", password=" + password + ", fullName=" + fullName + ", status=" + status + ", privilege=" + privilege + ", lastAccess=" + lastAccess + ", lastPasswordChange=" + lastPasswordChange + ", dni=" + dni + ", street=" + street + ", townHall=" + townHall + ", incidents=" + incidents + ", signatureIncidents=" + signatureIncidents + '}';
+        this.townHall.set(townHall);
     }
 }
