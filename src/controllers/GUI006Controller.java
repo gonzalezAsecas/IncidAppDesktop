@@ -5,8 +5,13 @@
  */
 package controllers;
 
+import criptografia.Cifrado;
+import exceptions.UpdateException;
 import factories.LogicFactory;
 import interfaces.iUser;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.UserBean;
 import javafx.event.ActionEvent;
@@ -25,7 +30,7 @@ import javafx.stage.WindowEvent;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Lander Lluvia
  */
 public class GUI006Controller {
 
@@ -57,6 +62,7 @@ public class GUI006Controller {
     private Button btnUpdate;
     
     protected iUser userImpl = LogicFactory.getiUser();
+    protected Cifrado cif = null;
     
     protected Stage stage;
     public void setStage(Stage stage){
@@ -79,7 +85,7 @@ public class GUI006Controller {
         pfPassword.setTooltip(new Tooltip("Use this field if you want to change your current password"));
         tfEmail.setText(user.getEmail());
         tfStreet.setText(user.getStreet());
-        tfTownhall.setText(user.get);
+        tfTownhall.setText(user.getTownHall().getLocality());
         btnUpdate.setOnAction((event) -> handleUpdate(event));
     }
     
@@ -101,17 +107,27 @@ public class GUI006Controller {
                         user.setPassword(pfPassword.getText());
                         user.setEmail(tfEmail.getText());
                         user.setStreet(tfStreet.getText());
-                        user.setTownHall(tfStreet.getText());
-                        user.setLastPasswordChange(lastPasswordChange);
+                        //user.setTownHall(tfTownhall.getText());
+                        user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
                     }
+                }else{
+                    user.setFullName(tfFullName.getText());
+                    user.setLogin(tfUsername.getText());
+                    user.setEmail(tfEmail.getText());
+                    user.setStreet(tfStreet.getText());
+                    //user.setTownHall(tfTownhall.getText());
+                    user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
                 }
+                userImpl.editUser(user);
             }
+        }catch (UpdateException ex) {
+            Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
+    } 
+        
     public boolean fieldsAreFilled(){
         boolean filled = true;
-        if(tfFullName.getText().isEmpty() | tfUsername.getText().isEmpty() | tfEmail.getText().isEmpty() | tfLocation.getText().isEmpty()){
+        if(tfFullName.getText().isEmpty() | tfUsername.getText().isEmpty() | tfEmail.getText().isEmpty() | tfStreet.getText().isEmpty() | tfTownhall.getText().isEmpty()){
             filled = false;
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "At least all the fields except password must have information", ButtonType.OK);
             alert.showAndWait();

@@ -6,7 +6,9 @@
 package javabeans;
 
 import java.io.Serializable;
+import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -16,34 +18,37 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="townwhall")
 public class TownHallBean implements Serializable{
-    //private final SimpleIntegerProperty idTownHall;
+    //ToDo: no se puede hacer un constructor con solo algunos datos?
+    private final SimpleIntegerProperty id;
     private final SimpleStringProperty locality;
     private final SimpleStringProperty email;
     private final SimpleStringProperty telephoneNumber;
+    private final SimpleObjectProperty<List<LocationBean>> locations;
+    private final SimpleObjectProperty<List<UserBean>> users;
 
     public TownHallBean(){
-        //this.idTownHall = new SimpleIntegerProperty();
+        this.id = new SimpleIntegerProperty();
         this.locality = new SimpleStringProperty();
         this.email = new SimpleStringProperty();
         this.telephoneNumber = new SimpleStringProperty();
+        this.locations = new SimpleObjectProperty<List<LocationBean>>();
+        this.users = new SimpleObjectProperty<List<UserBean>>();
     }
     
     public TownHallBean(String locality, String email, String telephoneNumber) {
-        //this.idTownHall = new SimpleIntegerProperty(idTownHall);
         this.locality = new SimpleStringProperty(locality);
         this.email = new SimpleStringProperty(email);
         this.telephoneNumber = new SimpleStringProperty(telephoneNumber);
     }
 
-    /*
-    public Integer getIdTownHall() {
-        return this.idTownHall.get();
-    }*/
-
-    /*
-    public void setIdTownHall(Integer idTownHall) {
-        this.idTownHall.set(idTownHall);
-    }*/
+    
+    public Integer getId() {
+        return this.id.get();
+    }
+    
+    public void setId(Integer id) {
+        this.id.set(id);
+    }
 
     public String getLocality() {
         return this.locality.get();
@@ -67,5 +72,21 @@ public class TownHallBean implements Serializable{
 
     public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber.set(telephoneNumber);
+    }
+    
+    public List<LocationBean> getLocations(List<LocationBean> locations) {
+        return this.locations.get();
+    }
+    
+    public void setLocation(List<LocationBean> locations) {
+        this.locations.set(locations);
+    }
+    
+    public List<UserBean> getUsers(List<UserBean> users) {
+        return this.users.get();
+    }
+    
+    public void setUsers(List<UserBean> users) {
+        this.users.set(users);
     }
 }

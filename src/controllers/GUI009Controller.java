@@ -85,7 +85,7 @@ public class GUI009Controller {
         try{
             TownHallBean townhall = new TownHallBean(txtFName.getText(), txtFEmail.getText(), txtFPhone.getText());
             if(fieldsAreFilled()){
-                //townHallAlreadyExists(townhall);
+                townHallImpl.townHallAlreadyExists();
                 townHallImpl.createTownHall(townhall);
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "All the fields must have information", ButtonType.OK);
@@ -95,12 +95,6 @@ public class GUI009Controller {
             e.printStackTrace();
         }
     }
-    
-    //public boolean townHallAlreadyExists(TownHallBean townhall){
-        //TODO: con que dato debemos comparar?
-        //Obtenemos en una variable todos los townhall y los comparamos
-        //con el actual?
-    //}
     
     public boolean fieldsAreFilled(){
         boolean filled = true;

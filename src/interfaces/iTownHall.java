@@ -17,7 +17,7 @@ import javabeans.TownHallBean;
  * @author Jon Gonzalez
  */
 public interface iTownHall {
-     public TownHallBean createTownHall(TownHallBean townhall) throws CreateException;
+     public void createTownHall(TownHallBean townhall) throws CreateException;
 
     public void editTownHall(TownHallBean townhall) throws UpdateException;
 

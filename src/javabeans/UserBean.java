@@ -6,14 +6,10 @@
 package javabeans;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,10 +30,8 @@ public class UserBean implements Serializable {
     private SimpleStringProperty dni;
     private SimpleStringProperty street;
     private SimpleObjectProperty<TownHallBean> townHall;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    private SimpleObjectProperty<List<IncidentBean>> incidents;
+    private SimpleObjectProperty<List<IncidentBean>> signatureIncidents;
     
     public UserBean() {
         this.login = new SimpleStringProperty();
@@ -51,6 +45,8 @@ public class UserBean implements Serializable {
         this.dni = new SimpleStringProperty();
         this.street = new SimpleStringProperty();
         this.townHall = new SimpleObjectProperty<TownHallBean>();
+        this.incidents = new SimpleObjectProperty<List<IncidentBean>>();
+        this.signatureIncidents = new SimpleObjectProperty<List<IncidentBean>>();
     }
     
     public UserBean(String login, String email, String password, String fullName,
@@ -151,5 +147,21 @@ public class UserBean implements Serializable {
 
     public void setTownHall(TownHallBean townHall) {
         this.townHall.set(townHall);
+    }
+    
+    public List<IncidentBean> getIncidents(List<IncidentBean> incidents) {
+        return this.incidents.get();
+    }
+    
+    public void setIncidents(List<IncidentBean> incidents) {
+        this.incidents.set(incidents);
+    }
+    
+    public List<IncidentBean> getSignatures(List<IncidentBean> signatures) {
+        return this.signatureIncidents.get();
+    }
+    
+    public void setSignature(List<IncidentBean>  signatures) {
+        this.signatureIncidents.get();
     }
 }
