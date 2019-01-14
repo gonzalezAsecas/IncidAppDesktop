@@ -8,14 +8,6 @@ package javabeans;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -23,20 +15,11 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Jon Gonzalez
  */
-@Entity
-@Table(name="type", schema="incidapp")
-@XmlRootElement
-@NamedQuery(name="findAllTypes", 
-            query="SELECT s FROM TypeBean s")
+@XmlRootElement(name="TypeBean")
 public class TypeBean implements Serializable{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @NotNull
     private String name;
-    @NotNull
     private Integer Severity;
-    @OneToMany(mappedBy="type")
     private List<IncidentBean> incidents;
 
     public TypeBean(){}

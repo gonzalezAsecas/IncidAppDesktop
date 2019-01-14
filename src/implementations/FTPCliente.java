@@ -56,9 +56,8 @@ public class FTPCliente implements iFTP{
     }
     
     @Override
-    public FTPFile[] showFiles() {
-        //return ftpclient.listFiles(""); cargar los archivos que estan en raiz
-        return null;
+    public FTPFile[] showFiles(FTPFile dir) throws IOException{
+        return ftpclient.listFiles(dir.getLink());
     }
     
     @Override

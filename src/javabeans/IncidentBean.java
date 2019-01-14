@@ -6,24 +6,10 @@
 package javabeans;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -31,36 +17,20 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Jon Gonzalez
  */
-@Entity
-@Table(name="incident", schema="incidapp")
-@XmlRootElement
-@NamedQuery(name="findAllIncidents", query="SELECT s FROM IncidentBean s")
+
+@XmlRootElement(name="IncidentBean")
 public class IncidentBean implements Serializable{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @NotNull
     private String title;
     private byte[] photo;
-    @NotNull
     private String description;
     private String comment;
-    @NotNull
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createDate;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date endDate;
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
     private Estate estate;
-    @ManyToOne
     private UserBean user;
-    @ManyToOne
     private LocationBean location;
-    @ManyToOne
     private TypeBean type;
-    @ManyToMany
-    @JoinTable(name="signature", catalog="incidapp")
     private List<UserBean> users;
     
     public IncidentBean(){}

@@ -8,8 +8,16 @@ package controllers;
 import exceptions.ReadException;
 import factories.LogicFactory;
 import interfaces.iUser;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import javabeans.UserBean;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.logging.Level;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -25,6 +33,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * GUI001 FXML Controller class, in this window you can connect to the main 
@@ -86,13 +98,6 @@ public class GUI001Controller extends THUserGenericController{
         //Set the mnemonic character and the text
         btnLogIn.setText("_Login");
         hlPasswordForget.setText("_Click here");
-        /*
-        stage.addEventHandler(KeyEvent.KEY_PRESSED, ev ->{
-            if(ev.getCode()==KeyCode.ENTER){
-                logIn();
-            }
-        });
-        */
         LOGGER.info("Ending handleWindowShowing");
     }
     
@@ -133,7 +138,7 @@ public class GUI001Controller extends THUserGenericController{
     }
     
     /**
-     * Verify that the textfields are filled and send to the server to verify 
+     * Verify that the textfield is filled and send to the server to verify 
      * that the login exist and the password isn't the same. If the login don't 
      * exist or the login exist but the password is the same that he has, 
      * notify to the user.
@@ -145,19 +150,13 @@ public class GUI001Controller extends THUserGenericController{
         if(txtFUser.getText().isEmpty()){
             super.getAlert("You need to put the login in the user field");
             txtFUser.requestFocus();
-            //Verify that the password textfield isn't empty
-        }else if(pwPassword.getText().isEmpty()){
-            super.getAlert("You need to put the new password for change it");
-            pwPassword.requestFocus();
         }else{
             //get the implementation of the iUser interface
             iUser iuser= LogicFactory.getiUser();
             //get the user wrote
             user.setLogin(txtFUser.getText());
-            //get the password wrote
-            user.setPassword(pwPassword.getText());//Encriptar
             try {
-                //send the password and the login for the password change
+                //send the login for the password change
                 iuser.findUserToChangePassword(user);
             } catch (ReadException ex) {
                 //Run when the login don't exist
@@ -169,12 +168,6 @@ public class GUI001Controller extends THUserGenericController{
                     lblPass.setTextFill(Color.web("#237bf7"));
                 //Run when the login is correct and the password is the same
                 //that is trying to change
-                }else if(ex.getWhy().equals("password")){
-                    LOGGER.log(Level.SEVERE, "GUI001Controller: Exception with the password", ex);
-                    lblUser.setTextFill(Color.web("#237bf7"));
-                    lblPass.setTextFill(Color.web("#ff0000"));
-                    pwPassword.requestFocus();
-                    super.getAlert("The password is the same.");
                 }
             }
         }
@@ -183,7 +176,7 @@ public class GUI001Controller extends THUserGenericController{
     
     /**
      * Send the user that it's write in the text fields to the logic a receive
-     * the answer in form of or the user with all the information or 
+     * the answer in form of the user with all the information or 
      * an exception saying the problem 
      * @param event
      */
@@ -193,7 +186,7 @@ public class GUI001Controller extends THUserGenericController{
         //Get the username and the password
         user=new UserBean();
         user.setLogin(txtFUser.getText());
-        user.setPassword(pwPassword.getText());// TODO: Sacar el hash!!!!
+        user.setPassword(cypherPass(pwPassword.getText()));
         try{
             //Send the user to compare the infomation with the database 
             //information and receive the user that it's login, 
@@ -210,20 +203,23 @@ public class GUI001Controller extends THUserGenericController{
                     break;
                 //else if the user is a simple user do this
                 case USER:
-                    super.getAlert("You don't have permissions for enter in this application.");
+                    super.getAlert("You don't have permissions for enter "
+                            + "in this application.");
                     break;
             }
         }catch(ReadException e1){
             //Run when the login isn't in the database
             if(e1.getWhy().equals("login")){
-                LOGGER.log(Level.SEVERE, "GUI001Controller: Exception with the login", e1);
+                LOGGER.log(Level.SEVERE,
+                        "GUI001Controller: Exception with the login", e1);
                 lblUser.setTextFill(Color.web("#ff0000"));
                 lblPass.setTextFill(Color.web("#237bf7"));
                 txtFUser.requestFocus();
                 super.getAlert("The user doesn't exist.");
             //Run when the login is correct but the password no
             }else if(e1.getWhy().equals("password")){
-                LOGGER.log(Level.SEVERE, "GUI001Controller: Exception with the password", e1);
+                LOGGER.log(Level.SEVERE,
+                        "GUI001Controller: Exception with the password", e1);
                 lblUser.setTextFill(Color.web("#237bf7"));
                 lblPass.setTextFill(Color.web("#ff0000"));
                 pwPassword.requestFocus();
@@ -264,8 +260,8 @@ public class GUI001Controller extends THUserGenericController{
             //Hide this stage
             stage.hide();
         }catch(IOException ex){
-            LOGGER.log(Level.SEVERE, "An input-output error in the logOut loader.", 
-                    ex.getMessage());
+            LOGGER.log(Level.SEVERE,
+                    "An input-output error in the logOut loader.", ex.getMessage());
             super.getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }catch(Exception ex){
@@ -315,5 +311,47 @@ public class GUI001Controller extends THUserGenericController{
             txtFUser.requestFocus();
         }
         LOGGER.info("Ending townHallUserLogin");
+    }
+    
+    /**
+     * Take the password in raw and return it chyper with rsa algorithm
+     * @param password the password in raw that is going to be encrypted
+     * @return the password encrypted
+     */
+    private String cypherPass(String password) {
+        LOGGER.info("Beginning cypherPass");
+        FileInputStream fispublic;
+        byte[] key;
+        KeyFactory keyFactory;
+        PublicKey publicKey;
+        Cipher cipher;
+        try{
+            //open the stream for read the public key file 
+            fispublic = new FileInputStream("public.key");
+            //set the size for the byte array
+            key = new byte[fispublic.available()];
+            //read the file
+            fispublic.read(key);
+            //close the stream
+            fispublic.close();
+            //instance the factory with the rsa algorithm
+            keyFactory = KeyFactory.getInstance("RSA");
+            //generate the public key from the information of the file
+            publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(key));
+            //instance the cipher object with the algorithm rsa
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            //intialize the cipher object for the encrypt mode with the public key
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+            password = new String(cipher.doFinal(password.getBytes()));
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.SEVERE, "Exception reading the file", ex);
+        } catch (IOException | NoSuchAlgorithmException | 
+                InvalidKeySpecException | NoSuchPaddingException | 
+                InvalidKeyException | IllegalBlockSizeException | 
+                BadPaddingException ex) {
+            LOGGER.log(Level.SEVERE, "Exception excrypting the password", ex);
+        }
+        LOGGER.info("Ending cypherPass");
+        return password;
     }
 }

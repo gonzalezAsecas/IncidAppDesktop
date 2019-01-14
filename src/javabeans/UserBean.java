@@ -9,20 +9,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -30,48 +16,23 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Jon Gonzalez
  */
-@Entity
-@Table(name="user", schema="incidapp")
-@XmlRootElement
-@NamedQueries({@NamedQuery(
-                name="findAllUsers", 
-                query="SELECT s FROM UserBean s"),
-              @NamedQuery(
-                name="findUserbyLogin", 
-                query="SELECT s FROM UserBean s WHERE s.login = :login")
-})
+@XmlRootElement(name="UserBean")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @NotNull
     private String login;
-    @NotNull
     private String email;
-    @NotNull
     private String password;
     private String fullName;
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
     private Status status;
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
     private Privilege privilege;
-    @NotNull
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date lastAccess;
-    @NotNull
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date lastPasswordChange;
     private String dni;
     private String street;
-    @ManyToOne
     private TownHallBean th;
-    @OneToMany(mappedBy="user")
     private List<IncidentBean> incidents;
-    @ManyToMany(mappedBy="users")
     private List<IncidentBean> signatureIncidents;
 
     public static long getSerialVersionUID() {

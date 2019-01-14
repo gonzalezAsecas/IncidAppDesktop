@@ -9,7 +9,6 @@ import factories.FTPFactory;
 import interfaces.iFTP;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -52,6 +51,8 @@ public class GUI005Controller extends THUserGenericController{
     private Button btnDelete;
     @FXML
     private Button btnDownload;
+    @FXML
+    private TextField txtFNameDirectory;
     
     private File file;
     
@@ -134,9 +135,10 @@ public class GUI005Controller extends THUserGenericController{
      */
     private void loadFiles() {
         TreeItem root;
-        FTPFile[] files;
+        FTPFile[] files=null;
         FTP.login();
-        files = FTP.showFiles();
+        //try{
+            //files = FTP.showFiles();
         root = new TreeItem<String>("FTP client");
         root.setExpanded(true);
         for(int i=0;i<=files.length; i++){
@@ -146,6 +148,9 @@ public class GUI005Controller extends THUserGenericController{
             root.getChildren().add(files[i].getName());
         }
         treeFTP = new TreeView<String>(root);
+        //}catch(IOException ex){
+            
+        //}
     }
     
     /**
