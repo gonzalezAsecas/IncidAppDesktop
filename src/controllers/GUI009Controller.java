@@ -96,6 +96,10 @@ public class GUI009Controller {
         }
     }
     
+    /**
+     * 
+     * @return 
+     */
     public boolean fieldsAreFilled(){
         boolean filled = true;
         if(txtFName.getText().isEmpty() | txtFEmail.getText().isEmpty() | txtFPhone.getText().isEmpty()){

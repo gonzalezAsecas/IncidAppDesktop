@@ -5,8 +5,10 @@
  */
 package controllers;
 
+import exceptions.ReadException;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javabeans.TownHallBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -63,24 +65,28 @@ public class GUI007Controller extends AdminGenericController{
      */
     public void initStage(Parent root) {
         LOGGER.info("Initializing GUI007 stage");
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Townhalls");
-        stage.setResizable(true);
-        townhallData = FXCollections.observableArrayList(townHallImpl.findAllTownHalls());
-        tableTownhalls.setItems(townhallData);
-        tcName.setCellValueFactory(new PropertyValueFactory<>("locality"));
-        tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        tcTelephone .setCellValueFactory(new PropertyValueFactory<>("telephoneNumber"));
-        stage.setOnShowing(this::OnShowingHandler);
-        mUsers.setOnAction((event) -> super.handleUsers(event));
-        mInformation.setOnAction((event) -> super.handleInformation(event));
-        mLogOut.setOnAction((event) -> super.handleLogOut(event));
-        btnNewTownhall.setOnAction((event) -> handleNewTownhall(event));
-        btnModifyTownhall.setOnAction((event) -> handleModifyTownhall(event));
-        btnDelete.setOnAction((event) -> handleDelete(event));
-        tableTownhalls.getSelectionModel().selectedItemProperty()
-                .addListener(this::handleTownhallsTable);
+        try{
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Townhalls");
+            stage.setResizable(true);
+            townhallData = FXCollections.observableArrayList(townHallImpl.findAllTownHalls());
+            tableTownhalls.setItems(townhallData);
+            tcName.setCellValueFactory(new PropertyValueFactory<>("locality"));
+            tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+            tcTelephone .setCellValueFactory(new PropertyValueFactory<>("telephoneNumber"));
+            stage.setOnShowing(this::OnShowingHandler);
+            mUsers.setOnAction((event) -> super.handleUsers(event));
+            mInformation.setOnAction((event) -> super.handleInformation(event));
+            mLogOut.setOnAction((event) -> super.handleLogOut(event));
+            btnNewTownhall.setOnAction((event) -> handleNewTownhall(event));
+            btnModifyTownhall.setOnAction((event) -> handleModifyTownhall(event));
+            btnDelete.setOnAction((event) -> handleDelete(event));
+            tableTownhalls.getSelectionModel().selectedItemProperty()
+                    .addListener(this::handleTownhallsTable);
+        } catch (ReadException ex) {
+            Logger.getLogger(GUI007Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**

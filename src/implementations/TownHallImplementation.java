@@ -25,10 +25,18 @@ public class TownHallImplementation implements iTownHall{
     private TownHallRestFul webClient;
     protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
     
+    /**
+     * 
+     */
     public TownHallImplementation(){
         webClient = new TownHallRestFul();
     }
 
+    /**
+     * 
+     * @param townhall
+     * @throws CreateException 
+     */
     @Override
     public void createTownHall(TownHallBean townhall) throws CreateException {
        try{
@@ -41,6 +49,11 @@ public class TownHallImplementation implements iTownHall{
        }
     }
 
+    /**
+     * 
+     * @param townhall
+     * @throws UpdateException 
+     */
     @Override
     public void editTownHall(TownHallBean townhall) throws UpdateException {
         try{
@@ -52,7 +65,12 @@ public class TownHallImplementation implements iTownHall{
             throw new UpdateException("Error editing a townhall");
         }
     }
-
+    
+    /**
+     * 
+     * @param townhall
+     * @throws DeleteException 
+     */
     @Override
     public void removeTownHall(TownHallBean townhall) throws DeleteException {
         try{
@@ -65,6 +83,12 @@ public class TownHallImplementation implements iTownHall{
         }
     }
 
+    /**
+     * 
+     * @param townhall
+     * @return
+     * @throws ReadException 
+     */
     @Override
     public TownHallBean findTownHallbyId(TownHallBean townhall) throws ReadException {
         try{
@@ -76,6 +100,11 @@ public class TownHallImplementation implements iTownHall{
         }
     }
 
+    /**
+     * 
+     * @return
+     * @throws ReadException 
+     */
     @Override
     public List<TownHallBean> findAllTownHalls() throws ReadException {
         List<TownHallBean> townhalls = null;
@@ -90,6 +119,9 @@ public class TownHallImplementation implements iTownHall{
         return townhalls;
     }
 
+    /**
+     * 
+     */
     @Override
     public void townHallAlreadyExists() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
