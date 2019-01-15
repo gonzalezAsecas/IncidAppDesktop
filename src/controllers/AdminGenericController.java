@@ -61,7 +61,7 @@ public class AdminGenericController {
      */
     public void handleTownHalls(ActionEvent event){
         LOGGER.info("Beginning handleTownHalls()");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI007.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI007SDTH.fxml"));
         Parent root;
         try{
             root = (Parent)loader.load();
@@ -87,7 +87,7 @@ public class AdminGenericController {
      */
     public void handleUsers(ActionEvent event) {
         LOGGER.info("Beginning handleUsers()");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI008.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI008CRUDTH.fxml"));
         Parent root;
         try{
             root = (Parent)loader.load();
@@ -114,7 +114,7 @@ public class AdminGenericController {
      */
     public void handleInformation(ActionEvent event){
         LOGGER.info("Beginning handleInformation()");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI006.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI006MD.fxml"));
         Parent root;
         try{
             root = (Parent)loader.load();

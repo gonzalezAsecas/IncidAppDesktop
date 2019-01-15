@@ -5,8 +5,10 @@
  */
 package controllers;
 
+import exceptions.CreateException;
 import factories.LogicFactory;
 import interfaces.iTownHall;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.TownHallBean;
 import javafx.event.ActionEvent;
@@ -43,8 +45,8 @@ public class GUI009Controller {
     protected Stage stage;
     
     /**
-     * 
-     * @param stage 
+     * Setter of the stage
+     * @param stage Stage of the application
      */
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -53,7 +55,7 @@ public class GUI009Controller {
     protected iTownHall townHallImpl = LogicFactory.getiTownHall();
     
     /**
-     * 
+     * Set and initialize the stage and its properties
      * @param root 
      */
     public void initStage(Parent root){
@@ -67,7 +69,7 @@ public class GUI009Controller {
     }
     
     /**
-     * 
+     * Set the buttons mnemonics
      * @param event 
      */
     public void OnShowingHandlerTownHall(WindowEvent event) {
@@ -78,7 +80,7 @@ public class GUI009Controller {
     }
     
     /**
-     * 
+     * Checks if the fields are filleds, and
      * @param event 
      */
     public void handleAccept(ActionEvent event) {
@@ -91,13 +93,13 @@ public class GUI009Controller {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "All the fields must have information", ButtonType.OK);
                 alert.showAndWait();
             }
-        }catch (Exception e){
-            e.printStackTrace();
+        } catch (CreateException ex) {
+            LOGGER.log(Level.SEVERE, "Error creating a townhall");
         }
     }
     
     /**
-     * 
+     * Checks if the fields are filled
      * @return 
      */
     public boolean fieldsAreFilled(){

@@ -57,10 +57,13 @@ public class GUI007Controller extends AdminGenericController{
     @FXML
     private TableView tableTownhalls;
     
+    /**
+     * Contains all the Townhalls to show them in the tableview
+     */
     private ObservableList<TownHallBean> townhallData;
     
     /**
-     * 
+     * Set and initialize the stage and its properties
      * @param root 
      */
     public void initStage(Parent root) {
@@ -90,7 +93,7 @@ public class GUI007Controller extends AdminGenericController{
     }
     
     /**
-     * 
+     * Set attributes to the controls that it need when the window is shown
      * @param event 
      */
     public void OnShowingHandler(WindowEvent event){
@@ -109,7 +112,8 @@ public class GUI007Controller extends AdminGenericController{
     }
     
     /**
-     * 
+     * Show a new modal window that allows to introduce the values of the new 
+     * townhall
      * @param event 
      */
     public void handleNewTownhall(ActionEvent event){
@@ -136,7 +140,8 @@ public class GUI007Controller extends AdminGenericController{
     }
     
     /**
-     * 
+     * Show a new modal window that allows to modify the values of the selected
+     * townhall
      * @param event 
      */
     public void handleModifyTownhall(ActionEvent event){
@@ -165,7 +170,7 @@ public class GUI007Controller extends AdminGenericController{
     }
     
     /**
-     * 
+     * Deletes the selected townhall
      * @param event 
      */
     public void handleDelete(ActionEvent event){
@@ -176,7 +181,7 @@ public class GUI007Controller extends AdminGenericController{
     }
     
     /**
-     * 
+     * Enables and disables the buttons Modify townhall and Delete
      * @param observable
      * @param oldValue
      * @param newValue 

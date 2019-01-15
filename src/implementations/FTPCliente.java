@@ -56,14 +56,14 @@ public class FTPCliente implements iFTP{
     
     @Override
     public FTPFile[] showFiles() {
-        //return ftpclient.listFiles(""); cargar los archivos que estan en raiz
+        return ftpclient.listFiles(""); cargar los archivos que estan en raiz
         return null;
     }
     
     @Override
     public void loadFile(File file) throws IOException{
         BufferedInputStream buffIn;
-        //ftpclient.changeWorkingDirectory(pathname); cambiar al directorio
+        ftpclient.changeWorkingDirectory(pathname); cambiar al directorio
         buffIn = new BufferedInputStream(new FileInputStream(file.getPath()));
         ftpclient.enterLocalPassiveMode();
         ftpclient.storeFile(file.getName(), buffIn);
@@ -83,4 +83,4 @@ public class FTPCliente implements iFTP{
     public void delete() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-}
+//}

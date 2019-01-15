@@ -21,9 +21,11 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javabeans.Privilege;
 import javabeans.UserBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -104,6 +106,10 @@ public class GUI006Controller {
         stage.setTitle("User information");
         stage.setResizable(true);
         stage.setOnShowing(this::OnShowingHandler);
+        mIncident.setOnAction((event) -> handleIncident(event));
+        mTownhall.setOnAction((event) -> handleTownhall(event));
+        mFile.setOnAction((event) -> handleFile(event));
+        mLogOut.setOnAction((event) -> handleLogOut(event));
         tfFullName.setText(user.getFullName());
         tfUsername.setText(user.getLogin());
         pfPassword.setTooltip(new Tooltip("Use this field if you want to change your current password"));
@@ -119,9 +125,90 @@ public class GUI006Controller {
      */
     public void OnShowingHandler(WindowEvent event){
         LOGGER.info("Beginning OnShowingHandler()");
+        if(user.getPrivilege().equals(Privilege.TOWNHALLUSER)){
+            mTownhall.setDisable(true);
+        }else if(user.getPrivilege().equals(Privilege.ADMIN)){
+            mIncident.setDisable(true);
+        }
         mUserInformation.setDisable(true);
         btnUpdate.setMnemonicParsing(true);
         btnUpdate.setText("_Update");
+    }
+    
+    public void handleIncident(ActionEvent event){
+        LOGGER.info("Begginning handleIncident()");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI003SDI"));
+        Parent root;
+        try{
+            root = (Parent)loader.load();
+            Stage gui003Stage = new Stage();
+            GUI003Controller controller = loader.getController();
+            controller.setStage(gui003Stage);
+            controller.setUser(user);
+            controller.initStage(root);
+            stage.hide();
+        } catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, "An input-output error in handleIncident()",
+                    ex.getMessage());
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "An error ocurred in handleIncident()",
+                    ex.getMessage());
+        }
+    }
+    
+    public void handleTownhall(ActionEvent event){
+        LOGGER.info("Begginning handleTownhall()");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI007SDTH"));
+        Parent root;
+        try{
+            root = (Parent)loader.load();
+            Stage gui007Stage = new Stage();
+            GUI007Controller controller = loader.getController();
+            controller.setStage(gui007Stage);
+            controller.setUser(user);
+            controller.initStage(root);
+            stage.hide();
+        }catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, "An input-output error in handleTownhall()",
+                    ex.getMessage());
+        }catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "An error ocurred in handleTownhall()",
+                    ex.getMessage());
+        }
+    }
+    
+    public void handleFile(ActionEvent event){
+        LOGGER.info("Begginning handleFile()");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI005CRUDF"));
+        Parent root;
+        try{
+            root = (Parent)loader.load();
+            Stage gui005Stage = new Stage();
+            GUI005Controller controller = loader.getController();
+            controller.setStage(gui005Stage);
+            controller.setUser(user);
+            controller.initStage(root);
+            stage.hide();
+        }catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, "An input-output error in handleFile()",
+                    ex.getMessage());
+        }catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "An error ocurred in handleFile()",
+                    ex.getMessage());
+        }
+    }
+    
+    public ButtonType getAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK, ButtonType.CANCEL);
+        return alert.showAndWait().get();
+    }
+    
+    public void handleLogOut(ActionEvent event){
+        LOGGER.info("Begginning handleLogOut()");
+        if(getAlert("Do you want to exit the application?").equals(ButtonType.OK)){
+            stage.close();
+        }
+        LOGGER.info("Ending handleLogOut()");
     }
     
     /**
@@ -132,7 +219,7 @@ public class GUI006Controller {
         LOGGER.info("Begginning handleUpdate()");
         try{
             if(fieldsAreFilled()){
-                if(pfPassword.getText().length() !=0){
+                if(pfPassword.getText().trim().length() !=0){
                     if(handlePassword()){
                         user.setFullName(tfFullName.getText());
                         user.setLogin(tfUsername.getText());
@@ -163,7 +250,7 @@ public class GUI006Controller {
      */
     public boolean fieldsAreFilled(){
         boolean filled = true;
-        if(tfFullName.getText().isEmpty() | tfUsername.getText().isEmpty() | tfEmail.getText().isEmpty() | tfStreet.getText().isEmpty() | tfTownhall.getText().isEmpty()){
+        if(tfFullName.getText().trim().isEmpty() | tfUsername.getText().trim().isEmpty() | tfEmail.getText().trim().isEmpty() | tfStreet.getText().trim().isEmpty() | tfTownhall.getText().trim().isEmpty()){
             filled = false;
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "At least all the fields except password must have information", ButtonType.OK);
             alert.showAndWait();

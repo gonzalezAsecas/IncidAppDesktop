@@ -75,7 +75,7 @@ public class TownHallImplementation implements iTownHall{
     public void removeTownHall(TownHallBean townhall) throws DeleteException {
         try{
             LOGGER.info("TownhallImplementation: Deleting a townhall from REST service.");
-            webClient.remove(townhall.getId());
+            //webClient.remove(townhall.getId());
         }catch(Exception ex) {
             LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception removing a townhall",
                     ex.getMessage());

@@ -22,7 +22,7 @@ import javafx.scene.control.TreeView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.WindowEvent;
-import org.apache.commons.net.ftp.FTPFile;
+//import org.apache.commons.net.ftp.FTPFile;
 
 /**
  * 
@@ -133,6 +133,7 @@ public class GUI005Controller extends THUserGenericController{
      * 
      */
     private void loadFiles() {
+        
         TreeItem root;
         FTPFile[] files;
         FTP.login();
@@ -145,7 +146,7 @@ public class GUI005Controller extends THUserGenericController{
             }
             root.getChildren().add(files[i].getName());
         }
-        treeFTP = new TreeView<String>(root);
+        treeFTP = new TreeView<String>(root);*/
     }
     
     /**
@@ -153,6 +154,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleLoad(ActionEvent event){
+        
         try{
             FTP.loadFile(file);
         }catch(IOException ex){
@@ -166,7 +168,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleDownload(ActionEvent event){
-        //FTP.downloadFile(file); //el fichero que se hya seleccionado
+        FTP.downloadFile(file); //el fichero que se hya seleccionado
         
     }
     

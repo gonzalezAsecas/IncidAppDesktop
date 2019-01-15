@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="townwhall")
 public class TownHallBean implements Serializable{
     //ToDo: no se puede hacer un constructor con solo algunos datos?
-    private final SimpleIntegerProperty id;
+    //private final SimpleIntegerProperty id;
     private final SimpleStringProperty locality;
     private final SimpleStringProperty email;
     private final SimpleStringProperty telephoneNumber;
@@ -27,7 +27,7 @@ public class TownHallBean implements Serializable{
     private final SimpleObjectProperty<List<UserBean>> users;
 
     public TownHallBean(){
-        this.id = new SimpleIntegerProperty();
+        //this.id = new SimpleIntegerProperty();
         this.locality = new SimpleStringProperty();
         this.email = new SimpleStringProperty();
         this.telephoneNumber = new SimpleStringProperty();
