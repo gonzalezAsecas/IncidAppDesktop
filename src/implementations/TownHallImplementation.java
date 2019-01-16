@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.TownHallBean;
+import javax.ws.rs.core.GenericType;
 import restfuls.TownHallRestFul;
 
 /**
@@ -75,7 +76,7 @@ public class TownHallImplementation implements iTownHall{
     public void removeTownHall(TownHallBean townhall) throws DeleteException {
         try{
             LOGGER.info("TownhallImplementation: Deleting a townhall from REST service.");
-            //webClient.remove(townhall.getId());
+            webClient.remove(townhall.getId());
         }catch(Exception ex) {
             LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception removing a townhall",
                     ex.getMessage());
@@ -91,13 +92,28 @@ public class TownHallImplementation implements iTownHall{
      */
     @Override
     public TownHallBean findTownHallbyId(TownHallBean townhall) throws ReadException {
+        TownHallBean th = null;
         try{
             LOGGER.info("TownhallImplementation: Finding a townhall by id from REST service.");
-            webClient.find(TownHallBean, townhall.getId());
+            th = webClient.findById(TownHallBean.class, townhall.getId().toString());
         }catch(Exception ex) {
             LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception finding a townhall by id",
                     ex.getMessage());
         }
+        return th;
+    }
+    
+    @Override
+    public TownHallBean findTownHallByName(TownHallBean townhall) throws ReadException {
+        TownHallBean th = null;
+        try{
+            LOGGER.info("TownhallImplementation: Finding a townhall by id from REST service.");
+            th = webClient.findByName(TownHallBean.class, townhall.getLocality());
+        }catch(Exception ex) {
+            LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception finding a townhall by id",
+                    ex.getMessage());
+        }
+        return th;
     }
 
     /**
@@ -110,7 +126,7 @@ public class TownHallImplementation implements iTownHall{
         List<TownHallBean> townhalls = null;
         try{
             LOGGER.info("TownhallImplementation: Finding all townhalls from REST service.");
-            townhalls = webClient.findAll(new Class<List<TownHallBean>>() {});
+            townhalls = webClient.findAll(new GenericType<List<TownHallBean>>() {});
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception finding all townhalls",
                     ex.getMessage());

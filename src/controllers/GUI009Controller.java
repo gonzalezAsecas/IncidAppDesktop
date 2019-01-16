@@ -51,6 +51,11 @@ public class GUI009Controller {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+    
+    protected TownHallBean th;
+    public void setTownHall(TownHallBean th){
+        this.th = th;
+    }
 
     protected iTownHall townHallImpl = LogicFactory.getiTownHall();
     

@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import controllers.GUI007Controller;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,12 +41,12 @@ public class Application extends javafx.application.Application{
      */
     @Override
     public void start(Stage stage){
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI007SDTH.fxml"));
+        String path = "/fxmls/GUI007SDTH.fxml";
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
         Parent root;
         try {
             root = (Parent)loader.load();
-            GUI001Controller controller = loader.getController();
+            GUI007Controller controller = (GUI007Controller)loader.getController();
             controller.setStage(stage);
             controller.initStage(root);
         } catch (IOException ex) {

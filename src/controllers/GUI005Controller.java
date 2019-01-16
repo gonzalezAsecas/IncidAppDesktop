@@ -5,8 +5,8 @@
  */
 package controllers;
 
-import factories.FTPFactory;
-import interfaces.iFTP;
+//import factories.FTPFactory;
+//import interfaces.iFTP;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -55,7 +55,7 @@ public class GUI005Controller extends THUserGenericController{
     
     private File file;
     
-    private final iFTP FTP = FTPFactory.getiFTP();
+    //private final iFTP FTP = FTPFactory.getiFTP();
     
     /**
      * GUI005 FXML Controller class, this is the window for modify the data 
@@ -133,7 +133,7 @@ public class GUI005Controller extends THUserGenericController{
      * 
      */
     private void loadFiles() {
-        
+        /*
         TreeItem root;
         FTPFile[] files;
         FTP.login();
@@ -154,13 +154,13 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleLoad(ActionEvent event){
-        
+        /*
         try{
             FTP.loadFile(file);
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "Error loading file", ex);
             super.getAlert("An error had ocurred loading the file.");
-        }
+        }*/
     }
     
     /**
@@ -168,8 +168,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleDownload(ActionEvent event){
-        FTP.downloadFile(file); //el fichero que se hya seleccionado
-        
+        //FTP.downloadFile(file); //el fichero que se hya seleccionado
     }
     
     /**
@@ -177,7 +176,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleMakeDir(ActionEvent event){
-        FTP.makeDirectory();
+        //FTP.makeDirectory();
     }
     
     /**
@@ -185,7 +184,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleDelete(ActionEvent event){
-        FTP.delete();
+        //FTP.delete();
     }
     
     /**
@@ -193,8 +192,8 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleIncidentsFTP(ActionEvent event){
-        FTP.logout();
-        super.handleIncidents(event);
+        //FTP.logout();
+        //super.handleIncidents(event);
     }
     
     /**
@@ -202,8 +201,8 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleInfoFTP(ActionEvent event){
-        FTP.logout();
-        super.handleInfo(event);
+        //FTP.logout();
+        //super.handleInfo(event);
     }
     
     /**
@@ -211,7 +210,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleLogOutFTP(ActionEvent event){
-        FTP.logout();
-        super.handleLogOut(event);
+        //FTP.logout();
+        //super.handleLogOut(event);
     }
 }

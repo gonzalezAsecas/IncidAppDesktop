@@ -6,8 +6,10 @@
 package controllers;
 
 
+import exceptions.ReadException;
 import exceptions.UpdateException;
 import factories.LogicFactory;
+import interfaces.iTownHall;
 import interfaces.iUser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,6 +24,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.Privilege;
+import javabeans.TownHallBean;
 import javabeans.UserBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -76,6 +79,7 @@ public class GUI006Controller {
     private Button btnUpdate;
     
     protected iUser userImpl = LogicFactory.getiUser();
+    protected iTownHall townHallImpl = LogicFactory.getiTownHall();
     
     protected Stage stage;
     /**
@@ -226,7 +230,10 @@ public class GUI006Controller {
                         user.setPassword(cypherPass(pfPassword.getText()));
                         user.setEmail(tfEmail.getText());
                         user.setStreet(tfStreet.getText());
-                        //user.setTownHall(tfTownhall.getText());
+                        TownHallBean th = new TownHallBean();
+                        th.setLocality(tfTownhall.getText());
+                        th = townHallImpl.findTownHallByName(th);
+                        user.setTownHall(th);
                         user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
                     }
                 }else{
@@ -234,12 +241,17 @@ public class GUI006Controller {
                     user.setLogin(tfUsername.getText());
                     user.setEmail(tfEmail.getText());
                     user.setStreet(tfStreet.getText());
-                    //user.setTownHall(tfTownhall.getText());
+                    TownHallBean th = new TownHallBean();
+                    th.setLocality(tfTownhall.getText());
+                    th = townHallImpl.findTownHallByName(th);
+                    user.setTownHall(th);
                     user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
                 }
                 userImpl.editUser(user);
             }
         }catch (UpdateException ex) {
+            Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ReadException ex) {
             Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 

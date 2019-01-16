@@ -94,9 +94,9 @@ public class AdminGenericController {
             Stage gui008Stage = new Stage();
             GUI008Controller controller = loader.getController();
             //Los metodos dan error ya que el controller GUI008 no esta hecho
-            controller.setStage(gui008Stage);
-            controller.setUser(user);
-            controller.initStage(root);
+            //controller.setStage(gui008Stage);
+            //controller.setUser(user);
+            //controller.initStage(root);
             stage.hide();
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "An input-output error in handleUsers()",

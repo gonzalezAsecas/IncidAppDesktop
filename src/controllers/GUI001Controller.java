@@ -161,7 +161,7 @@ public class GUI001Controller extends THUserGenericController{
                 iuser.findUserToChangePassword(user);
             } catch (ReadException ex) {
                 //Run when the login don't exist
-                if(ex.getWhy().equals("login")){
+                /*if(ex.getWhy().equals("login")){
                     LOGGER.log(Level.SEVERE,"The user don´t exist",ex);
                     super.getAlert("This user don´t exist.");
                     txtFUser.requestFocus();
@@ -175,7 +175,7 @@ public class GUI001Controller extends THUserGenericController{
                     lblPass.setTextFill(Color.web("#ff0000"));
                     pwPassword.requestFocus();
                     super.getAlert("The password is the same.");
-                }
+                }*/
             }
         }
         LOGGER.info("Ending handleRecoverPassword");
@@ -215,7 +215,7 @@ public class GUI001Controller extends THUserGenericController{
             }
         }catch(ReadException e1){
             //Run when the login isn't in the database
-            if(e1.getWhy().equals("login")){
+            /*if(e1.getWhy().equals("login")){
                 LOGGER.log(Level.SEVERE, "GUI001Controller: Exception with the login", e1);
                 lblUser.setTextFill(Color.web("#ff0000"));
                 lblPass.setTextFill(Color.web("#237bf7"));
@@ -228,7 +228,7 @@ public class GUI001Controller extends THUserGenericController{
                 lblPass.setTextFill(Color.web("#ff0000"));
                 pwPassword.requestFocus();
                 super.getAlert("The password is wrong.");
-            }
+            }*/
         }
         LOGGER.info("Ending handleLogIn");
     }
