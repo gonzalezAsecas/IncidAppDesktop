@@ -11,47 +11,108 @@ import exceptions.ReadException;
 import exceptions.UpdateException;
 import interfaces.iUser;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javabeans.UserBean;
+import javax.ws.rs.core.GenericType;
+import restfuls.UserRestFul;
 
 /**
  *
  * @author Jon Gonzalez
  */
 public class UserImplementation implements iUser{
-
+    
+    /**
+     * The logger for the desktop app
+     */
+    protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
+    
+    UserRestFul userRest = new UserRestFul();
+    
     @Override
-    public UserBean createUser(UserBean user) throws CreateException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void createUser(UserBean user) throws CreateException {
+        try{
+            userRest.create(user);
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "", ex);
+            //throw new CreateException();
+        }
     }
 
     @Override
     public void editUser(UserBean user) throws UpdateException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            userRest.edit(user);
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "", ex);
+            //throw new UpdateException();
+        }
     }
 
     @Override
     public void removeUser(UserBean user) throws DeleteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            userRest.remove(user.getId().toString());
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "", ex);
+            //throw new DeleteException();
+        }
     }
 
     @Override
     public UserBean findUserbyId(UserBean user) throws ReadException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            //user = userRest.find(UserBean.class, user.getId());
+            return user;
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "", ex);
+            //throw new FindException();
+        }
     }
 
     @Override
     public List<UserBean> findAllUsers() throws ReadException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<UserBean> us;
+        try{
+            us = userRest.findAll(new GenericType<List<UserBean>>() {});
+            return us;
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "", ex);
+            //throw new FindException();
+        }
     }
 
     @Override
+    public List<UserBean> findAllTHUsers() throws ReadException {
+        List<UserBean> us;
+        try{
+            us = userRest.findAllTHU(new GenericType<List<UserBean>>() {});
+            return us;
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "", ex);
+            //throw new FindException();
+        }
+    }
+    
+    @Override
     public UserBean findUserbyLogin(UserBean user) throws ReadException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            user = userRest.findUserbyLogin(UserBean.class, user.getLogin(), user.getPassword());
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "", ex);
+            //throw new FindException();
+        }
     }
 
     @Override
     public void findUserToChangePassword(UserBean user) throws ReadException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            userRest.findUserToChangePassword(UserBean.class, user.getLogin());
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "", ex);
+            //throw new FindException();
+        }
     }
     
 }

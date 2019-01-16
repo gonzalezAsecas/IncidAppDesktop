@@ -10,7 +10,6 @@ import exceptions.CreateException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

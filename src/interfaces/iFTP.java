@@ -14,11 +14,11 @@ import org.apache.commons.net.ftp.FTPFile;
  * @author Jon Gonzalez
  */
 public interface iFTP {
-    public void login();
-    public void logout();
-    public FTPFile[] showFiles(FTPFile dir) throws IOException;
-    public void loadFile(FTPFile ftpdirectory,File file) throws IOException;
-    public void makeDirectory();
-    public void downloadFile(FTPFile file);
-    public void delete();
+    public FTPFile[] login() throws Exception;
+    public void logout() throws Exception;
+    public FTPFile[] showFiles(FTPFile dir) throws Exception;
+    public void loadFile(FTPFile ftpdirectory,File file) throws Exception;
+    public void makeDirectory(FTPFile dir, String dirName) throws Exception;
+    public void downloadFile(FTPFile file) throws Exception;
+    public void delete(FTPFile file) throws Exception;
 }

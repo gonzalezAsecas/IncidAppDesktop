@@ -5,9 +5,11 @@
  */
 package restfuls;
 
+import java.util.ResourceBundle;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 
 /**
  * Jersey REST client generated for REST resource:UserRestFul [user]<br>
@@ -19,13 +21,14 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Usuario
+ * @author Jon Gonzalez
  */
 public class UserRestFul {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:22461/grupo4/webresources";
+    ResourceBundle rb = ResourceBundle.getBundle("properties.Properties.properties");
+    private final String BASE_URI = rb.getString("server_url");
 
     public UserRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -58,12 +61,12 @@ public class UserRestFul {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T findAll(Class<T> responseType) throws ClientErrorException {
+    public <T> T findAll(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T findAllTHU(Class<T> responseType) throws ClientErrorException {
+    public <T> T findAllTHU(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }

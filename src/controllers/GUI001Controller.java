@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import exceptions.CreateException;
 import exceptions.ReadException;
 import factories.LogicFactory;
 import interfaces.iUser;
@@ -19,13 +20,18 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import javabeans.Privilege;
+import javabeans.Status;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -45,7 +51,7 @@ import javax.crypto.NoSuchPaddingException;
  * @author Jon Gonzalez
  * @version 1.0
  */
-public class GUI001Controller extends THUserGenericController{
+public class GUI001Controller{
 
     @FXML
     private Label lblUser;
@@ -59,6 +65,49 @@ public class GUI001Controller extends THUserGenericController{
     private Button btnLogIn;
     @FXML
     private Hyperlink hlPasswordForget;
+    
+    iUser iuser= LogicFactory.getiUser();
+    
+    /**
+     * The logger for the desktop app
+     */
+    protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
+    
+    /**
+     * The stage for the scene
+     */
+    protected Stage stage;
+    
+    /**
+     * The user that is login or logged in the application
+     */
+    protected UserBean user;
+    
+    /**
+     * The setter of the stage
+     * @param stage The stage of the application
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+    
+    /**
+     * the setter for the user
+     * @param user the object for the user
+     */
+    public void setUser(UserBean user) {
+        this.user = user;
+    }
+    
+    /**
+     * The method for get a customized alert sending the message for the user
+     * @param message the message that the user is going to read 
+     * @return the type of the button clicked
+     */
+    public ButtonType getAlert(String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK, ButtonType.CANCEL);
+        return alert.showAndWait().get();
+    }
     
     /**
      * Set and initialize the stage and its properties.
@@ -81,6 +130,7 @@ public class GUI001Controller extends THUserGenericController{
         pwPassword.textProperty().addListener(this::handleTextChanged);
         pwPassword.setPromptText("Set the password...");
         hlPasswordForget.setOnAction(this::handleRecoverPassword);
+        makeUserInShow();
         //Show the LogIn window
         stage.show();
         LOGGER.info("Ending the initialization of the GUI001 stage");
@@ -124,15 +174,13 @@ public class GUI001Controller extends THUserGenericController{
             String login = txtFUser.getText();
             login = login.substring(0, login.length()-1);
             txtFUser.setText(login);
-            super.getAlert(
-                    "The login can´t had more than twenty characters.");
+            getAlert("The login can´t had more than twenty characters.");
             txtFUser.requestFocus();
         }else if(pwPassword.getText().length()>16){
             String password= pwPassword.getText();
             password = password.substring(0, password.length()-1);
             pwPassword.setText(password);
-            super.getAlert( 
-                    "The password can´t had more than sixteen characters.");
+            getAlert("The password can´t had more than sixteen characters.");
             pwPassword.requestFocus();
         }
     }
@@ -148,7 +196,7 @@ public class GUI001Controller extends THUserGenericController{
         LOGGER.info("Beginning handleRecoverPassword");
         //Verify that the login textfield isn't empty
         if(txtFUser.getText().isEmpty()){
-            super.getAlert("You need to put the login in the user field");
+            getAlert("You need to put the login in the user field");
             txtFUser.requestFocus();
         }else{
             //get the implementation of the iUser interface
@@ -162,7 +210,7 @@ public class GUI001Controller extends THUserGenericController{
                 //Run when the login don't exist
                 if(ex.getWhy().equals("login")){
                     LOGGER.log(Level.SEVERE,"The user don´t exist",ex);
-                    super.getAlert("This user don´t exist.");
+                    getAlert("This user don´t exist.");
                     txtFUser.requestFocus();
                     lblUser.setTextFill(Color.web("#ff0000"));
                     lblPass.setTextFill(Color.web("#237bf7"));
@@ -182,7 +230,6 @@ public class GUI001Controller extends THUserGenericController{
      */
     public void handleLogIn(ActionEvent event) {
         LOGGER.info("Beginning handleLogIn");
-        iUser iuser= LogicFactory.getiUser();
         //Get the username and the password
         user=new UserBean();
         user.setLogin(txtFUser.getText());
@@ -203,7 +250,7 @@ public class GUI001Controller extends THUserGenericController{
                     break;
                 //else if the user is a simple user do this
                 case USER:
-                    super.getAlert("You don't have permissions for enter "
+                    getAlert("You don't have permissions for enter "
                             + "in this application.");
                     break;
             }
@@ -215,7 +262,7 @@ public class GUI001Controller extends THUserGenericController{
                 lblUser.setTextFill(Color.web("#ff0000"));
                 lblPass.setTextFill(Color.web("#237bf7"));
                 txtFUser.requestFocus();
-                super.getAlert("The user doesn't exist.");
+                getAlert("The user doesn't exist.");
             //Run when the login is correct but the password no
             }else if(e1.getWhy().equals("password")){
                 LOGGER.log(Level.SEVERE,
@@ -223,13 +270,13 @@ public class GUI001Controller extends THUserGenericController{
                 lblUser.setTextFill(Color.web("#237bf7"));
                 lblPass.setTextFill(Color.web("#ff0000"));
                 pwPassword.requestFocus();
-                super.getAlert("The password is wrong.");
+                getAlert("The password is wrong.");
             }
         }catch(Exception e3){
             LOGGER.log(Level.SEVERE, e3.getMessage(), e3);
             lblUser.setTextFill(Color.web("#237bf7"));
             lblPass.setTextFill(Color.web("#237bf7"));
-            super.getAlert("An error with the program has ocurred.");
+            getAlert("An error with the program has ocurred.");
         }
         LOGGER.info("Ending handleLogIn");
     }
@@ -262,12 +309,12 @@ public class GUI001Controller extends THUserGenericController{
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE,
                     "An input-output error in the logOut loader.", ex.getMessage());
-            super.getAlert("A error have ocurred in the login.");
+            getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "An error in the logOut loader.", 
                     ex.getMessage());
-            super.getAlert("A error have ocurred in the login.");
+            getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }
         
@@ -302,12 +349,12 @@ public class GUI001Controller extends THUserGenericController{
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "An input-output error in the logOut loader.", 
                     ex.getMessage());
-            super.getAlert("A error have ocurred in the login.");
+            getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "An error in the logOut loader.", 
                     ex.getMessage());
-            super.getAlert("A error have ocurred in the login.");
+            getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }
         LOGGER.info("Ending townHallUserLogin");
@@ -353,5 +400,25 @@ public class GUI001Controller extends THUserGenericController{
         }
         LOGGER.info("Ending cypherPass");
         return password;
+    }
+    
+    /**
+     * 
+     */
+    private void makeUserInShow() {
+        LOGGER.info("making the user.");
+        UserBean us = new UserBean();
+        us.setEmail("jonasecas97@gmail.com");
+        us.setLogin("jon");
+        us.setPassword(cypherPass("1234"));
+        us.setFullName("Jon Gonzalez");
+        us.setPrivilege(Privilege.TOWNHALLUSER);
+        us.setStatus(Status.ENABLED);
+        try {
+            iuser.createUser(us);
+        } catch (CreateException ex) {
+            LOGGER.log(Level.SEVERE, "An error have ocurred with the creation of the user.", ex);
+        }
+        LOGGER.info("finishing making the user");
     }
 }

@@ -8,7 +8,6 @@ package controllers;
 import factories.FTPFactory;
 import interfaces.iFTP;
 import java.io.File;
-import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -136,7 +135,7 @@ public class GUI005Controller extends THUserGenericController{
     private void loadFiles() {
         TreeItem root;
         FTPFile[] files=null;
-        FTP.login();
+        //FTP.login();
         //try{
             //files = FTP.showFiles();
         root = new TreeItem<String>("FTP client");
@@ -182,7 +181,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleMakeDir(ActionEvent event){
-        FTP.makeDirectory();
+        //FTP.makeDirectory();
     }
     
     /**
@@ -190,7 +189,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleDelete(ActionEvent event){
-        FTP.delete();
+        //FTP.delete();
     }
     
     /**
@@ -198,7 +197,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleIncidentsFTP(ActionEvent event){
-        FTP.logout();
+        //FTP.logout();
         super.handleIncidents(event);
     }
     
@@ -207,7 +206,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleInfoFTP(ActionEvent event){
-        FTP.logout();
+        //FTP.logout();
         super.handleInfo(event);
     }
     
@@ -216,7 +215,7 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleLogOutFTP(ActionEvent event){
-        FTP.logout();
+        //FTP.logout();
         super.handleLogOut(event);
     }
 }
