@@ -6,7 +6,7 @@
 package javabeans;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -19,7 +19,7 @@ public class SignatureBean implements Serializable {
     private Integer id;
     private Integer idPerson;
     private Integer idIncident;
-    private Timestamp signatureDate;
+    private Date signatureDate;
 
     public Integer getId() {
         return id;
@@ -45,21 +45,21 @@ public class SignatureBean implements Serializable {
         this.idIncident = idIncident;
     }
 
-    public Timestamp getSignatureDate() {
+    public Date getSignatureDate() {
         return signatureDate;
     }
 
-    public void setSignatureDate(Timestamp signatureDate) {
+    public void setSignatureDate(Date signatureDate) {
         this.signatureDate = signatureDate;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 23 * hash + Objects.hashCode(this.id);
-        hash = 23 * hash + Objects.hashCode(this.idPerson);
-        hash = 23 * hash + Objects.hashCode(this.idIncident);
-        hash = 23 * hash + Objects.hashCode(this.signatureDate);
+        hash = 67 * hash + Objects.hashCode(this.id);
+        hash = 67 * hash + Objects.hashCode(this.idPerson);
+        hash = 67 * hash + Objects.hashCode(this.idIncident);
+        hash = 67 * hash + Objects.hashCode(this.signatureDate);
         return hash;
     }
 

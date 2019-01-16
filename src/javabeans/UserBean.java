@@ -6,65 +6,43 @@
 package javabeans;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Jon Gonzalez
  */
-@MappedSuperclass
-@Table(name="person", schema="incidapp")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idPerson;
-    @NotNull
     private String login;
-    @NotNull
     private String email;
-    @NotNull
     private String password;
     private String fullName;
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
     private Status status;
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
     private Privilege privilege;
-    @NotNull
-    private Timestamp lastAccess;
-    @NotNull
-    private Timestamp lastPasswordChange;
+    private Date lastAccess;
+    private Date lastPasswordChange;
     private String dni;
     private String street;
-    @ManyToOne
     private TownHallBean townHall;
-    @OneToMany(mappedBy="user")
     private List<IncidentBean> incidents;
-    @ManyToMany(mappedBy="users")
     private List<IncidentBean> signatureIncidents;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    
+    public UserBean() {
     }
-    
-    
+
+    public Integer getIdPerson() {
+        return idPerson;
+    }
+
+    public void setIdPerson(Integer idPerson) {
+        this.idPerson = idPerson;
+    }
+
     public String getLogin() {
         return login;
     }
@@ -73,20 +51,20 @@ public class UserBean implements Serializable {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFullName() {
@@ -113,31 +91,20 @@ public class UserBean implements Serializable {
         this.privilege = privilege;
     }
 
-    public Timestamp getLastAccess() {
+    public Date getLastAccess() {
         return lastAccess;
     }
 
-    public void setLastAccess(Timestamp lastAccess) {
+    public void setLastAccess(Date lastAccess) {
         this.lastAccess = lastAccess;
     }
 
-    public Timestamp getLastPasswordChange() {
+    public Date getLastPasswordChange() {
         return lastPasswordChange;
     }
 
-    public void setLastPasswordChange(Timestamp lastPasswordChange) {
+    public void setLastPasswordChange(Date lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
-    }
-
-    public Integer getIdPerson() {
-        return idPerson;
-    }
-
-    public void setIdPerson(Integer idPerson) {
-        this.idPerson = idPerson;
-    }
-
-    public UserBean() {
     }
 
     public String getDni() {
@@ -164,7 +131,6 @@ public class UserBean implements Serializable {
         this.townHall = townHall;
     }
 
-    @XmlTransient
     public List<IncidentBean> getIncidents() {
         return incidents;
     }
@@ -173,7 +139,6 @@ public class UserBean implements Serializable {
         this.incidents = incidents;
     }
 
-    @XmlTransient
     public List<IncidentBean> getSignatureIncidents() {
         return signatureIncidents;
     }
@@ -185,20 +150,20 @@ public class UserBean implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.idPerson);
-        hash = 37 * hash + Objects.hashCode(this.login);
-        hash = 37 * hash + Objects.hashCode(this.email);
-        hash = 37 * hash + Objects.hashCode(this.password);
-        hash = 37 * hash + Objects.hashCode(this.fullName);
-        hash = 37 * hash + Objects.hashCode(this.status);
-        hash = 37 * hash + Objects.hashCode(this.privilege);
-        hash = 37 * hash + Objects.hashCode(this.lastAccess);
-        hash = 37 * hash + Objects.hashCode(this.lastPasswordChange);
-        hash = 37 * hash + Objects.hashCode(this.dni);
-        hash = 37 * hash + Objects.hashCode(this.street);
-        hash = 37 * hash + Objects.hashCode(this.townHall);
-        hash = 37 * hash + Objects.hashCode(this.incidents);
-        hash = 37 * hash + Objects.hashCode(this.signatureIncidents);
+        hash = 17 * hash + Objects.hashCode(this.idPerson);
+        hash = 17 * hash + Objects.hashCode(this.login);
+        hash = 17 * hash + Objects.hashCode(this.email);
+        hash = 17 * hash + Objects.hashCode(this.password);
+        hash = 17 * hash + Objects.hashCode(this.fullName);
+        hash = 17 * hash + Objects.hashCode(this.status);
+        hash = 17 * hash + Objects.hashCode(this.privilege);
+        hash = 17 * hash + Objects.hashCode(this.lastAccess);
+        hash = 17 * hash + Objects.hashCode(this.lastPasswordChange);
+        hash = 17 * hash + Objects.hashCode(this.dni);
+        hash = 17 * hash + Objects.hashCode(this.street);
+        hash = 17 * hash + Objects.hashCode(this.townHall);
+        hash = 17 * hash + Objects.hashCode(this.incidents);
+        hash = 17 * hash + Objects.hashCode(this.signatureIncidents);
         return hash;
     }
 
@@ -261,6 +226,6 @@ public class UserBean implements Serializable {
 
     @Override
     public String toString() {
-        return "PersonBean{" + "idPerson=" + idPerson + ", login=" + login + ", email=" + email + ", password=" + password + ", fullName=" + fullName + ", status=" + status + ", privilege=" + privilege + ", lastAccess=" + lastAccess + ", lastPasswordChange=" + lastPasswordChange + ", dni=" + dni + ", street=" + street + ", townHall=" + townHall + ", incidents=" + incidents + ", signatureIncidents=" + signatureIncidents + '}';
+        return login;
     }
 }

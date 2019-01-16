@@ -6,9 +6,9 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javabeans.IncidentBean;
 import javabeans.UserBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * This is the generic controller that contains the general methods and 
@@ -42,6 +41,11 @@ public class THUserGenericController {
     protected UserBean user;
     
     /**
+     * The incident for the scene
+     */
+    protected IncidentBean incident;
+    
+    /**
      * The setter of the stage
      * @param stage The stage of the application
      */
@@ -55,6 +59,14 @@ public class THUserGenericController {
      */
     public void setUser(UserBean user) {
         this.user = user;
+    }
+    
+    /**
+     * The setter of the incident
+     * @param incident The incident of the application
+     */
+    public void setIncident(IncidentBean incident) {
+        this.incident = incident;
     }
     
     /**
@@ -73,18 +85,18 @@ public class THUserGenericController {
      */
     public void handleIncidents(ActionEvent event){
         //Create the loader for the xml
-        FXMLLoader loader=new FXMLLoader(getClass()
+        FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI003SDI.fxml"));
         //Create the parent and load the tree
         Parent root;
         try{
             root = (Parent) loader.load();
             //Create the Stage
-            Stage stage=new Stage();
+            Stage gui003Stage = new Stage();
             //Load de controller
             GUI003Controller controller = loader.getController();
             //Set the new stage
-            controller.setStage(stage);
+            controller.setStage(gui003Stage);
             //Pass the user to the next window
             controller.setUser(user);
             //Pass the control to the controller
@@ -103,6 +115,78 @@ public class THUserGenericController {
     }
     
     /**
+     * Load the GUI004 xml and pass the control to it controller 
+     * @param event
+     */
+    public void handleIncidentsEmpty(ActionEvent event) {
+        //Create the loader for the xml
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/fxmls/GUI004SAMI.fxml"));
+        //Create the parent and load the tree
+        Parent root;
+        try{
+            root = (Parent) loader.load();
+            //Create the Stage
+            Stage gui004Stage = new Stage();
+            //Load de controller
+            GUI004AddController controller = loader.getController();
+            //Set the new stage
+            controller.setStage(gui004Stage);
+            //Pass the user to the next window
+            controller.setUser(user);
+            //Pass the control to the controller
+            controller.initStage(root);
+            //Hide this stage
+            stage.hide();
+        }catch(IOException ex) {
+            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }
+    }
+    
+    /**
+     * Load the GUI004 xml and pass the control to it controller 
+     * @param event
+     */
+    public void handleIncidentsFull(ActionEvent event) {
+        //Create the loader for the xml
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/fxmls/GUI004SAMI.fxml"));
+        //Create the parent and load the tree
+        Parent root;
+        try{
+            root = (Parent) loader.load();
+            //Create the Stage
+            Stage gui004Stage = new Stage();
+            //Load de controller
+            GUI004UpdateController controller = loader.getController();
+            //Set the new stage
+            controller.setStage(gui004Stage);
+            //Pass the user to the next window
+            controller.setUser(user);
+            //Pass the incident to the next window
+            controller.setIncident(incident);
+            //Pass the control to the controller
+            controller.initStage(root);
+            //Hide this stage
+            stage.hide();
+        }catch(IOException ex) {
+            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }
+    }
+    
+    /**
      * Load the GUI005 xml and pass the control to it controller 
      * @param event
      */
@@ -115,11 +199,11 @@ public class THUserGenericController {
         try{
             root = (Parent) loader.load();
             //Create the Stage
-            Stage stage=new Stage();
+            Stage gui005Stage = new Stage();
             //Load de controller
             GUI005Controller controller = loader.getController();
             //Set the new stage
-            controller.setStage(stage);
+            controller.setStage(gui005Stage);
             //Pass the user to the next window
             controller.setUser(user);
             //Pass the control to the controller
@@ -150,11 +234,11 @@ public class THUserGenericController {
         try{
             root = (Parent) loader.load();
             //Create the Stage
-            Stage stage=new Stage();
+            Stage gui006Stage = new Stage();
             //Load de controller
             GUI006Controller controller = loader.getController();
             //Set the new stage
-            controller.setStage(stage);
+            controller.setStage(gui006Stage);
             //Pass the user to the next window
             controller.setUser(user);
             //Pass the control to the controller

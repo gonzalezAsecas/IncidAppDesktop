@@ -8,34 +8,18 @@ package javabeans;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Jon Gonzalez
  */
-@Entity
-@Table(name="townhall", schema="incidapp")
-@XmlRootElement
 public class TownHallBean implements Serializable{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idTownHall;
-    @NotNull
     private String locality;
     private String email;
     private String telephoneNumber;
-    @OneToMany(mappedBy="townHall")
     private List<LocationBean> locations;
-    @OneToMany(mappedBy="townHall")
     private List<UserBean> users;
 
     public TownHallBean(){}

@@ -8,33 +8,16 @@ package javabeans;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Jon Gonzalez
  */
-@Entity
-@Table(name="location", schema="incidapp")
-@XmlRootElement
 public class LocationBean implements Serializable{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idLocation;
-    @NotNull
     private String street;
-    @ManyToOne
     private TownHallBean townHall;
-    @OneToMany(mappedBy="location")
     private List<IncidentBean> incidents;
 
     public LocationBean(){}
@@ -111,6 +94,6 @@ public class LocationBean implements Serializable{
 
     @Override
     public String toString() {
-        return "LocationBean{" + "idLocation=" + idLocation + ", street=" + street + ", townHall=" + townHall + ", incidents=" + incidents + '}';
+        return street;
     }
 }

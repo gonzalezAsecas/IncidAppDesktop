@@ -7,7 +7,7 @@ package interfaces;
 
 import java.io.File;
 import java.io.IOException;
-import org.apache.commons.net.ftp.FTPFile;
+//import org.apache.commons.net.ftp.FTPFile;
 
 /**
  *
@@ -16,9 +16,9 @@ import org.apache.commons.net.ftp.FTPFile;
 public interface iFTP {
     public void login();
     public void logout();
-    public FTPFile[] showFiles();
+    //public FTPFile[] showFiles();
     public void loadFile(File file) throws IOException;
     public void makeDirectory();
-    public void downloadFile(FTPFile file);
+    //public void downloadFile(FTPFile file);
     public void delete();
 }

@@ -9,42 +9,39 @@ import static controllers.THUserGenericController.LOGGER;
 import exceptions.ReadException;
 import factories.LogicFactory;
 import interfaces.iIncident;
-import interfaces.iType;
-import java.util.List;
-import java.util.logging.Level;
+import java.io.IOException;
 import javabeans.Estate;
 import javabeans.IncidentBean;
+import javabeans.LocationBean;
 import javabeans.TypeBean;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * GUI001 FXML Controller class, in this window you can see the list of 
+ * GUI003 FXML Controller class, in this window you can see the list of 
  * incidents, add one incident and see or modify the incident that is selected
- * @author Jon Gonzalez
- * @version 1.0
+ * @author Gorka Redondo
  */
-public class GUI003Controller extends THUserGenericController{
+public class GUI003Controller extends THUserGenericController {
 
     @FXML
     private TextField txtFTitle;
     @FXML
-    private ChoiceBox<TypeBean> chcType;
-    @FXML
-    private ChoiceBox<Estate> chcEstate;
-    @FXML
-    private TableView<IncidentBean> tableView;
+    private TableView<IncidentBean> tbIncidents;
     @FXML
     private TableColumn<?, ?> tCTitle;
     @FXML
@@ -77,19 +74,9 @@ public class GUI003Controller extends THUserGenericController{
     private Menu mLogOut;
     
     /**
-     * the implementation of the iType interface
+     * the implementation of the iIncident interface
      */
-    private iType typeImpl = LogicFactory.getiType();
-    
-    /**
-     * the implementation f the iIncident interface
-     */
-    private iIncident incidentImpl = LogicFactory.getiIncident();
-    
-    /**
-     * the list of incidents
-     */
-    private List<IncidentBean> incidents;
+    //private iIncident incidentImpl = LogicFactory.getiIncident();
     
     /**
      * Set and initialize the stage and its properties.
@@ -114,9 +101,46 @@ public class GUI003Controller extends THUserGenericController{
         btnModifyIncident.setOnAction((event) -> handleModifyIncident(event));
         btnDelete.setOnAction((event) -> handleDelete(event));
         btnCollectSignatures.setOnAction((event) -> handleCollectSignatures(event));
+        tbIncidents.getSelectionModel().selectedItemProperty()
+            .addListener(this::handleIncidentsTableSelectionChanged);
+        //load the all data
+        loadData();
         //Show the LogIn window
         stage.show();
         LOGGER.info("Ending the initialization of the GUI003 stage");
+    }
+    
+    /**
+     * load all the incidents
+     */
+    private void loadData() {
+        ObservableList<IncidentBean> incidents = 
+            FXCollections.observableArrayList();
+        TypeBean t = new TypeBean();
+        t.setName("Apocalipsis");
+        LocationBean l = new LocationBean();
+        l.setStreet("Urreta");
+        IncidentBean incident;
+        for(int i = 1; i < 3; i++){
+            incident = new IncidentBean();
+            incident.setIdIncident(i);
+            incident.setTitle("Incidencia" + i);
+            incident.setDescription("Descripcion" + i);
+            incident.setLocation(l);
+            incident.setType(t);
+            incident.setEstate(Estate.OUTSTANDING);
+            incidents.add(incident);
+        }
+        
+        //Rellenar table
+        tCTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tCDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        tCLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        tCType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        tCEstate.setCellValueFactory(new PropertyValueFactory<>("estate"));
+        //tCSignatures.setCellValueFactory(new PropertyValueFactory<>(""));
+        //incidents = incidentImpl.findAllIncidents();
+        tbIncidents.setItems(incidents);
     }
     
     /**
@@ -133,63 +157,42 @@ public class GUI003Controller extends THUserGenericController{
         btnAddIncident.setText("_Add Incident");
         btnModifyIncident.setMnemonicParsing(true);
         btnModifyIncident.setText("_Modify Incidents");
+        btnModifyIncident.setDisable(false);
         btnDelete.setMnemonicParsing(true);
         btnDelete.setText("_Delete");
+        btnDelete.setDisable(false);
         btnCollectSignatures.setMnemonicParsing(true);
         btnCollectSignatures.setText("_Collect Signatures");
-        //load the all data
-        loadData();
+        btnCollectSignatures.setDisable(false);
         LOGGER.info("Ending OnShowingHandler");
     }
     
     /**
-     * load all the incidents, the types and the estates
-     * TO DO
+     * 
+     * @param event 
      */
-    private void loadData() {
-        TypeBean typeOne= new TypeBean();
-        typeOne.setIncidents(null);
-        typeOne.setName("All");
-        List<TypeBean> types = null;
-        try {
-            types = typeImpl.findAllTypes();
-        } catch (ReadException ex) {
-            LOGGER.log(Level.SEVERE, "There is no types.", ex);
-        }
-        types.add(typeOne);
-        for(int i=0; types.size() >= i; i++){
-            chcType.getItems().add(types.get(i));
-        }
-        //TODO estates
-        //Revisar esto
-        try{
-            incidents = incidentImpl.findAllIncidents();
-            loadIncidents();
-        }catch(ReadException ex){
-            LOGGER.log(Level.SEVERE, "There is no incidents", ex);
-            super.getAlert("There is no incidents.");
-        }
-        
+    public void handleFiles(ActionEvent event){
+        LOGGER.info("Beginning handleFiles");
+        super.handleFiles(event);
+        LOGGER.info("Ending handleFiles");
     }
     
     /**
-     * load the incidents of the list in the table view
-     * TO DO
+     * 
+     * @param event 
      */
-    private void loadIncidents() {
-            tableView.setItems((ObservableList<IncidentBean>) incidents);//se puede parsear?
-            tCTitle = new TableColumn("Title");
-            tCTitle.setCellValueFactory(new PropertyValueFactory("title"));
-            tCDescription = new TableColumn("Description");
-            tCDescription.setCellValueFactory(new PropertyValueFactory("description"));
-            tCLocation = new TableColumn("Location");
-            tCLocation.setCellValueFactory(new PropertyValueFactory("location"));
-            tCType = new TableColumn("Type");
-            tCType.setCellValueFactory(new PropertyValueFactory("type"));
-            tCEstate = new TableColumn("Estate");
-            tCEstate.setCellValueFactory(new PropertyValueFactory("estate"));
-            tCSignatures = new TableColumn("Signature");
-            tCSignatures.setCellValueFactory(new PropertyValueFactory("signatures"));
+    public void handleInfo(ActionEvent event){
+        LOGGER.info("Beginning handleInfo");
+        LOGGER.info("Ending handleInfo");
+    }
+    
+    /**
+     * 
+     * @param event 
+     */
+    public void handleLogOut(ActionEvent event){
+        LOGGER.info("Beginning handleLogOut");
+        LOGGER.info("Ending handleLogOut");
     }
     
     /**
@@ -200,11 +203,9 @@ public class GUI003Controller extends THUserGenericController{
     public void handleFilter(ActionEvent event){
         LOGGER.info("Beginning handleFilter");
         //Create the incident for the filtrate
-        IncidentBean incident = new IncidentBean();
+        /*IncidentBean incident = new IncidentBean();
         //get the filters
         incident.setTitle(txtFTitle.getText());
-        incident.setType(chcType.getValue());
-        incident.setEstate(chcEstate.getValue());
         try {
             incidents = incidentImpl.findIncidentsbyFilter(incident);
             //reload the table view of the incidents
@@ -212,7 +213,7 @@ public class GUI003Controller extends THUserGenericController{
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE, "There is no incidents with that parameters", ex);
             super.getAlert("There is no incidents with that parameters.");
-        }
+        }*/
         LOGGER.info("Ending handleFilter");
     }
     
@@ -222,7 +223,7 @@ public class GUI003Controller extends THUserGenericController{
      */
     public void handleAddIncident(ActionEvent event){
         LOGGER.info("Beginning handleAddIncident");
-        
+        super.handleIncidentsEmpty(event);
         LOGGER.info("Ending handleAddIncident");
     }
     
@@ -232,6 +233,7 @@ public class GUI003Controller extends THUserGenericController{
      */
     public void handleModifyIncident(ActionEvent event){
         LOGGER.info("Beginning handleModifyIncident");
+        super.handleIncidentsFull(event);
         LOGGER.info("Ending handleModifyIncident");
     }
     
@@ -249,8 +251,30 @@ public class GUI003Controller extends THUserGenericController{
      * @param event 
      */
     public void handleCollectSignatures(ActionEvent event){
-       LOGGER.info("Beginning handleCollectSignatures");
-       LOGGER.info("Ending handleCollectSignatures");
+        LOGGER.info("Beginning handleCollectSignatures");
+        LOGGER.info("Ending handleCollectSignatures");
        //TODO with MongoDB 
+    }
+    
+    /**
+     * 
+     * @param observable
+     * @param oldValue
+     * @param newValue 
+     */
+    public void handleIncidentsTableSelectionChanged(ObservableValue observable,
+             Object oldValue,
+             Object newValue){
+        LOGGER.info("Beginning handleIncidentsTableSelectionChanged");
+        if(newValue != null){
+            btnModifyIncident.setDisable(false);
+            btnDelete.setDisable(false);
+            btnCollectSignatures.setDisable(false);
+        }else{
+            btnModifyIncident.setDisable(true);
+            btnDelete.setDisable(true);
+            btnCollectSignatures.setDisable(true);
+        }
+        LOGGER.info("Ending handleIncidentsTableSelectionChanged");
     }
 }

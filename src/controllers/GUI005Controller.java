@@ -22,7 +22,7 @@ import javafx.scene.control.TreeView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.WindowEvent;
-import org.apache.commons.net.ftp.FTPFile;
+//import org.apache.commons.net.ftp.FTPFile;
 
 /**
  * 
@@ -133,7 +133,7 @@ public class GUI005Controller extends THUserGenericController{
      * 
      */
     private void loadFiles() {
-        TreeItem root;
+        /*TreeItem root;
         FTPFile[] files;
         FTP.login();
         files = FTP.showFiles();
@@ -145,7 +145,7 @@ public class GUI005Controller extends THUserGenericController{
             }
             root.getChildren().add(files[i].getName());
         }
-        treeFTP = new TreeView<String>(root);
+        treeFTP = new TreeView<String>(root);*/
     }
     
     /**

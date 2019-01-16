@@ -18,12 +18,24 @@ import javabeans.IncidentBean;
  * @author Jon Gonzalez
  */
 public class IncidentImplementation implements iIncident{
-
+    
+    /**
+     * 
+     * @param incident
+     * @return
+     * @throws CreateException
+     * @throws Exception 
+     */
     @Override
     public IncidentBean createIncident(IncidentBean incident) throws CreateException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    /**
+     * 
+     * @param incident
+     * @throws UpdateException 
+     */
     @Override
     public void editIncident(IncidentBean incident) throws UpdateException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
