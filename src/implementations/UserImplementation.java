@@ -28,15 +28,23 @@ public class UserImplementation implements iUser{
      */
     protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
     
+    /**
+     * The restful for the user 
+     */
     UserRestFul userRest = new UserRestFul();
     
+    /**
+     * Create the user if there isn't any with this login
+     * @param user
+     * @throws CreateException 
+     */
     @Override
     public void createUser(UserBean user) throws CreateException {
         try{
             userRest.create(user);
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "", ex);
-            //throw new CreateException();
+            throw new CreateException();
         }
     }
 
@@ -46,7 +54,7 @@ public class UserImplementation implements iUser{
             userRest.edit(user);
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "", ex);
-            //throw new UpdateException();
+            throw new UpdateException();
         }
     }
 
@@ -56,7 +64,7 @@ public class UserImplementation implements iUser{
             userRest.remove(user.getId().toString());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "", ex);
-            //throw new DeleteException();
+            throw new DeleteException();
         }
     }
 
@@ -67,7 +75,7 @@ public class UserImplementation implements iUser{
             return user;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "", ex);
-            //throw new FindException();
+            throw new ReadException();
         }
     }
 
@@ -79,7 +87,7 @@ public class UserImplementation implements iUser{
             return us;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "", ex);
-            //throw new FindException();
+            throw new ReadException();
         }
     }
 
@@ -91,17 +99,19 @@ public class UserImplementation implements iUser{
             return us;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "", ex);
-            //throw new FindException();
+            throw new ReadException();
         }
     }
     
     @Override
     public UserBean findUserbyLogin(UserBean user) throws ReadException {
         try{
-            user = userRest.findUserbyLogin(UserBean.class, user.getLogin(), user.getPassword());
+            user = userRest.findUserbyLogin(UserBean.class, user.getLogin(),
+                    user.getPassword());
+            return user;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "", ex);
-            //throw new FindException();
+            throw new ReadException();
         }
     }
 
@@ -111,7 +121,7 @@ public class UserImplementation implements iUser{
             userRest.findUserToChangePassword(UserBean.class, user.getLogin());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "", ex);
-            //throw new FindException();
+            throw new ReadException();
         }
     }
     

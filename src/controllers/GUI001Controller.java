@@ -207,16 +207,11 @@ public class GUI001Controller{
                 //send the login for the password change
                 iuser.findUserToChangePassword(user);
             } catch (ReadException ex) {
-                //Run when the login don't exist
-                if(ex.getWhy().equals("login")){
-                    LOGGER.log(Level.SEVERE,"The user don´t exist",ex);
-                    getAlert("This user don´t exist.");
-                    txtFUser.requestFocus();
-                    lblUser.setTextFill(Color.web("#ff0000"));
-                    lblPass.setTextFill(Color.web("#237bf7"));
-                //Run when the login is correct and the password is the same
-                //that is trying to change
-                }
+                LOGGER.log(Level.SEVERE,"The user don´t exist",ex);
+                getAlert("This user don´t exist.");
+                txtFUser.requestFocus();
+                lblUser.setTextFill(Color.web("#ff0000"));
+                lblPass.setTextFill(Color.web("#237bf7"));
             }
         }
         LOGGER.info("Ending handleRecoverPassword");
@@ -256,7 +251,7 @@ public class GUI001Controller{
             }
         }catch(ReadException e1){
             //Run when the login isn't in the database
-            if(e1.getWhy().equals("login")){
+            /*if(e1.getWhy().equals("login")){
                 LOGGER.log(Level.SEVERE,
                         "GUI001Controller: Exception with the login", e1);
                 lblUser.setTextFill(Color.web("#ff0000"));
@@ -271,7 +266,7 @@ public class GUI001Controller{
                 lblPass.setTextFill(Color.web("#ff0000"));
                 pwPassword.requestFocus();
                 getAlert("The password is wrong.");
-            }
+            }*/
         }catch(Exception e3){
             LOGGER.log(Level.SEVERE, e3.getMessage(), e3);
             lblUser.setTextFill(Color.web("#237bf7"));
@@ -415,9 +410,15 @@ public class GUI001Controller{
         us.setPrivilege(Privilege.TOWNHALLUSER);
         us.setStatus(Status.ENABLED);
         try {
-            iuser.createUser(us);
+            if(iuser.findUserbyLogin(us)!=null){
+                throw new ReadException();
+            }else{
+                iuser.createUser(us);
+            }
         } catch (CreateException ex) {
             LOGGER.log(Level.SEVERE, "An error have ocurred with the creation of the user.", ex);
+        } catch ( ReadException ex){
+                getAlert("The user exist.");
         }
         LOGGER.info("finishing making the user");
     }
