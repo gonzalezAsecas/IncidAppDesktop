@@ -40,6 +40,7 @@ public class Application extends javafx.application.Application{
      */
     @Override
     public void start(Stage stage){
+        LOGGER.info("Starting the application");
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI001LI.fxml"));
         Parent root;
@@ -48,6 +49,7 @@ public class Application extends javafx.application.Application{
             GUI001Controller controller = loader.getController();
             controller.setStage(stage);
             controller.initStage(root);
+            LOGGER.info("Application started");
         } catch (IOException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
             Alert alert = new Alert(Alert.AlertType.ERROR, "An error has ocurred with the application", ButtonType.OK);

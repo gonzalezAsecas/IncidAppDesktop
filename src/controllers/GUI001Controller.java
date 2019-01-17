@@ -411,14 +411,13 @@ public class GUI001Controller{
         us.setStatus(Status.ENABLED);
         try {
             if(iuser.findUserbyLogin(us)!=null){
-                throw new ReadException();
-            }else{
-                iuser.createUser(us);
             }
-        } catch (CreateException ex) {
-            LOGGER.log(Level.SEVERE, "An error have ocurred with the creation of the user.", ex);
-        } catch ( ReadException ex){
-                getAlert("The user exist.");
+        } catch (ReadException ex){
+            try{
+                iuser.createUser(us);
+            }catch(CreateException e){
+                LOGGER.info("MALALALALALDJFFLBG");
+            }
         }
         LOGGER.info("finishing making the user");
     }

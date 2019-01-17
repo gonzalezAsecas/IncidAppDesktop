@@ -106,8 +106,7 @@ public class UserImplementation implements iUser{
     @Override
     public UserBean findUserbyLogin(UserBean user) throws ReadException {
         try{
-            user = userRest.findUserbyLogin(UserBean.class, user.getLogin(),
-                    user.getPassword());
+            user = userRest.findUserbyLogin(UserBean.class, user.getLogin());
             return user;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "", ex);

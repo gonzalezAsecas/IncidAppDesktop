@@ -43,7 +43,7 @@ public class FTPCliente implements iFTP{
             LOGGER.info("Beginning login");
             //Set properties file for the ftpclient
             properties = ResourceBundle
-                    .getBundle("properties.ftpClientProperties.properties");
+                    .getBundle("properties.ftpClientProperties");
             //get the server name
             ftpclient.connect(properties.getString("ftpserver"));
             //get the user and the password decrypting it before
