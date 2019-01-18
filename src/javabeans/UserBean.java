@@ -10,11 +10,13 @@ import java.util.Date;
 import java.util.List;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Lander Lluvia
  */
+@XmlRootElement(name="user")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;

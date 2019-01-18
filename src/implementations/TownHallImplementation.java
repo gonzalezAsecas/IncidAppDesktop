@@ -128,6 +128,7 @@ public class TownHallImplementation implements iTownHall{
             LOGGER.info("TownhallImplementation: Finding all townhalls from REST service.");
             townhalls = webClient.findAll(new GenericType<List<TownHallBean>>() {});
         }catch(Exception ex){
+            ex.printStackTrace();
             LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception finding all townhalls",
                     ex.getMessage());
             throw new ReadException("Error finding all townhalls");

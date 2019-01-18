@@ -87,6 +87,7 @@ public class GUI007Controller extends AdminGenericController{
             btnDelete.setOnAction((event) -> handleDelete(event));
             tableTownhalls.getSelectionModel().selectedItemProperty()
                     .addListener(this::handleTownhallsTable);
+            stage.show();
         } catch (ReadException ex) {
             Logger.getLogger(GUI007Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -119,20 +120,25 @@ public class GUI007Controller extends AdminGenericController{
     public void handleNewTownhall(ActionEvent event){
         //TODO: como obtenemos y devolvemos los datos de la ventana?
         LOGGER.info("Begginning handleNewTownhall()");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI009.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI009AMTH.fxml"));
         Parent root;
         try{
             root = (Parent)loader.load();
             Stage gui009Stage = new Stage();
-            GUI009AddController controller = loader.getController();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            GUI009Controller controller = loader.getController();
             controller.setStage(gui009Stage);
             controller.initStage(root);
-            stage.initModality(Modality.APPLICATION_MODAL);
+            //stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+            TownHallBean th = controller.getTownHall();
+            tableTownhalls.getItems().add(th);
+            tableTownhalls.refresh();
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "An input-output error in handleUsers()",
                     ex.getMessage());
         }catch(Exception ex) {
+            ex.printStackTrace();
             LOGGER.log(Level.SEVERE, "An error ocurred in handleUsers()",
                     ex.getMessage());
         }    
@@ -159,6 +165,10 @@ public class GUI007Controller extends AdminGenericController{
             controller.initStage(root);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+            TownHallBean th = controller.getTownHall();
+            selectedth = th;
+            tableTownhalls.refresh();
+            
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "An input-output error in handleUsers()",
                     ex.getMessage());

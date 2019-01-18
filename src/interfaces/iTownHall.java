@@ -9,6 +9,7 @@ import exceptions.CreateException;
 import exceptions.DeleteException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
+import java.util.Collection;
 import java.util.List;
 import javabeans.TownHallBean;
 
@@ -27,7 +28,7 @@ public interface iTownHall {
     
     public TownHallBean findTownHallByName(TownHallBean townhall) throws ReadException;
 
-    public List<TownHallBean> findAllTownHalls() throws ReadException;
+    public Collection<TownHallBean> findAllTownHalls() throws ReadException;
     
     public void townHallAlreadyExists();
 }

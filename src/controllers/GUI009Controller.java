@@ -56,8 +56,12 @@ public class GUI009Controller {
     public void setTownHall(TownHallBean th){
         this.th = th;
     }
+    public TownHallBean getTownHall(){
+        return th;
+    }
 
     protected iTownHall townHallImpl = LogicFactory.getiTownHall();
+    
     
     /**
      * Set and initialize the stage and its properties
@@ -90,10 +94,12 @@ public class GUI009Controller {
      */
     public void handleAccept(ActionEvent event) {
         try{
-            TownHallBean townhall = new TownHallBean(txtFName.getText(), txtFEmail.getText(), txtFPhone.getText());
             if(fieldsAreFilled()){
+                th.setLocality(txtFName.getText().trim());
+                th.setEmail(txtFEmail.getText().trim());
+                th.setTelephoneNumber(txtFPhone.getText().trim());
                 townHallImpl.townHallAlreadyExists();
-                townHallImpl.createTownHall(townhall);
+                townHallImpl.createTownHall(th);
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "All the fields must have information", ButtonType.OK);
                 alert.showAndWait();

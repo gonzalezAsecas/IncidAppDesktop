@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Lander Lluvia
  */
-@XmlRootElement(name="townwhall")
+@XmlRootElement(name="townHallBean")
 public class TownHallBean implements Serializable{
     //ToDo: no se puede hacer un constructor con solo algunos datos?
     private final SimpleIntegerProperty id;
