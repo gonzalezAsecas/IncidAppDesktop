@@ -18,6 +18,13 @@ import javabeans.UserBean;
  * @author Jon Gonzalez
  */
 public class UserImplementation implements iUser{
+    
+    //REST incident web client
+    /*private UserRestFulClient webClient;
+
+    public UserImplementation() {
+        webClient = new UserRestFulClient();
+    }*/
 
     @Override
     public UserBean createUser(UserBean user) throws CreateException {

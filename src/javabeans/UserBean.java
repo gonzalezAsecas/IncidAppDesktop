@@ -9,11 +9,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Jon Gonzalez
  */
+@XmlRootElement(name="user")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -226,6 +228,6 @@ public class UserBean implements Serializable {
 
     @Override
     public String toString() {
-        return login;
+        return fullName;
     }
 }

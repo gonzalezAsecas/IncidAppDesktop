@@ -7,12 +7,9 @@ package controllers;
 
 import static controllers.THUserGenericController.LOGGER;
 import exceptions.ReadException;
-import factories.LogicFactory;
-import interfaces.iIncident;
 import java.io.IOException;
-import javabeans.Estate;
+import java.util.logging.Level;
 import javabeans.IncidentBean;
-import javabeans.LocationBean;
 import javabeans.TypeBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -74,11 +71,6 @@ public class GUI003Controller extends THUserGenericController {
     private Menu mLogOut;
     
     /**
-     * the implementation of the iIncident interface
-     */
-    //private iIncident incidentImpl = LogicFactory.getiIncident();
-    
-    /**
      * Set and initialize the stage and its properties.
      * @param root 
      */
@@ -114,22 +106,13 @@ public class GUI003Controller extends THUserGenericController {
      * load all the incidents
      */
     private void loadData() {
-        ObservableList<IncidentBean> incidents = 
-            FXCollections.observableArrayList();
-        TypeBean t = new TypeBean();
-        t.setName("Apocalipsis");
-        LocationBean l = new LocationBean();
-        l.setStreet("Urreta");
-        IncidentBean incident;
-        for(int i = 1; i < 3; i++){
-            incident = new IncidentBean();
-            incident.setIdIncident(i);
-            incident.setTitle("Incidencia" + i);
-            incident.setDescription("Descripcion" + i);
-            incident.setLocation(l);
-            incident.setType(t);
-            incident.setEstate(Estate.OUTSTANDING);
-            incidents.add(incident);
+        ObservableList<IncidentBean> incidents = null;
+        try {
+            incidents = FXCollections
+                .observableArrayList(incidentManager.findAllIncidents());
+        } catch (ReadException ex) {
+            LOGGER.log(Level.SEVERE,
+                "Exception finding all incidents",ex.getMessage());
         }
         
         //Rellenar table
@@ -139,7 +122,6 @@ public class GUI003Controller extends THUserGenericController {
         tCType.setCellValueFactory(new PropertyValueFactory<>("type"));
         tCEstate.setCellValueFactory(new PropertyValueFactory<>("estate"));
         //tCSignatures.setCellValueFactory(new PropertyValueFactory<>(""));
-        //incidents = incidentImpl.findAllIncidents();
         tbIncidents.setItems(incidents);
     }
     
@@ -173,7 +155,32 @@ public class GUI003Controller extends THUserGenericController {
      */
     public void handleFiles(ActionEvent event){
         LOGGER.info("Beginning handleFiles");
-        super.handleFiles(event);
+        //Create the loader for the xml
+        FXMLLoader loader=new FXMLLoader(getClass()
+                .getResource("/fxmls/GUI005CRUDF.fxml"));
+        //Create the parent and load the tree
+        Parent root;
+        try{
+            root = (Parent) loader.load();
+            //Create the Stage
+            Stage gui005Stage = new Stage();
+            //Load de controller
+            GUI005Controller controller = loader.getController();
+            //Set the new stage
+            controller.setStage(gui005Stage);
+            //Pass the control to the controller
+            controller.initStage(root);
+            //Hide this stage
+            stage.hide();
+        }catch(IOException ex){
+            LOGGER.log(Level.SEVERE, "An input-output error loading GUI005Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI005Controller.");
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "An error loading GUI005Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI005Controller.");
+        }
         LOGGER.info("Ending handleFiles");
     }
     
@@ -223,7 +230,34 @@ public class GUI003Controller extends THUserGenericController {
      */
     public void handleAddIncident(ActionEvent event){
         LOGGER.info("Beginning handleAddIncident");
-        super.handleIncidentsEmpty(event);
+        //Create the loader for the xml
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/fxmls/GUI004SAMI.fxml"));
+        //Create the parent and load the tree
+        Parent root;
+        try{
+            root = (Parent) loader.load();
+            //Create the Stage
+            Stage gui004Stage = new Stage();
+            //Load de controller
+            GUI004AddController controller = loader.getController();
+            //Set the new stage
+            controller.setStage(gui004Stage);
+            //Pass the user to the next window
+            //controller.setUser(user);
+            //Pass the control to the controller
+            controller.initStage(root);
+            //Hide this stage
+            stage.hide();
+        }catch(IOException ex) {
+            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }
         LOGGER.info("Ending handleAddIncident");
     }
     
@@ -233,7 +267,36 @@ public class GUI003Controller extends THUserGenericController {
      */
     public void handleModifyIncident(ActionEvent event){
         LOGGER.info("Beginning handleModifyIncident");
-        super.handleIncidentsFull(event);
+        //Create the loader for the xml
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/fxmls/GUI004SAMI.fxml"));
+        //Create the parent and load the tree
+        Parent root;
+        try{
+            root = (Parent) loader.load();
+            //Create the Stage
+            Stage gui004Stage = new Stage();
+            //Load de controller
+            GUI004UpdateController controller = loader.getController();
+            //Set the new stage
+            controller.setStage(gui004Stage);
+            //Pass the user to the next window
+            //controller.setUser(user);
+            //Pass the incident to the next window
+            //controller.setIncident(incident);
+            //Pass the control to the controller
+            controller.initStage(root);
+            //Hide this stage
+            stage.hide();
+        }catch(IOException ex) {
+            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }
         LOGGER.info("Ending handleModifyIncident");
     }
     

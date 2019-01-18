@@ -5,14 +5,11 @@
  */
 package controllers;
 
-import java.io.IOException;
-import java.util.logging.Level;
+import factories.LogicFactory;
+import interfaces.iIncident;
+import interfaces.iType;
 import java.util.logging.Logger;
-import javabeans.IncidentBean;
-import javabeans.UserBean;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
@@ -30,21 +27,18 @@ public class THUserGenericController {
      */
     protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
     
+    
     /**
      * The stage for the scene
      */
     protected Stage stage;
-    
     /**
-     * The user that is login or logged in the application
+     * The getter of the stage
+     * @return stage The stage of the application
      */
-    protected UserBean user;
-    
-    /**
-     * The incident for the scene
-     */
-    protected IncidentBean incident;
-    
+    public Stage getStage() {
+        return stage;
+    }
     /**
      * The setter of the stage
      * @param stage The stage of the application
@@ -53,21 +47,46 @@ public class THUserGenericController {
         this.stage = stage;
     }
     
-    /**
-     * the setter for the town hall user
-     * @param user the object for the user
-     */
-    public void setUser(UserBean user) {
-        this.user = user;
-    }
     
     /**
-     * The setter of the incident
-     * @param incident The incident of the application
+     * The business logic object
      */
-    public void setIncident(IncidentBean incident) {
-        this.incident = incident;
+    protected iIncident incidentManager = LogicFactory.getiIncident();
+    /**
+     * The getter of the incidentManager
+     * @return incidentManager The incidentManager of the application
+     */
+    public iIncident getIncidentManager() {
+        return incidentManager;
     }
+    /**
+     * The setter of the incidentManager
+     * @param incidentManager The incidentManager of the application
+     */
+    public void setIncidentManager(iIncident incidentManager) {
+        this.incidentManager = incidentManager;
+    }
+    
+    
+    /**
+     * The business logic object
+     */
+    protected iType typeManager = LogicFactory.getiType();
+    /**
+     * The getter of the typeManager
+     * @return typeManager The typeManager of the application
+     */
+    public iType getTypeManager() {
+        return typeManager;
+    }
+    /**
+     * The setter of the typeManager
+     * @param typeManager The typeManager of the application
+     */
+    public void setTypeManager(iType typeManager) {
+        this.typeManager = typeManager;
+    }
+    
     
     /**
      * The method for get a customized alert sending the message for the user
@@ -79,11 +98,12 @@ public class THUserGenericController {
         return alert.showAndWait().get();
     }
     
+    
     /**
      * Load the GUI003 xml and pass the control to it controller 
      * @param event
      */
-    public void handleIncidents(ActionEvent event){
+    /*public void handleIncidents(ActionEvent event){
         //Create the loader for the xml
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI003SDI.fxml"));
@@ -98,7 +118,7 @@ public class THUserGenericController {
             //Set the new stage
             controller.setStage(gui003Stage);
             //Pass the user to the next window
-            controller.setUser(user);
+            //controller.setUser(user);
             //Pass the control to the controller
             controller.initStage(root);
             //Hide this stage
@@ -108,17 +128,18 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI003Controller.");
         }catch(Exception ex){
+            ex.printStackTrace();
             LOGGER.log(Level.SEVERE, "An error loading GUI003Controller.", 
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI003Controller.");
         }
-    }
+    }*/
     
     /**
      * Load the GUI004 xml and pass the control to it controller 
      * @param event
      */
-    public void handleIncidentsEmpty(ActionEvent event) {
+    /*public void handleIncidentsEmpty(ActionEvent event) {
         //Create the loader for the xml
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI004SAMI.fxml"));
@@ -147,13 +168,13 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI004Controller.");
         }
-    }
+    }*/
     
     /**
      * Load the GUI004 xml and pass the control to it controller 
      * @param event
      */
-    public void handleIncidentsFull(ActionEvent event) {
+    /*public void handleIncidentsFull(ActionEvent event) {
         //Create the loader for the xml
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI004SAMI.fxml"));
@@ -184,13 +205,13 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI004Controller.");
         }
-    }
+    }*/
     
     /**
      * Load the GUI005 xml and pass the control to it controller 
      * @param event
      */
-    public void handleFiles(ActionEvent event){
+    /*public void handleFiles(ActionEvent event){
         //Create the loader for the xml
         FXMLLoader loader=new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI005CRUDF.fxml"));
@@ -219,13 +240,13 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI005Controller.");
         }
-    }
+    }*/
     
     /**
      * Load the GUI006 xml and pass the control to it controller 
      * @param event
      */
-    public void handleInfo(ActionEvent event){
+    /*public void handleInfo(ActionEvent event){
         //Create the loader for the xml
         FXMLLoader loader=new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI006.fxml"));
@@ -254,7 +275,7 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI006Controller.");
         }
-    }
+    }*/
     
     /**
      * exit the application if the user click ok button

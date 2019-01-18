@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI003Controller">
@@ -46,7 +47,8 @@
                   <AnchorPane VBox.vgrow="NEVER">
                      <children>
                         <Label fx:id="lblTitle" layoutX="14.0" layoutY="22.0" text="Title:" AnchorPane.topAnchor="22.0" />
-                        <TextField fx:id="txtFTitle" layoutX="50.0" layoutY="18.0" prefHeight="25.0" prefWidth="657.0" AnchorPane.topAnchor="20.0" />
+                        <TextField fx:id="txtFTitle" layoutX="50.0" layoutY="18.0" prefHeight="25.0" prefWidth="710.0" AnchorPane.topAnchor="20.0" />
+                        <Button fx:id="btnFilter" layoutX="762.0" layoutY="20.0" mnemonicParsing="false" prefWidth="120.0" text="Filter" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -61,51 +63,46 @@
                               <TableColumn fx:id="tCLocation" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Location" />
                               <TableColumn fx:id="tCType" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Type" />
                               <TableColumn fx:id="tCEstate" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Estate" />
-                              <TableColumn fx:id="tCSignatures" maxWidth="-1.0" minWidth="111.0" prefWidth="-1.0" text="Number of Signatures" />
+                              <TableColumn fx:id="tCSignatures" maxWidth="-1.0" minWidth="121.0" prefWidth="-1.0" text="Number of Signatures" />
                            </columns>
                         </TableView>
                      </children>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
-                     <padding>
-                        <Insets right="10.0" />
-                     </padding>
                   </AnchorPane>
                </children>
             </VBox>
+            <Pane prefWidth="10.0" />
             <VBox>
                <children>
-                  <Button fx:id="btnFilter" mnemonicParsing="false" prefWidth="120.0" text="Filter">
-                     <VBox.margin>
-                        <Insets left="10.0" top="20.0" />
-                     </VBox.margin>
-                  </Button>
+                  <Pane prefHeight="80.0" />
                   <Button fx:id="btnAddIncident" mnemonicParsing="false" prefWidth="120.0" text="Add new incident">
                      <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </Button>
                   <Button fx:id="btnModifyIncident" mnemonicParsing="false" prefWidth="120.0" text="Modify incident">
                      <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets top="15.0" />
                      </VBox.margin>
                   </Button>
                   <Button fx:id="btnDelete" mnemonicParsing="false" prefWidth="120.0" text="Delete">
                      <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets top="15.0" />
                      </VBox.margin>
                   </Button>
                   <Button fx:id="btnCollectSignatures" mnemonicParsing="false" prefWidth="120.0" text="Collect signatures">
                      <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets top="15.0" />
                      </VBox.margin>
                   </Button>
                </children>
                <HBox.margin>
-                  <Insets right="10.0" />
+                  <Insets />
                </HBox.margin>
             </VBox>
+            <Pane prefWidth="10.0" />
          </children>
       </HBox>
    </children>

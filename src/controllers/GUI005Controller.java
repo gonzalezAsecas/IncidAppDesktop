@@ -17,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -192,7 +191,7 @@ public class GUI005Controller extends THUserGenericController{
      */
     public void handleIncidentsFTP(ActionEvent event){
         FTP.logout();
-        super.handleIncidents(event);
+        //super.handleIncidents(event);
     }
     
     /**
@@ -201,7 +200,7 @@ public class GUI005Controller extends THUserGenericController{
      */
     public void handleInfoFTP(ActionEvent event){
         FTP.logout();
-        super.handleInfo(event);
+        //super.handleInfo(event);
     }
     
     /**

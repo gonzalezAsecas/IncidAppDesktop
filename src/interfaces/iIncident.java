@@ -9,23 +9,22 @@ import exceptions.CreateException;
 import exceptions.DeleteException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
-import java.util.List;
+import java.util.Collection;
 import javabeans.IncidentBean;
+import javabeans.LocationBean;
 
 /**
  *
  * @author Jon Gonzalez
  */
 public interface iIncident {
-    public IncidentBean createIncident(IncidentBean incident) throws CreateException;
-
-    public void editIncident(IncidentBean incident) throws UpdateException;
-
-    public void removeIncident(IncidentBean incident) throws DeleteException;
-
-    public IncidentBean findIncidentbyId(IncidentBean incident) throws ReadException;
-
-    public List<IncidentBean> findAllIncidents() throws ReadException;
+    public void createIncident(IncidentBean incident) throws CreateException;
     
-    public List<IncidentBean> findIncidentsbyFilter(IncidentBean incident) throws ReadException;
+    public void editIncident(IncidentBean incident) throws UpdateException;
+    
+    public void removeIncident(IncidentBean incident) throws DeleteException;
+    
+    public Collection<IncidentBean> findAllIncidents() throws ReadException;
+    
+    public Collection<IncidentBean> findIncidentsbyFilter(LocationBean location) throws ReadException;
 }

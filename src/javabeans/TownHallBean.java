@@ -8,12 +8,14 @@ package javabeans;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Jon Gonzalez
  */
+@XmlRootElement(name="townhall")
 public class TownHallBean implements Serializable{
     private Integer idTownHall;
     private String locality;

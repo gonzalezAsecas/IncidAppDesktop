@@ -111,7 +111,7 @@ public class GUI004UpdateController extends THUserGenericController {
         btnCancel.setMnemonicParsing(true);
         btnCancel.setText("_Cancel");
         //txtFTitle.setText(incident.getTitle());
-        txtADescription.setText(incident.getDescription());
+        //txtADescription.setText(incident.getDescription());
         //txtAComment.setText(incident.getComment());
         //Set de la photo
         //txtFStreet.setText(incident.getLocation().getStreet() + ", " +incident.getLocation().getTownHall().getLocality() );

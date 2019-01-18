@@ -36,7 +36,6 @@ public class Application extends javafx.application.Application{
     /**
      * The start method all the fx applications needs for work 
      * @param stage the stage of the aplication
-     * @throws Exception 
      */
     @Override
     public void start(Stage stage){

@@ -22,7 +22,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -49,6 +48,25 @@ public class GUI001Controller extends THUserGenericController{
     private Hyperlink hlPasswordForget;
     
     /**
+     * 
+     */
+    private UserBean user;
+    /**
+     * The getter of the user
+     * @return user The user of the application
+     */
+    public UserBean getUser() {
+        return user;
+    }
+    /**
+     * The setter of the user
+     * @param user The user of the application
+     */
+    public void setUser(UserBean user) {
+        this.user = user;
+    }
+    
+    /**
      * Set and initialize the stage and its properties.
      * @param root 
      */
@@ -63,23 +81,17 @@ public class GUI001Controller extends THUserGenericController{
         stage.setResizable(false);
         //Set window's event handlers and the textfield's promptext
         stage.setOnShowing(this::handleWindowShowing);
-        //btnLogIn.setOnAction(this::handleLogIn);
-        btnLogIn.setOnAction(this::handleLogIn2);
+        btnLogIn.setOnAction((event) -> handleLogIn(event));
         txtFUser.textProperty().addListener(this::handleTextChanged);
         txtFUser.setPromptText("Set the username...");
         pwPassword.textProperty().addListener(this::handleTextChanged);
         pwPassword.setPromptText("Set the password...");
-        hlPasswordForget.setOnAction(this::handleRecoverPassword);
+        hlPasswordForget.setOnAction((event) -> handleRecoverPassword(event));
         //Show the LogIn window
         stage.show();
         LOGGER.info("Ending the initialization of the GUI001 stage");
     }
     
-    public void handleLogIn2(ActionEvent event) {
-        LOGGER.info("Beginning handleLogIn");
-        super.handleIncidents(event);
-        LOGGER.info("Ending handleLogIn");
-    }
     
     /**
      * Set atributes to the controls that it need in the window showing event
@@ -198,9 +210,9 @@ public class GUI001Controller extends THUserGenericController{
      */
     public void handleLogIn(ActionEvent event) {
         LOGGER.info("Beginning handleLogIn");
-        iUser iuser= LogicFactory.getiUser();
+        /*iUser iuser= LogicFactory.getiUser();
         //Get the username and the password
-        user=new UserBean();
+        user = new UserBean();
         user.setLogin(txtFUser.getText());
         user.setPassword(pwPassword.getText());// TODO: Sacar el hash!!!!
         try{
@@ -224,7 +236,7 @@ public class GUI001Controller extends THUserGenericController{
             }
         }catch(ReadException e1){
             //Run when the login isn't in the database
-            /*if(e1.getWhy().equals("login")){
+            if(e1.getWhy().equals("login")){
                 LOGGER.log(Level.SEVERE, "GUI001Controller: Exception with the login", e1);
                 lblUser.setTextFill(Color.web("#ff0000"));
                 lblPass.setTextFill(Color.web("#237bf7"));
@@ -237,13 +249,14 @@ public class GUI001Controller extends THUserGenericController{
                 lblPass.setTextFill(Color.web("#ff0000"));
                 pwPassword.requestFocus();
                 super.getAlert("The password is wrong.");
-            }*/
+            }
         }catch(Exception e3){
             LOGGER.log(Level.SEVERE, e3.getMessage(), e3);
             lblUser.setTextFill(Color.web("#237bf7"));
             lblPass.setTextFill(Color.web("#237bf7"));
             super.getAlert("An error with the program has ocurred.");
-        }
+        }*/
+        townHallUserLogin();
         LOGGER.info("Ending handleLogIn");
     }
     
@@ -254,7 +267,7 @@ public class GUI001Controller extends THUserGenericController{
     public void adminLogin(UserBean user){
         LOGGER.info("Beginning adminLogin");
         //Create the loader for the xml
-        FXMLLoader loader=new FXMLLoader(getClass()
+        FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI007.fxml"));
         //Create the parent and load the tree
         Parent root;
@@ -291,10 +304,10 @@ public class GUI001Controller extends THUserGenericController{
      * Load the GUI003 xml and pass the control to it controller
      * @param user the user that is going to login in the application
      */
-    public void townHallUserLogin(UserBean user){
-        LOGGER.info("Beginning townHallUserLogin");/*
+    public void townHallUserLogin(){
+        LOGGER.info("Beginning townHallUserLogin");
         //Create the loader for the xml
-        FXMLLoader loader=new FXMLLoader(getClass()
+        FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI003SDI.fxml"));
         //Create the parent and load the tree
         Parent root;
@@ -307,7 +320,7 @@ public class GUI001Controller extends THUserGenericController{
             //Set the new stage
             controller.setStage(gui003Stage);
             //Pass the user to the next window
-            controller.setUser(user);
+            //controller.setUser(user);
             //Pass the control to the controller
             controller.initStage(root);
             //Hide this stage
@@ -318,12 +331,11 @@ public class GUI001Controller extends THUserGenericController{
             super.getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }catch(Exception ex){
-            ex.printStackTrace();
             LOGGER.log(Level.SEVERE, "An error in the logIn loader.", 
                     ex.getMessage());
             super.getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
-        }*/
+        }
         LOGGER.info("Ending townHallUserLogin");
     }
 }

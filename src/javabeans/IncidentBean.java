@@ -233,6 +233,6 @@ public class IncidentBean implements Serializable{
 
     @Override
     public String toString() {
-        return "IncidentBean{" + "idIncident=" + idIncident + ", title=" + title + ", photo=" + photo + ", description=" + description + ", comment=" + comment + ", createDate=" + createDate + ", endDate=" + endDate + ", estate=" + estate + ", user=" + user + ", location=" + location + ", type=" + type + ", users=" + users + '}';
+        return "IncidentBean{" + "idIncident=" + idIncident + ", title=" + title + ", description=" + description + ", comment=" + comment + ", createDate=" + createDate + ", endDate=" + endDate + ", estate=" + estate + ", user=" + user + ", location=" + location + ", type=" + type + ", users=" + users + '}';
     }
 }

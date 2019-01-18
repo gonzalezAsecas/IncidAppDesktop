@@ -5,6 +5,7 @@
  */
 package javabeans;
 
+
 /**
  *
  * @author Jon Gonzalez
