@@ -6,6 +6,7 @@
 package controllers;
 
 import exceptions.CreateException;
+import exceptions.UpdateException;
 import factories.LogicFactory;
 import interfaces.iTownHall;
 import java.util.logging.Level;
@@ -59,7 +60,16 @@ public class GUI009Controller {
     public TownHallBean getTownHall(){
         return th;
     }
-
+    
+    TownHallBean townhall;
+    public void setTownhall(TownHallBean townhall){
+        this.townhall = townhall;
+    }
+    
+    protected boolean alreadyExist = false;
+    public void setAlreadyExist(boolean bool){
+        alreadyExist = bool;
+    }
     protected iTownHall townHallImpl = LogicFactory.getiTownHall();
     
     
@@ -71,6 +81,11 @@ public class GUI009Controller {
         LOGGER.info("Initializing GUI009 stage");
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        if(alreadyExist){
+            txtFName.setText(townhall.getLocality());
+            txtFEmail.setText(townhall.getEmail());
+            txtFPhone.setText(townhall.getTelephoneNumber());
+        }
         stage.setOnShowing(this::OnShowingHandlerTownHall);
         btnAccept.setOnAction((event) -> handleAccept(event));
         btnCancel.setOnAction((event) -> handleCancel(event));
@@ -99,13 +114,19 @@ public class GUI009Controller {
                 th.setEmail(txtFEmail.getText().trim());
                 th.setTelephoneNumber(txtFPhone.getText().trim());
                 townHallImpl.townHallAlreadyExists();
-                townHallImpl.createTownHall(th);
+                if(alreadyExist){
+                    townHallImpl.editTownHall(th);
+                }else{
+                    townHallImpl.createTownHall(th);
+                }
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "All the fields must have information", ButtonType.OK);
                 alert.showAndWait();
             }
         } catch (CreateException ex) {
             LOGGER.log(Level.SEVERE, "Error creating a townhall");
+        } catch (UpdateException ex) {
+            Logger.getLogger(GUI009Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -115,7 +136,7 @@ public class GUI009Controller {
      */
     public boolean fieldsAreFilled(){
         boolean filled = true;
-        if(txtFName.getText().isEmpty() | txtFEmail.getText().isEmpty() | txtFPhone.getText().isEmpty()){
+        if(txtFName.getText().trim().isEmpty() | txtFEmail.getText().trim().isEmpty() | txtFPhone.getText().trim().isEmpty()){
             filled = false;
         }
         return filled;

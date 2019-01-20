@@ -125,11 +125,10 @@ public class GUI007Controller extends AdminGenericController{
         try{
             root = (Parent)loader.load();
             Stage gui009Stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
             GUI009Controller controller = loader.getController();
             controller.setStage(gui009Stage);
             controller.initStage(root);
-            //stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             TownHallBean th = controller.getTownHall();
             tableTownhalls.getItems().add(th);
@@ -159,9 +158,10 @@ public class GUI007Controller extends AdminGenericController{
             TownHallBean selectedth = (TownHallBean)tableTownhalls.getSelectionModel().getSelectedItem();
             root = (Parent)loader.load();
             Stage gui009Stage = new Stage();
-            GUI009UpdateController controller = loader.getController();
+            GUI009Controller controller = loader.getController();
             controller.setTownhall(selectedth);
             controller.setStage(gui009Stage);
+            controller.setAlreadyExist(true);
             controller.initStage(root);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();

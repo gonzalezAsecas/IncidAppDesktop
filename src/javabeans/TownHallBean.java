@@ -18,7 +18,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="townHallBean")
 public class TownHallBean implements Serializable{
-    //ToDo: no se puede hacer un constructor con solo algunos datos?
     private final SimpleIntegerProperty id;
     private final SimpleStringProperty locality;
     private final SimpleStringProperty email;
