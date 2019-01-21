@@ -410,15 +410,13 @@ public class GUI001Controller{
         us.setPrivilege(Privilege.TOWNHALLUSER);
         us.setStatus(Status.ENABLED);
         try {
-            if(iuser.findUserbyLogin(us)!=null){
-                throw new ReadException();
-            }else{
+            if(iuser.findUserbyLogin(us)!=null){}
+        } catch (ReadException ex){
+            try{
                 iuser.createUser(us);
+            }catch(CreateException e){
+                LOGGER.info("Error creating user.");
             }
-        } catch (CreateException ex) {
-            LOGGER.log(Level.SEVERE, "An error have ocurred with the creation of the user.", ex);
-        } catch ( ReadException ex){
-                getAlert("The user exist.");
         }
         LOGGER.info("finishing making the user");
     }

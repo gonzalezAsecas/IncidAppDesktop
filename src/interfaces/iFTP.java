@@ -6,7 +6,7 @@
 package interfaces;
 
 import java.io.File;
-import java.io.IOException;
+import javabeans.FTPFileTV;
 import org.apache.commons.net.ftp.FTPFile;
 
 /**
@@ -14,11 +14,11 @@ import org.apache.commons.net.ftp.FTPFile;
  * @author Jon Gonzalez
  */
 public interface iFTP {
-    public FTPFile[] login() throws Exception;
+    public FTPFileTV[] login() throws Exception;
     public void logout() throws Exception;
-    public FTPFile[] showFiles(FTPFile dir) throws Exception;
-    public void loadFile(FTPFile ftpdirectory,File file) throws Exception;
-    public void makeDirectory(FTPFile dir, String dirName) throws Exception;
-    public void downloadFile(FTPFile file) throws Exception;
-    public void delete(FTPFile file) throws Exception;
+    public FTPFileTV[] showFiles(String dir) throws Exception;
+    public void loadFile(FTPFileTV ftpdirectory,File file) throws Exception;
+    public void makeDirectory(FTPFileTV dir, String dirName) throws Exception;
+    public void downloadFile(FTPFileTV file) throws Exception;
+    public void delete(FTPFileTV file) throws Exception;
 }

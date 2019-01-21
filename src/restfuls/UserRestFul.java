@@ -5,7 +5,6 @@
  */
 package restfuls;
 
-import java.util.ResourceBundle;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -27,8 +26,7 @@ public class UserRestFul {
 
     private WebTarget webTarget;
     private Client client;
-    ResourceBundle rb = ResourceBundle.getBundle("properties.Properties.properties");
-    private final String BASE_URI = rb.getString("server_url");
+    private static final String BASE_URI = "http://localhost:8080/grupo4/webresources";
 
     public UserRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -62,11 +60,6 @@ public class UserRestFul {
     }
 
     public <T> T findAll(GenericType<T> responseType) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
-    }
-
-    public <T> T findAllTHU(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }

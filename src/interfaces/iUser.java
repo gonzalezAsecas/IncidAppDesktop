@@ -27,8 +27,6 @@ public interface iUser {
 
     public List<UserBean> findAllUsers() throws ReadException;
     
-    public List<UserBean> findAllTHUsers() throws ReadException;
-    
     public UserBean findUserbyLogin(UserBean user) throws ReadException;
 
     public void findUserToChangePassword(UserBean user) throws ReadException;

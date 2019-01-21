@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.UserBean;
 import javax.ws.rs.core.GenericType;
+import javax.xml.bind.DatatypeConverter;
 import restfuls.UserRestFul;
 
 /**
@@ -40,89 +41,123 @@ public class UserImplementation implements iUser{
      */
     @Override
     public void createUser(UserBean user) throws CreateException {
+        LOGGER.info("UserImplementation: Beginning the creation of the user.");
         try{
             userRest.create(user);
         }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "UserImplementation: Exception creating the user.", ex);
             throw new CreateException();
         }
+        LOGGER.info("UserImplementation: ");
     }
-
+    
+    /**
+     * 
+     * @param user
+     * @throws UpdateException 
+     */
     @Override
     public void editUser(UserBean user) throws UpdateException {
+        LOGGER.info("UserImplementation: Beginning the modification of the user.");
         try{
             userRest.edit(user);
         }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "UserImplementation: Exception modifing the user.", ex);
             throw new UpdateException();
         }
+        LOGGER.info("UserImplementation: ");
     }
-
+    
+    /**
+     * 
+     * @param user
+     * @throws DeleteException 
+     */
     @Override
     public void removeUser(UserBean user) throws DeleteException {
+        LOGGER.info("UserImplementation: Beginning the erasing of the user.");
         try{
             userRest.remove(user.getId().toString());
         }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "UserImplementation: Exception deleting the user.", ex);
             throw new DeleteException();
         }
+        LOGGER.info("UserImplementation: ");
     }
-
+    
+    /**
+     * 
+     * @param user
+     * @return
+     * @throws ReadException 
+     */
     @Override
     public UserBean findUserbyId(UserBean user) throws ReadException {
+        LOGGER.info("UserImplementation: Beginning the creation of the user.");
         try{
-            //user = userRest.find(UserBean.class, user.getId());
+            user = userRest.find(UserBean.class, user.getId().toString());
+            LOGGER.info("UserImplementation: ");
             return user;
         }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user by id.", ex);
             throw new ReadException();
         }
+        
     }
-
+    
+    /**
+     * 
+     * @return
+     * @throws ReadException 
+     */
     @Override
     public List<UserBean> findAllUsers() throws ReadException {
+        LOGGER.info("UserImplementation: ");
         List<UserBean> us;
         try{
             us = userRest.findAll(new GenericType<List<UserBean>>() {});
+            LOGGER.info("UserImplementation: ");
             return us;
         }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "", ex);
-            throw new ReadException();
-        }
-    }
-
-    @Override
-    public List<UserBean> findAllTHUsers() throws ReadException {
-        List<UserBean> us;
-        try{
-            us = userRest.findAllTHU(new GenericType<List<UserBean>>() {});
-            return us;
-        }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding all the users.", ex);
             throw new ReadException();
         }
     }
     
+    /**
+     * 
+     * @param user
+     * @return
+     * @throws ReadException 
+     */
     @Override
     public UserBean findUserbyLogin(UserBean user) throws ReadException {
+        LOGGER.info("UserImplementation: ");
         try{
-            user = userRest.findUserbyLogin(UserBean.class, user.getLogin(),
-                    user.getPassword());
+            user = userRest.findUserbyLogin(UserBean.class, user.getLogin(), 
+                    DatatypeConverter.printHexBinary(user.getPassword().getBytes()));
+            LOGGER.info("UserImplementation: ");
             return user;
         }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user by login.", ex);
             throw new ReadException();
         }
     }
-
+    
+    /**
+     * 
+     * @param user
+     * @throws ReadException 
+     */
     @Override
     public void findUserToChangePassword(UserBean user) throws ReadException {
+        LOGGER.info("UserImplementation: ");
         try{
             userRest.findUserToChangePassword(UserBean.class, user.getLogin());
         }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user to change the password.", ex);
             throw new ReadException();
         }
+        LOGGER.info("UserImplementation: ");
     }
-    
 }
