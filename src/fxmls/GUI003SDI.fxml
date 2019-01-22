@@ -58,12 +58,11 @@
                      <children>
                         <TableView fx:id="tbIncidents" layoutX="14.0" layoutY="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
                            <columns>
-                              <TableColumn fx:id="tCTitle" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Title" />
-                              <TableColumn fx:id="tCDescription" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Description" />
-                              <TableColumn fx:id="tCLocation" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Location" />
-                              <TableColumn fx:id="tCType" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Type" />
-                              <TableColumn fx:id="tCEstate" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Estate" />
-                              <TableColumn fx:id="tCSignatures" maxWidth="-1.0" minWidth="121.0" prefWidth="-1.0" text="Number of Signatures" />
+                              <TableColumn fx:id="tCTitle" maxWidth="-1.0" minWidth="175.0" prefWidth="-1.0" text="Title" />
+                              <TableColumn fx:id="tCDescription" maxWidth="-1.0" minWidth="175.0" prefWidth="-1.0" text="Description" />
+                              <TableColumn fx:id="tCLocation" maxWidth="-1.0" minWidth="175.0" prefWidth="-1.0" text="Location" />
+                              <TableColumn fx:id="tCType" maxWidth="-1.0" minWidth="175.0" prefWidth="-1.0" text="Type" />
+                              <TableColumn fx:id="tCEstate" maxWidth="-1.0" minWidth="171.0" prefWidth="-1.0" text="Estate" />
                            </columns>
                         </TableView>
                      </children>

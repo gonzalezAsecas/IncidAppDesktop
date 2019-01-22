@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Jon Gonzalez
  */
-@XmlRootElement(name="townhall")
+@XmlRootElement(name="townHall")
 public class TownHallBean implements Serializable{
     private Integer idTownHall;
     private String locality;
@@ -123,6 +123,6 @@ public class TownHallBean implements Serializable{
 
     @Override
     public String toString() {
-        return "TownHallBean{" + "idTownHall=" + idTownHall + ", locality=" + locality + ", email=" + email + ", telephoneNumber=" + telephoneNumber + ", locations=" + locations + ", users=" + users + '}';
+        return locality;
     }
 }

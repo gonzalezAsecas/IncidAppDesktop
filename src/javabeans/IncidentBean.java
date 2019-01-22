@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Gorka Redondo
  */
-@XmlRootElement(name="incident")
+@XmlRootElement(name="incidentBean")
 public class IncidentBean implements Serializable{
     private Integer idIncident;
     private final SimpleStringProperty title;
@@ -34,24 +34,17 @@ public class IncidentBean implements Serializable{
     private List<UserBean> users;
 
     public IncidentBean() {
-        //this.idIncident = idIncident;
         this.title = new SimpleStringProperty();
-        //this.photo = photo;
         this.description = new SimpleStringProperty();
-        //this.comment = comment;
-        //this.createDate = createDate;
-        //this.endDate = endDate;
         this.estate = new SimpleObjectProperty();
-        //this.user = user;
         this.location = new SimpleObjectProperty();
         this.type = new SimpleObjectProperty();
-        //this.users = users;
     }
     
     public IncidentBean(Integer idIncident, String title, byte[] photo, 
         String description, String comment, Date createDate, Date endDate, 
         Estate estate, UserBean user, LocationBean location, TypeBean type, 
-        List<UserBean> users, Integer votes) {
+        List<UserBean> users) {
         this.idIncident = idIncident;
         this.title = new SimpleStringProperty(title);
         this.photo = photo;
@@ -121,15 +114,15 @@ public class IncidentBean implements Serializable{
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
+
     public Estate getEstate() {
         return this.estate.get();
     }
-
+    
     public void setEstate(Estate estate) {
         this.estate.set(estate);
     }
-
+    
     public UserBean getUser() {
         return user;
     }
@@ -141,7 +134,7 @@ public class IncidentBean implements Serializable{
     public LocationBean getLocation() {
         return this.location.get();
     }
-
+    
     public void setLocation(LocationBean location) {
         this.location.set(location);
     }
@@ -149,7 +142,7 @@ public class IncidentBean implements Serializable{
     public TypeBean getType() {
         return this.type.get();
     }
-
+    
     public void setType(TypeBean type) {
         this.type.set(type);
     }

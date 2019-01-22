@@ -47,24 +47,6 @@ public class GUI001Controller extends THUserGenericController{
     @FXML
     private Hyperlink hlPasswordForget;
     
-    /**
-     * 
-     */
-    private UserBean user;
-    /**
-     * The getter of the user
-     * @return user The user of the application
-     */
-    public UserBean getUser() {
-        return user;
-    }
-    /**
-     * The setter of the user
-     * @param user The user of the application
-     */
-    public void setUser(UserBean user) {
-        this.user = user;
-    }
     
     /**
      * Set and initialize the stage and its properties.
@@ -256,7 +238,7 @@ public class GUI001Controller extends THUserGenericController{
             lblPass.setTextFill(Color.web("#237bf7"));
             super.getAlert("An error with the program has ocurred.");
         }*/
-        townHallUserLogin();
+        handleIncidents(event);
         LOGGER.info("Ending handleLogIn");
     }
     
@@ -298,44 +280,5 @@ public class GUI001Controller extends THUserGenericController{
         }
         
         LOGGER.info("Ending adminLogin");
-    }
-    
-    /**
-     * Load the GUI003 xml and pass the control to it controller
-     * @param user the user that is going to login in the application
-     */
-    public void townHallUserLogin(){
-        LOGGER.info("Beginning townHallUserLogin");
-        //Create the loader for the xml
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI003SDI.fxml"));
-        //Create the parent and load the tree
-        Parent root;
-        try{
-            root = (Parent) loader.load();
-            //Create the Stage
-            Stage gui003Stage = new Stage();
-            //Load de controller to the town hall user application main window
-            GUI003Controller controller = loader.getController();
-            //Set the new stage
-            controller.setStage(gui003Stage);
-            //Pass the user to the next window
-            //controller.setUser(user);
-            //Pass the control to the controller
-            controller.initStage(root);
-            //Hide this stage
-            stage.hide();
-        }catch(IOException ex){
-            LOGGER.log(Level.SEVERE, "An input-output error in the logIn loader.", 
-                    ex.getMessage());
-            super.getAlert("A error have ocurred in the login.");
-            txtFUser.requestFocus();
-        }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "An error in the logIn loader.", 
-                    ex.getMessage());
-            super.getAlert("A error have ocurred in the login.");
-            txtFUser.requestFocus();
-        }
-        LOGGER.info("Ending townHallUserLogin");
     }
 }

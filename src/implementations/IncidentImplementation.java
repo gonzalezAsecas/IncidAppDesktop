@@ -87,7 +87,6 @@ public class IncidentImplementation implements iIncident {
         try{
             incidents = webClient.findAll(new GenericType<List<IncidentBean>>() {});
         }catch(Exception ex){
-            ex.printStackTrace();
             LOGGER.log(Level.SEVERE,
                 "Exception finding all incidents",ex.getMessage());
             throw new ReadException("Error finding all incidents:\n"+ex.getMessage());
@@ -95,8 +94,9 @@ public class IncidentImplementation implements iIncident {
         return incidents;
     }
 
+    
     @Override
-    public Collection<IncidentBean> findIncidentsbyFilter(LocationBean location) throws ReadException {
+    public Collection<IncidentBean> findIncidentsbyLocation(LocationBean location) throws ReadException {
         List<IncidentBean> incidentsAll = null;
         List<IncidentBean> incidents = null;
         try{

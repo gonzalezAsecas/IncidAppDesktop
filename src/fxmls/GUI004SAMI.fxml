@@ -10,16 +10,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.IncidentGenericController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI004Controller">
    <children>
       <AnchorPane prefHeight="576.0" prefWidth="662.0" HBox.hgrow="ALWAYS">
          <children>
             <Label fx:id="lblTitle" layoutX="15.0" layoutY="25.0" text="Title:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="25.0" />
             <TextField fx:id="txtFTitle" layoutX="51.0" layoutY="21.0" prefHeight="25.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0" />
-            <Label fx:id="lblDescription" layoutX="15.0" layoutY="66.0" text="Description:" AnchorPane.leftAnchor="10.0" />
-            <TextArea fx:id="txtADescription" layoutX="15.0" layoutY="93.0" prefHeight="191.0" prefWidth="570.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-            <Label fx:id="lblComment" layoutX="15.0" layoutY="296.0" text="Comment:" AnchorPane.leftAnchor="10.0" />
-            <TextArea fx:id="txtAComment" layoutX="15.0" layoutY="323.0" prefHeight="242.0" prefWidth="572.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="324.0" />
+            <Label fx:id="lblDescription" layoutX="15.0" layoutY="71.0" text="Description:" AnchorPane.leftAnchor="14.0" />
+            <TextArea fx:id="txtADescription" layoutX="15.0" layoutY="93.0" prefHeight="200.0" prefWidth="570.0" wrapText="true" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label fx:id="lblComment" layoutX="15.0" layoutY="302.0" text="Comment:" AnchorPane.leftAnchor="9.0" />
+            <TextArea fx:id="txtAComment" layoutX="15.0" layoutY="323.0" prefHeight="200.0" prefWidth="572.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="324.0" />
          </children>
          <HBox.margin>
             <Insets />
@@ -33,12 +33,14 @@
                   <ImageView fx:id="iVPhoto" fitHeight="225.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
-            <Label fx:id="lblStreet" layoutX="11.0" layoutY="295.0" text="Street:" AnchorPane.leftAnchor="10.0" />
-            <TextField fx:id="txtFStreet" layoutX="25.0" layoutY="319.0" prefHeight="25.0" prefWidth="300.0" promptText="Example: Street, Locality" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-            <Label fx:id="lblType" layoutX="25.0" layoutY="364.0" text="Type:" AnchorPane.leftAnchor="10.0" />
-            <ComboBox fx:id="chcType" layoutX="25.0" layoutY="391.0" prefHeight="25.0" prefWidth="316.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-            <Label fx:id="lblEstate" layoutX="25.0" layoutY="436.0" text="Estate:" AnchorPane.leftAnchor="10.0" />
-            <ComboBox fx:id="chcEstate" layoutX="25.0" layoutY="463.0" prefHeight="25.0" prefWidth="300.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label fx:id="lblStreet" layoutX="10.0" layoutY="381.0" text="Street:" AnchorPane.leftAnchor="12.0" />
+            <TextField fx:id="txtFStreet" layoutX="10.0" layoutY="403.0" prefHeight="25.0" prefWidth="300.0" promptText="Example: Street" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label fx:id="lblLocality" layoutX="10.0" layoutY="438.0" text="Locality:" />
+            <TextField fx:id="txtFLocality" layoutX="10.0" layoutY="460.0" prefHeight="25.0" prefWidth="316.0" promptText="Example: Locality" />
+            <Label fx:id="lblType" layoutX="10.0" layoutY="310.0" text="Type:" AnchorPane.leftAnchor="14.0" />
+            <ComboBox fx:id="chcType" layoutX="10.0" layoutY="332.0" prefHeight="25.0" prefWidth="150.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="172.0" />
+            <Label fx:id="lblEstate" layoutX="176.0" layoutY="310.0" text="Estate:" AnchorPane.leftAnchor="176.0" />
+            <ComboBox fx:id="chcEstate" layoutX="176.0" layoutY="332.0" prefHeight="25.0" prefWidth="150.0" AnchorPane.leftAnchor="176.0" AnchorPane.rightAnchor="10.0" />
             <Button fx:id="btnAccept" layoutX="201.0" layoutY="503.0" mnemonicParsing="false" text="Accept" AnchorPane.leftAnchor="201.0" />
             <Button fx:id="btnCancel" layoutX="274.0" layoutY="503.0" mnemonicParsing="false" text="Cancel" AnchorPane.leftAnchor="274.0" />
             <Button fx:id="btnSignature" layoutX="55.0" layoutY="503.0" mnemonicParsing="false" prefWidth="53.0" text="Sign it" />

@@ -26,5 +26,5 @@ public interface iIncident {
     
     public Collection<IncidentBean> findAllIncidents() throws ReadException;
     
-    public Collection<IncidentBean> findIncidentsbyFilter(LocationBean location) throws ReadException;
+    public Collection<IncidentBean> findIncidentsbyLocation(LocationBean location) throws ReadException;
 }

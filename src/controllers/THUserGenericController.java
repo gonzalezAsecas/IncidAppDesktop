@@ -8,8 +8,14 @@ package controllers;
 import factories.LogicFactory;
 import interfaces.iIncident;
 import interfaces.iType;
+import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javabeans.IncidentBean;
+import javabeans.UserBean;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
@@ -45,6 +51,44 @@ public class THUserGenericController {
      */
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+    
+    /**
+     * user
+     */
+    protected UserBean user;
+    /**
+     * The getter of the user
+     * @return user The user of the application
+     */
+    public UserBean getUser() {
+        return user;
+    }
+    /**
+     * The setter of the user
+     * @param user The user of the application
+     */
+    public void setUser(UserBean user) {
+        this.user = user;
+    }
+    
+    /**
+     * incident
+     */
+    protected IncidentBean incident;
+    /**
+     * The getter of the incident
+     * @return incident The incident of the application
+     */
+    public IncidentBean getIncident() {
+        return incident;
+    }
+    /**
+     * The setter of the incident
+     * @param incident The incident of the application
+     */
+    public void setIncident(IncidentBean incident) {
+        this.incident = incident;
     }
     
     
@@ -103,7 +147,7 @@ public class THUserGenericController {
      * Load the GUI003 xml and pass the control to it controller 
      * @param event
      */
-    /*public void handleIncidents(ActionEvent event){
+    public void handleIncidents(ActionEvent event){
         //Create the loader for the xml
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI003SDI.fxml"));
@@ -128,18 +172,17 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI003Controller.");
         }catch(Exception ex){
-            ex.printStackTrace();
             LOGGER.log(Level.SEVERE, "An error loading GUI003Controller.", 
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI003Controller.");
         }
-    }*/
+    }
     
     /**
      * Load the GUI004 xml and pass the control to it controller 
      * @param event
      */
-    /*public void handleIncidentsEmpty(ActionEvent event) {
+    public void handleIncidentsEmpty(ActionEvent event) {
         //Create the loader for the xml
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI004SAMI.fxml"));
@@ -150,11 +193,11 @@ public class THUserGenericController {
             //Create the Stage
             Stage gui004Stage = new Stage();
             //Load de controller
-            GUI004AddController controller = loader.getController();
+            GUI004Controller controller = loader.getController();
             //Set the new stage
             controller.setStage(gui004Stage);
             //Pass the user to the next window
-            controller.setUser(user);
+            //controller.setUser(user);
             //Pass the control to the controller
             controller.initStage(root);
             //Hide this stage
@@ -168,13 +211,13 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI004Controller.");
         }
-    }*/
+    }
     
     /**
      * Load the GUI004 xml and pass the control to it controller 
      * @param event
      */
-    /*public void handleIncidentsFull(ActionEvent event) {
+    public void handleIncidentsFull(ActionEvent event) {
         //Create the loader for the xml
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI004SAMI.fxml"));
@@ -185,11 +228,11 @@ public class THUserGenericController {
             //Create the Stage
             Stage gui004Stage = new Stage();
             //Load de controller
-            GUI004UpdateController controller = loader.getController();
+            GUI004Controller controller = loader.getController();
             //Set the new stage
             controller.setStage(gui004Stage);
             //Pass the user to the next window
-            controller.setUser(user);
+            //controller.setUser(user);
             //Pass the incident to the next window
             controller.setIncident(incident);
             //Pass the control to the controller
@@ -205,13 +248,13 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI004Controller.");
         }
-    }*/
+    }
     
     /**
      * Load the GUI005 xml and pass the control to it controller 
      * @param event
      */
-    /*public void handleFiles(ActionEvent event){
+    public void handleFiles(ActionEvent event){
         //Create the loader for the xml
         FXMLLoader loader=new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI005CRUDF.fxml"));
@@ -226,7 +269,7 @@ public class THUserGenericController {
             //Set the new stage
             controller.setStage(gui005Stage);
             //Pass the user to the next window
-            controller.setUser(user);
+            //controller.setUser(user);
             //Pass the control to the controller
             controller.initStage(root);
             //Hide this stage
@@ -240,13 +283,13 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI005Controller.");
         }
-    }*/
+    }
     
     /**
      * Load the GUI006 xml and pass the control to it controller 
      * @param event
      */
-    /*public void handleInfo(ActionEvent event){
+    public void handleInfo(ActionEvent event){
         //Create the loader for the xml
         FXMLLoader loader=new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI006.fxml"));
@@ -261,7 +304,7 @@ public class THUserGenericController {
             //Set the new stage
             controller.setStage(gui006Stage);
             //Pass the user to the next window
-            controller.setUser(user);
+            //controller.setUser(user);
             //Pass the control to the controller
             controller.initStage(root);
             //Hide this stage
@@ -275,7 +318,7 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI006Controller.");
         }
-    }*/
+    }
     
     /**
      * exit the application if the user click ok button

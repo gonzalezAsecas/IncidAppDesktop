@@ -8,29 +8,20 @@ package javabeans;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Gorka Redondo
  */
-@XmlRootElement(name="type")
+@XmlRootElement(name="typeBean")
 public class TypeBean implements Serializable{
     private Integer idType;
-    private final SimpleStringProperty name;
+    private String name;
     private Integer severity;
     private List<IncidentBean> incidents;
 
     public TypeBean(){
-        this.name = new SimpleStringProperty();
-    }
-
-    public TypeBean(Integer idType, String name, Integer severity, List<IncidentBean> incidents) {
-        this.idType = idType;
-        this.name = new SimpleStringProperty(name);;
-        this.severity = severity;
-        this.incidents = incidents;
     }
 
     public Integer getIdType() {
@@ -42,11 +33,11 @@ public class TypeBean implements Serializable{
     }
 
     public String getName() {
-        return this.name.get();
+        return name;
     }
-    
+
     public void setName(String name) {
-        this.name.set(name);
+        this.name = name;
     }
 
     public Integer getSeverity() {
@@ -104,6 +95,6 @@ public class TypeBean implements Serializable{
 
     @Override
     public String toString() {
-        return "TypeBean{" + "idType=" + idType + ", name=" + name + ", severity=" + severity + ", incidents=" + incidents + '}';
+        return name;
     }
 }

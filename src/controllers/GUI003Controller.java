@@ -7,16 +7,13 @@ package controllers;
 
 import static controllers.THUserGenericController.LOGGER;
 import exceptions.ReadException;
-import java.io.IOException;
 import java.util.logging.Level;
 import javabeans.IncidentBean;
-import javabeans.TypeBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -40,17 +37,15 @@ public class GUI003Controller extends THUserGenericController {
     @FXML
     private TableView<IncidentBean> tbIncidents;
     @FXML
-    private TableColumn<?, ?> tCTitle;
+    private TableColumn tCTitle;
     @FXML
-    private TableColumn<?, ?> tCDescription;
+    private TableColumn tCDescription;
     @FXML
-    private TableColumn<?, ?> tCLocation;
+    private TableColumn tCLocation;
     @FXML
-    private TableColumn<?, ?> tCType;
+    private TableColumn tCType;
     @FXML
-    private TableColumn<?, ?> tCEstate;
-    @FXML
-    private TableColumn<?, ?> tCSignatures;
+    private TableColumn tCEstate;
     @FXML
     private Button btnFilter;
     @FXML
@@ -70,6 +65,9 @@ public class GUI003Controller extends THUserGenericController {
     @FXML
     private Menu mLogOut;
     
+    private ObservableList<IncidentBean> incidents = null;
+    private ObservableList<IncidentBean> incidentsCopy = null;
+    
     /**
      * Set and initialize the stage and its properties.
      * @param root 
@@ -78,6 +76,7 @@ public class GUI003Controller extends THUserGenericController {
         LOGGER.info("Initializing GUI003 stage");
         //Create the scene associated to to the parent root
         Scene scene = new Scene(root);
+        stage = new Stage();
         //Associate the scene with the stage
         stage.setScene(scene);
         //Set window's properties
@@ -89,8 +88,8 @@ public class GUI003Controller extends THUserGenericController {
         mUserInfo.setOnAction((event) -> handleInfo(event));
         mLogOut.setOnAction((event) -> handleLogOut(event));
         btnFilter.setOnAction((event) -> handleFilter(event));
-        btnAddIncident.setOnAction((event) -> handleAddIncident(event));
-        btnModifyIncident.setOnAction((event) -> handleModifyIncident(event));
+        btnAddIncident.setOnAction((event) -> handleIncidentsEmpty(event));
+        btnModifyIncident.setOnAction((event) -> handleIncidentsFull(event));
         btnDelete.setOnAction((event) -> handleDelete(event));
         btnCollectSignatures.setOnAction((event) -> handleCollectSignatures(event));
         tbIncidents.getSelectionModel().selectedItemProperty()
@@ -106,7 +105,6 @@ public class GUI003Controller extends THUserGenericController {
      * load all the incidents
      */
     private void loadData() {
-        ObservableList<IncidentBean> incidents = null;
         try {
             incidents = FXCollections
                 .observableArrayList(incidentManager.findAllIncidents());
@@ -114,14 +112,11 @@ public class GUI003Controller extends THUserGenericController {
             LOGGER.log(Level.SEVERE,
                 "Exception finding all incidents",ex.getMessage());
         }
-        
-        //Rellenar table
         tCTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         tCDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         tCLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
         tCType.setCellValueFactory(new PropertyValueFactory<>("type"));
         tCEstate.setCellValueFactory(new PropertyValueFactory<>("estate"));
-        //tCSignatures.setCellValueFactory(new PropertyValueFactory<>(""));
         tbIncidents.setItems(incidents);
     }
     
@@ -131,173 +126,42 @@ public class GUI003Controller extends THUserGenericController {
      */
     public void OnShowingHandler(WindowEvent event){
         LOGGER.info("Beginning OnShowingHandler");
-        mIncidents.setDisable(true);
-        //Set the mnemonics
         btnFilter.setMnemonicParsing(true);
         btnFilter.setText("_Filter");
         btnAddIncident.setMnemonicParsing(true);
         btnAddIncident.setText("_Add Incident");
         btnModifyIncident.setMnemonicParsing(true);
         btnModifyIncident.setText("_Modify Incidents");
-        btnModifyIncident.setDisable(false);
+        btnModifyIncident.setDisable(true);
         btnDelete.setMnemonicParsing(true);
         btnDelete.setText("_Delete");
-        btnDelete.setDisable(false);
+        btnDelete.setDisable(true);
         btnCollectSignatures.setMnemonicParsing(true);
         btnCollectSignatures.setText("_Collect Signatures");
-        btnCollectSignatures.setDisable(false);
+        btnCollectSignatures.setDisable(true);
         LOGGER.info("Ending OnShowingHandler");
     }
     
     /**
-     * 
-     * @param event 
-     */
-    public void handleFiles(ActionEvent event){
-        LOGGER.info("Beginning handleFiles");
-        //Create the loader for the xml
-        FXMLLoader loader=new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI005CRUDF.fxml"));
-        //Create the parent and load the tree
-        Parent root;
-        try{
-            root = (Parent) loader.load();
-            //Create the Stage
-            Stage gui005Stage = new Stage();
-            //Load de controller
-            GUI005Controller controller = loader.getController();
-            //Set the new stage
-            controller.setStage(gui005Stage);
-            //Pass the control to the controller
-            controller.initStage(root);
-            //Hide this stage
-            stage.hide();
-        }catch(IOException ex){
-            LOGGER.log(Level.SEVERE, "An input-output error loading GUI005Controller.", 
-                    ex.getMessage());
-            this.getAlert("A error have ocurred loading the GUI005Controller.");
-        }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "An error loading GUI005Controller.", 
-                    ex.getMessage());
-            this.getAlert("A error have ocurred loading the GUI005Controller.");
-        }
-        LOGGER.info("Ending handleFiles");
-    }
-    
-    /**
-     * 
-     * @param event 
-     */
-    public void handleInfo(ActionEvent event){
-        LOGGER.info("Beginning handleInfo");
-        LOGGER.info("Ending handleInfo");
-    }
-    
-    /**
-     * 
-     * @param event 
-     */
-    public void handleLogOut(ActionEvent event){
-        LOGGER.info("Beginning handleLogOut");
-        LOGGER.info("Ending handleLogOut");
-    }
-    
-    /**
-     * filter the list of incidents by the type and the estate and see if any 
-     * of they contains the text of the textfield
+     * filter the list of incidents by the text of the textfield
      * @param event 
      */
     public void handleFilter(ActionEvent event){
         LOGGER.info("Beginning handleFilter");
-        //Create the incident for the filtrate
-        /*IncidentBean incident = new IncidentBean();
-        //get the filters
-        incident.setTitle(txtFTitle.getText());
-        try {
-            incidents = incidentImpl.findIncidentsbyFilter(incident);
-            //reload the table view of the incidents
-            loadIncidents();
-        } catch (ReadException ex) {
-            LOGGER.log(Level.SEVERE, "There is no incidents with that parameters", ex);
-            super.getAlert("There is no incidents with that parameters.");
-        }*/
+        incidentsCopy = FXCollections.observableArrayList(incidents);
+        if(!(txtFTitle.getText().trim().isEmpty())) {
+            for(IncidentBean inc : incidentsCopy) {
+                if(!(inc.getTitle().toLowerCase()
+                    .contains((CharSequence)txtFTitle.getText().toLowerCase()))) {
+                    incidents.remove(inc);
+                }
+            }
+        }
+        tbIncidents.getSelectionModel().clearSelection();
+        tbIncidents.refresh();
+        incidents = FXCollections.observableArrayList(incidentsCopy);
         LOGGER.info("Ending handleFilter");
-    }
-    
-    /**
-     * 
-     * @param event 
-     */
-    public void handleAddIncident(ActionEvent event){
-        LOGGER.info("Beginning handleAddIncident");
-        //Create the loader for the xml
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI004SAMI.fxml"));
-        //Create the parent and load the tree
-        Parent root;
-        try{
-            root = (Parent) loader.load();
-            //Create the Stage
-            Stage gui004Stage = new Stage();
-            //Load de controller
-            GUI004AddController controller = loader.getController();
-            //Set the new stage
-            controller.setStage(gui004Stage);
-            //Pass the user to the next window
-            //controller.setUser(user);
-            //Pass the control to the controller
-            controller.initStage(root);
-            //Hide this stage
-            stage.hide();
-        }catch(IOException ex) {
-            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
-                    ex.getMessage());
-            this.getAlert("A error have ocurred loading the GUI004Controller.");
-        }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
-                    ex.getMessage());
-            this.getAlert("A error have ocurred loading the GUI004Controller.");
-        }
-        LOGGER.info("Ending handleAddIncident");
-    }
-    
-    /**
-     * 
-     * @param event 
-     */
-    public void handleModifyIncident(ActionEvent event){
-        LOGGER.info("Beginning handleModifyIncident");
-        //Create the loader for the xml
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI004SAMI.fxml"));
-        //Create the parent and load the tree
-        Parent root;
-        try{
-            root = (Parent) loader.load();
-            //Create the Stage
-            Stage gui004Stage = new Stage();
-            //Load de controller
-            GUI004UpdateController controller = loader.getController();
-            //Set the new stage
-            controller.setStage(gui004Stage);
-            //Pass the user to the next window
-            //controller.setUser(user);
-            //Pass the incident to the next window
-            //controller.setIncident(incident);
-            //Pass the control to the controller
-            controller.initStage(root);
-            //Hide this stage
-            stage.hide();
-        }catch(IOException ex) {
-            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
-                    ex.getMessage());
-            this.getAlert("A error have ocurred loading the GUI004Controller.");
-        }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
-                    ex.getMessage());
-            this.getAlert("A error have ocurred loading the GUI004Controller.");
-        }
-        LOGGER.info("Ending handleModifyIncident");
+        //TODO: El refresh solo funciona la primera vez
     }
     
     /**
@@ -333,10 +197,7 @@ public class GUI003Controller extends THUserGenericController {
             btnModifyIncident.setDisable(false);
             btnDelete.setDisable(false);
             btnCollectSignatures.setDisable(false);
-        }else{
-            btnModifyIncident.setDisable(true);
-            btnDelete.setDisable(true);
-            btnCollectSignatures.setDisable(true);
+            incident = tbIncidents.getSelectionModel().getSelectedItem();
         }
         LOGGER.info("Ending handleIncidentsTableSelectionChanged");
     }
