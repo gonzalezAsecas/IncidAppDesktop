@@ -128,8 +128,8 @@ public class GUI007Controller extends AdminGenericController{
             GUI009Controller controller = loader.getController();
             controller.setStage(gui009Stage);
             controller.initStage(root);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            gui009Stage.initModality(Modality.APPLICATION_MODAL);
+            gui009Stage.showAndWait();
             TownHallBean th = controller.getTownHall();
             tableTownhalls.getItems().add(th);
             tableTownhalls.refresh();
@@ -150,21 +150,20 @@ public class GUI007Controller extends AdminGenericController{
      * @param event 
      */
     public void handleModifyTownhall(ActionEvent event){
-        //TODO: como obtenemos y devolvemos los datos de la ventana?
         LOGGER.info("Begginning handleModifyTownhall()");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI009.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI009AMTH.fxml"));
         Parent root;
         try{
             TownHallBean selectedth = (TownHallBean)tableTownhalls.getSelectionModel().getSelectedItem();
             root = (Parent)loader.load();
             Stage gui009Stage = new Stage();
             GUI009Controller controller = loader.getController();
-            controller.setTownhall(selectedth);
+            controller.setTownHall(selectedth);
             controller.setStage(gui009Stage);
             controller.setAlreadyExist(true);
             controller.initStage(root);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            gui009Stage.initModality(Modality.APPLICATION_MODAL);
+            gui009Stage.showAndWait();
             TownHallBean th = controller.getTownHall();
             selectedth = th;
             tableTownhalls.refresh();
@@ -175,6 +174,7 @@ public class GUI007Controller extends AdminGenericController{
         }catch(Exception ex) {
             LOGGER.log(Level.SEVERE, "An error ocurred in handleUsers()",
                     ex.getMessage());
+            ex.printStackTrace();
         }    
         LOGGER.info("Ending handleNewTownhall()");
     }

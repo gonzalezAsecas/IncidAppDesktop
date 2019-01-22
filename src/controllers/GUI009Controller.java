@@ -61,11 +61,6 @@ public class GUI009Controller {
         return th;
     }
     
-    TownHallBean townhall;
-    public void setTownhall(TownHallBean townhall){
-        this.townhall = townhall;
-    }
-    
     protected boolean alreadyExist = false;
     public void setAlreadyExist(boolean bool){
         alreadyExist = bool;
@@ -82,9 +77,9 @@ public class GUI009Controller {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         if(alreadyExist){
-            txtFName.setText(townhall.getLocality());
-            txtFEmail.setText(townhall.getEmail());
-            txtFPhone.setText(townhall.getTelephoneNumber());
+            txtFName.setText(th.getLocality());
+            txtFEmail.setText(th.getEmail());
+            txtFPhone.setText(th.getTelephoneNumber());
         }
         stage.setOnShowing(this::OnShowingHandlerTownHall);
         btnAccept.setOnAction((event) -> handleAccept(event));
@@ -110,14 +105,17 @@ public class GUI009Controller {
     public void handleAccept(ActionEvent event) {
         try{
             if(fieldsAreFilled()){
-                th.setLocality(txtFName.getText().trim());
-                th.setEmail(txtFEmail.getText().trim());
-                th.setTelephoneNumber(txtFPhone.getText().trim());
-                townHallImpl.townHallAlreadyExists();
+                //townHallImpl.townHallAlreadyExists();
                 if(alreadyExist){
+                    th.setLocality(txtFName.getText().trim());
+                    th.setEmail(txtFEmail.getText().trim());
+                    th.setTelephoneNumber(txtFPhone.getText().trim());
                     townHallImpl.editTownHall(th);
+                    stage.close();
                 }else{
+                    th = new TownHallBean(txtFName.getText().trim(), txtFEmail.getText().trim(), txtFPhone.getText().trim());
                     townHallImpl.createTownHall(th);
+                    stage.close();
                 }
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "All the fields must have information", ButtonType.OK);
@@ -149,7 +147,7 @@ public class GUI009Controller {
      * @return 
      */
     public ButtonType getAlert(String message){
-        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK, ButtonType.CANCEL);
+        Alert alert = new Alert(Alert.AlertType.WARNING, message, ButtonType.OK, ButtonType.CANCEL);
         return alert.showAndWait().get();
     }
     
