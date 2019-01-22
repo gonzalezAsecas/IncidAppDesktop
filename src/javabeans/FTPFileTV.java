@@ -41,4 +41,10 @@ public class FTPFileTV {
     public void setDirectory(boolean directory) {
         this.directory = directory;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+    
 }

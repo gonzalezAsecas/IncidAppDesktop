@@ -16,14 +16,14 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Jon Gonzalez
  */
-@XmlRootElement(name="UserBean")
+@XmlRootElement
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String login;
     private String email;
-    private String password;
+    private byte[] password;
     private String fullName;
     private Status status;
     private Privilege privilege;
@@ -48,11 +48,11 @@ public class UserBean implements Serializable {
         this.login = login;
     }
 
-    public String getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(byte[] password) {
         this.password = password;
     }
 

@@ -8,6 +8,9 @@ package controllers;
 import factories.FTPFactory;
 import interfaces.iFTP;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javabeans.FTPFileTV;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -20,7 +23,6 @@ import javafx.scene.control.TreeView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.WindowEvent;
-import org.apache.commons.net.ftp.FTPFile;
 
 /**
  * 
@@ -43,7 +45,7 @@ public class GUI005Controller extends THUserGenericController{
     @FXML
     private Button btnLoad;
     @FXML
-    private TreeView<String> treeFTP;
+    private TreeView<FTPFileTV> treeFTP;
     @FXML
     private Button btnMakeDirectory;
     @FXML
@@ -71,6 +73,11 @@ public class GUI005Controller extends THUserGenericController{
         //Set window's properties
         stage.setTitle("Files manager");
         stage.setResizable(true);
+        try {
+            loadFiles(FTP.login());
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
         //Set the window's event handlers handle
         stage.setOnShowing(this::OnShowingHandler);
         mIncidents.setOnAction((event) -> this.handleIncidentsFTP(event));
@@ -104,7 +111,6 @@ public class GUI005Controller extends THUserGenericController{
         btnMakeDirectory.setText("_Make directory");
         btnDelete.setMnemonicParsing(true);
         btnDelete.setText("_Delete");
-        loadFiles();
         LOGGER.info("Ending OnShowingHandler");
     }
     
@@ -131,26 +137,49 @@ public class GUI005Controller extends THUserGenericController{
     
     /**
      * 
+     * @param dir
      */
-    private void loadFiles() {
-        TreeItem root;
-        FTPFile[] files=null;
-        //FTP.login();
-        //try{
-            //files = FTP.showFiles();
-        root = new TreeItem<String>("FTP client");
-        root.setExpanded(true);
-        for(int i=0;i<=files.length; i++){
-            if(files[i].getType()==1){
-                files[i].setName(files[i].getName() + "[DIR]");
+    public void loadFiles(FTPFileTV dir){
+        LOGGER.info("Beginning load files");
+        TreeItem<FTPFileTV> root = new TreeItem<FTPFileTV>(dir);
+        treeFTP.setRoot(root);
+        TreeItem<FTPFileTV> item;
+        try {
+            //search the files for list it
+            FTPFileTV[] files = FTP.showFiles(dir.getPath());
+            root.setExpanded(true);
+            //add all the files
+            for(FTPFileTV file: files){
+                item = new TreeItem<FTPFileTV>(file);
+                root.getChildren().add(item);
             }
-            root.getChildren().add(files[i].getName());
+            treeFTP = new TreeView<FTPFileTV>(root);
+        } catch (Exception ex) {
+            Logger.getLogger(GUI005Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-        treeFTP = new TreeView<String>(root);
-        //}catch(IOException ex){
-            
-        //}
+        LOGGER.info("Ending load files");
     }
+    
+    /*private void loadFiles() {
+        TreeItem root;
+        FTPFileTV[] files;
+        FTPFileTV rootdir;
+        try {
+            rootdir = FTP.login();
+            root = new TreeItem<FTPFileTV>(rootdir);
+            files = FTP.showFiles(rootdir.getPath());
+            root.setExpanded(true);
+            for(int i=0;i<=files.length; i++){
+                if(files[i].isDirectory()){
+                    files[i].setName(files[i].getName() + "[DIR]"); //basura, no lo hagas, Jon
+                }
+                root.getChildren().add(files[i].getName());
+            }
+            treeFTP = new TreeView<FTPFileTV>(root);
+        } catch (Exception ex) {
+            Logger.getLogger(GUI005Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }*/
     
     /**
      * 

@@ -16,9 +16,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.FTPFileTV;
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
-import org.apache.commons.net.ftp.FTPFileFilters;
 
 /**
  * The ftp client for connect and load and download files, make directories and 
@@ -40,29 +40,25 @@ public class FTPCliente implements iFTP{
      * @throws Exception 
      */
     @Override
-    public FTPFileTV[] login() throws Exception{
-        FTPFileTV[] filestv;
-        FTPFile[] files;
+    public FTPFileTV login() throws Exception{
         try {
             LOGGER.info("Beginning login");
             //Set properties file for the ftpclient
             properties = ResourceBundle
-                    .getBundle("properties/ftpClientProperties.properties");
+                    .getBundle("properties/ftpClientProperties");
             //get the server name
-            ftpclient.connect(properties.getString("ftpserver"));
+            ftpclient.connect(properties.getString("ftpServer"), 6000);
+            //ftpclient.connect(properties.getString("ftpServer"), Integer.getInteger(properties.getString("ftpServerPort")));
+            ftpclient.enterRemotePassiveMode();
+            ftpclient.setFileType(FTP.BINARY_FILE_TYPE);
             //get the user and the password decrypting it before
-            ftpclient.login(properties.getString("ftpuser"),
-                    properties.getString("ftppassword"));//Cambiar esto para que desencripte la contrseña y el usuario primero
-            //get the 
+            ftpclient.login(properties.getString("ftpUser"),
+                    properties.getString("ftpPassword"));//Cambiar esto para que desencripte la contrseña y el usuario primero
             ftpclient.changeWorkingDirectory(properties
-                    .getString("ftpdirectory"));
-            files = ftpclient.listFiles(ftpclient.printWorkingDirectory(), FTPFileFilters.ALL);
-            filestv = new FTPFileTV[files.length];
-            for(int i=0; i<files.length; i++){
-                filestv[i] = fTPFiletoFTPileTV(ftpclient.printWorkingDirectory(), files[i]);
-            }
+                    .getString("ftpRootDirectory"));
             LOGGER.info("Ending login");
-            return showFiles(ftpclient.printWorkingDirectory());
+            //return showFiles(ftpclient.printWorkingDirectory());
+            return fTPFiletoFTPFileTV(ftpclient.printWorkingDirectory());
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE,
                     "An error have ocurred in the login of the ftp client", ex.getCause());
@@ -102,7 +98,7 @@ public class FTPCliente implements iFTP{
             files = ftpclient.listFiles(dir);
             filestv = new FTPFileTV[files.length];
             for(int i=0; i<files.length; i++){
-                filestv[i] = fTPFiletoFTPileTV(
+                filestv[i] = fTPFiletoFTPFileTV(
                         ftpclient.printWorkingDirectory(), files[i]);
             }
             return filestv;
@@ -125,7 +121,6 @@ public class FTPCliente implements iFTP{
             BufferedInputStream buffIn;
             ftpclient.changeWorkingDirectory(dir.getPath() + "/" + dir.getName());
             buffIn = new BufferedInputStream(new FileInputStream(file.getPath()));
-            ftpclient.enterLocalPassiveMode();
             ftpclient.storeFile(file.getName(), buffIn);
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE,
@@ -184,7 +179,7 @@ public class FTPCliente implements iFTP{
         }
     }
     
-    public FTPFileTV fTPFiletoFTPileTV(String dir, FTPFile file){
+    public FTPFileTV fTPFiletoFTPFileTV(String dir, FTPFile file){
         FTPFileTV filetv = new FTPFileTV();
         filetv.setName(file.getName());
         if(file.getType()==1){
@@ -192,6 +187,14 @@ public class FTPCliente implements iFTP{
         }else if(file.getType()==0){
             filetv.setDirectory(false);
         }
+        filetv.setPath(dir);
+        return filetv;
+    }
+
+    private FTPFileTV fTPFiletoFTPFileTV(String dir) {
+        FTPFileTV filetv = new FTPFileTV();
+        filetv.setName("");
+        filetv.setDirectory(true);
         filetv.setPath(dir);
         return filetv;
     }

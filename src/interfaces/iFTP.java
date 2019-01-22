@@ -14,7 +14,7 @@ import org.apache.commons.net.ftp.FTPFile;
  * @author Jon Gonzalez
  */
 public interface iFTP {
-    public FTPFileTV[] login() throws Exception;
+    public FTPFileTV login() throws Exception;
     public void logout() throws Exception;
     public FTPFileTV[] showFiles(String dir) throws Exception;
     public void loadFile(FTPFileTV ftpdirectory,File file) throws Exception;

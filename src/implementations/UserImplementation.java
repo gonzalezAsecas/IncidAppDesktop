@@ -48,7 +48,7 @@ public class UserImplementation implements iUser{
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception creating the user.", ex);
             throw new CreateException();
         }
-        LOGGER.info("UserImplementation: ");
+        LOGGER.info("UserImplementation: Ending the creation of the user.");
     }
     
     /**
@@ -135,7 +135,7 @@ public class UserImplementation implements iUser{
         LOGGER.info("UserImplementation: ");
         try{
             user = userRest.findUserbyLogin(UserBean.class, user.getLogin(), 
-                    DatatypeConverter.printHexBinary(user.getPassword().getBytes()));
+                    DatatypeConverter.printHexBinary(user.getPassword()));
             LOGGER.info("UserImplementation: ");
             return user;
         }catch(Exception ex){

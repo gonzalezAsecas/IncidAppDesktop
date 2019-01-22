@@ -81,7 +81,7 @@ public class GUI001Controller{
     /**
      * The user that is login or logged in the application
      */
-    protected UserBean user;
+    protected UserBean user = new UserBean();
     
     /**
      * The setter of the stage
@@ -250,23 +250,12 @@ public class GUI001Controller{
                     break;
             }
         }catch(ReadException e1){
-            //Run when the login isn't in the database
-            /*if(e1.getWhy().equals("login")){
-                LOGGER.log(Level.SEVERE,
-                        "GUI001Controller: Exception with the login", e1);
-                lblUser.setTextFill(Color.web("#ff0000"));
-                lblPass.setTextFill(Color.web("#237bf7"));
-                txtFUser.requestFocus();
-                getAlert("The user doesn't exist.");
-            //Run when the login is correct but the password no
-            }else if(e1.getWhy().equals("password")){
-                LOGGER.log(Level.SEVERE,
-                        "GUI001Controller: Exception with the password", e1);
-                lblUser.setTextFill(Color.web("#237bf7"));
-                lblPass.setTextFill(Color.web("#ff0000"));
-                pwPassword.requestFocus();
-                getAlert("The password is wrong.");
-            }*/
+            LOGGER.log(Level.SEVERE,
+                    "GUI001Controller: Exception with the login", e1);
+            lblUser.setTextFill(Color.web("#ff0000"));
+            lblPass.setTextFill(Color.web("#237bf7"));
+            txtFUser.requestFocus();
+            getAlert("The user or the password are incorrect.");
         }catch(Exception e3){
             LOGGER.log(Level.SEVERE, e3.getMessage(), e3);
             lblUser.setTextFill(Color.web("#237bf7"));
@@ -360,7 +349,7 @@ public class GUI001Controller{
      * @param password the password in raw that is going to be encrypted
      * @return the password encrypted
      */
-    private String cypherPass(String password) {
+    private byte[] cypherPass(String password) {
         LOGGER.info("Beginning cypherPass");
         FileInputStream fispublic;
         byte[] key;
@@ -384,7 +373,8 @@ public class GUI001Controller{
             cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             //intialize the cipher object for the encrypt mode with the public key
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-            password = new String(cipher.doFinal(password.getBytes()));
+            LOGGER.info("Ending cypherPass");
+            return cipher.doFinal(password.getBytes());
         } catch (FileNotFoundException ex) {
             LOGGER.log(Level.SEVERE, "Exception reading the file", ex);
         } catch (IOException | NoSuchAlgorithmException | 
@@ -393,31 +383,26 @@ public class GUI001Controller{
                 BadPaddingException ex) {
             LOGGER.log(Level.SEVERE, "Exception excrypting the password", ex);
         }
-        LOGGER.info("Ending cypherPass");
-        return password;
+        return null;
     }
     
     /**
      * 
      */
     private void makeUserInShow() {
-        LOGGER.info("making the user.");
+        LOGGER.info("GUI001Controller: Making the user.");
         UserBean us = new UserBean();
         us.setEmail("jonasecas97@gmail.com");
         us.setLogin("jon");
         us.setPassword(cypherPass("1234"));
-        us.setFullName("Jon Gonzalez");
+        us.setFullName("Jon Gonzalez");         
         us.setPrivilege(Privilege.TOWNHALLUSER);
         us.setStatus(Status.ENABLED);
-        try {
-            if(iuser.findUserbyLogin(us)!=null){}
-        } catch (ReadException ex){
             try{
                 iuser.createUser(us);
             }catch(CreateException e){
-                LOGGER.info("Error creating user.");
+                LOGGER.log(Level.SEVERE, "GUI001Controller: Error creating user.", e.getCause());
             }
-        }
-        LOGGER.info("finishing making the user");
+        LOGGER.info("GUI001Controller: Finishing making the user");
     }
 }

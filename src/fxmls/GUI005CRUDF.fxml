@@ -9,7 +9,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="574.0" minWidth="1024.0" prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI005Controller">
+<VBox minHeight="574.0" minWidth="1024.0" prefHeight="574.0" prefWidth="1024.0" 
+      xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="controllers.GUI005Controller">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
