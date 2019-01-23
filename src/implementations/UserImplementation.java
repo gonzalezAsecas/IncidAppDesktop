@@ -151,13 +151,13 @@ public class UserImplementation implements iUser{
      */
     @Override
     public void findUserToChangePassword(UserBean user) throws ReadException {
-        LOGGER.info("UserImplementation: ");
+        LOGGER.info("UserImplementation: Beginning the search of the user for change the password");
         try{
             userRest.findUserToChangePassword(UserBean.class, user.getLogin());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user to change the password.", ex);
             throw new ReadException();
         }
-        LOGGER.info("UserImplementation: ");
+        LOGGER.info("UserImplementation: Ending the search of the user for change the password");
     }
 }

@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -21,10 +23,10 @@ public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private String login;
-    private String email;
+    private final SimpleStringProperty login;
+    private final SimpleStringProperty email;
     private byte[] password;
-    private String fullName;
+    private final SimpleStringProperty fullName;
     private Status status;
     private Privilege privilege;
     private Date lastAccess;
@@ -34,6 +36,19 @@ public class UserBean implements Serializable {
     private TownHallBean th;
     private List<IncidentBean> incidents;
     private List<IncidentBean> signatureIncidents;
+    
+    public UserBean() {
+        this.login = new SimpleStringProperty();
+        this.email = new SimpleStringProperty();
+        this.fullName = new SimpleStringProperty();
+    }
+    
+    public UserBean(String login, String email, String fullName, TownHallBean th ) {
+        this.login = new SimpleStringProperty(login);
+        this.email = new SimpleStringProperty(email);
+        this.fullName = new SimpleStringProperty(fullName);
+    }
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -41,11 +56,11 @@ public class UserBean implements Serializable {
     
     
     public String getLogin() {
-        return login;
+        return login.get();
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        this.login.set(login);
     }
 
     public byte[] getPassword() {
@@ -57,19 +72,19 @@ public class UserBean implements Serializable {
     }
 
     public String getEmail() {
-        return email;
+        return email.get();
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email.set(email);
     }
 
     public String getFullName() {
-        return fullName;
+        return fullName.get();
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.fullName.set(fullName);
     }
 
     public Status getStatus() {
@@ -112,9 +127,7 @@ public class UserBean implements Serializable {
         this.id = id;
     }
 
-    public UserBean() {
-    }
-
+  
     public String getDni() {
         return dni;
     }

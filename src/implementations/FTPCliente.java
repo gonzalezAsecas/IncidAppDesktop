@@ -48,7 +48,7 @@ public class FTPCliente implements iFTP{
                     .getBundle("properties/ftpClientProperties");
             //get the server name
             ftpclient.connect(properties.getString("ftpServer"), 6000);
-            //ftpclient.connect(properties.getString("ftpServer"), Integer.getInteger(properties.getString("ftpServerPort")));
+            //ftpclient.connect(properties.getString("ftpServer"), Integer.getInteger(properties.getString("ftpServerPort"))); //parseInt
             ftpclient.enterRemotePassiveMode();
             ftpclient.setFileType(FTP.BINARY_FILE_TYPE);
             //get the user and the password decrypting it before
@@ -57,13 +57,13 @@ public class FTPCliente implements iFTP{
             ftpclient.changeWorkingDirectory(properties
                     .getString("ftpRootDirectory"));
             LOGGER.info("Ending login");
-            //return showFiles(ftpclient.printWorkingDirectory());
-            return fTPFiletoFTPFileTV(ftpclient.printWorkingDirectory());
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE,
                     "An error have ocurred in the login of the ftp client", ex.getCause());
             throw new Exception(ex);
         }
+        //return showFiles(ftpclient.printWorkingDirectory());
+        return fTPFiletoFTPFileTV(ftpclient.printWorkingDirectory());
     }
     
     /**
