@@ -8,15 +8,19 @@ package controllers;
 import factories.FTPFactory;
 import interfaces.iFTP;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.FTPFileTV;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -74,7 +78,8 @@ public class GUI005Controller extends THUserGenericController{
         stage.setTitle("Files manager");
         stage.setResizable(true);
         try {
-            loadFiles(FTP.login());
+            treeFTP.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            loadRoot(FTP.login());
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
@@ -88,6 +93,8 @@ public class GUI005Controller extends THUserGenericController{
         btnDownload.setOnAction((event) -> this.handleDownload(event));
         btnMakeDirectory.setOnAction((event) -> this.handleMakeDir(event));
         btnDelete.setOnAction((event) -> this.handleDelete(event));
+        //treeFTP.getSelectionModel().selectedItemProperty()
+        //        .addListener(this::handleLoadFiles);
         //Show the LogIn window
         stage.show();
         LOGGER.info("Ending the initialization of the GUI005 stage");
@@ -137,49 +144,52 @@ public class GUI005Controller extends THUserGenericController{
     
     /**
      * 
-     * @param dir
+     * @param dir 
      */
-    public void loadFiles(FTPFileTV dir){
-        LOGGER.info("Beginning load files");
-        TreeItem<FTPFileTV> root = new TreeItem<FTPFileTV>(dir);
-        treeFTP.setRoot(root);
-        TreeItem<FTPFileTV> item;
+    public void loadRoot(FTPFileTV dir){
         try {
-            //search the files for list it
+            TreeItem<FTPFileTV> root = new TreeItem<FTPFileTV>(dir);
             FTPFileTV[] files = FTP.showFiles(dir.getPath());
-            root.setExpanded(true);
-            //add all the files
+            TreeItem<FTPFileTV> item;
+            treeFTP.setRoot(root);
             for(FTPFileTV file: files){
                 item = new TreeItem<FTPFileTV>(file);
+                if(file.isDirectory()){
+                    item.getChildren().addAll(loadFiles(file.getPath() + "/" + file.getName()));
+                }
                 root.getChildren().add(item);
+                
             }
             treeFTP = new TreeView<FTPFileTV>(root);
         } catch (Exception ex) {
             Logger.getLogger(GUI005Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-        LOGGER.info("Ending load files");
     }
     
-    /*private void loadFiles() {
-        TreeItem root;
-        FTPFileTV[] files;
-        FTPFileTV rootdir;
+    /**
+     * 
+     * @param path
+     * @return 
+     */
+    public ArrayList<TreeItem<FTPFileTV>> loadFiles(String path){
+        FTPFileTV[] leafs;
+        ArrayList<TreeItem<FTPFileTV>> arrayFiles = null;
+        TreeItem<FTPFileTV> leaff;
         try {
-            rootdir = FTP.login();
-            root = new TreeItem<FTPFileTV>(rootdir);
-            files = FTP.showFiles(rootdir.getPath());
-            root.setExpanded(true);
-            for(int i=0;i<=files.length; i++){
-                if(files[i].isDirectory()){
-                    files[i].setName(files[i].getName() + "[DIR]"); //basura, no lo hagas, Jon
+            leafs = FTP.showFiles(path);
+            arrayFiles = new ArrayList<TreeItem<FTPFileTV>>();
+            for(FTPFileTV leaf: leafs){
+                leaff = new TreeItem<FTPFileTV>(leaf);
+                if(leaf.isDirectory()){
+                    leaff.getChildren().addAll(loadFiles(file.getPath() + "/" + file.getName()));
                 }
-                root.getChildren().add(files[i].getName());
+                arrayFiles.add(leaff);
             }
-            treeFTP = new TreeView<FTPFileTV>(root);
         } catch (Exception ex) {
             Logger.getLogger(GUI005Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }*/
+        return arrayFiles;
+    }
     
     /**
      * 

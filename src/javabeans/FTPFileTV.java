@@ -5,46 +5,51 @@
  */
 package javabeans;
 
-import java.util.Objects;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  *
- * @author Usuario
+ * @author Jon Gonzalez
  */
 public class FTPFileTV {
-    String path;
-    String name;
-    boolean directory;
+    private final SimpleStringProperty path;
+    private final SimpleStringProperty name;
+    private final SimpleBooleanProperty directory;
 
-    public FTPFileTV() {}
+    public FTPFileTV() {
+        path = new SimpleStringProperty();
+        name = new SimpleStringProperty();
+        directory = new SimpleBooleanProperty();
+    }
 
     public String getPath() {
-        return path;
+        return path.get();
     }
 
     public void setPath(String path) {
-        this.path = path;
+        this.path.set(path);
     }
 
     public String getName() {
-        return name;
+        return name.get();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
 
     public boolean isDirectory() {
-        return directory;
+        return directory.get();
     }
 
     public void setDirectory(boolean directory) {
-        this.directory = directory;
+        this.directory.set(directory);
     }
 
     @Override
     public String toString() {
-        return name;
+        return name.get();
     }
     
 }
