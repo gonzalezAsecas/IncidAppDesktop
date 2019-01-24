@@ -70,6 +70,7 @@ public class AdminGenericController {
             controller.setStage(gui007Stage);
             controller.setUser(user);
             controller.initStage(root);
+            gui007Stage.show();
             stage.hide();
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "An input-output error in handleUsers()",
@@ -97,6 +98,7 @@ public class AdminGenericController {
             //controller.setStage(gui008Stage);
             //controller.setUser(user);
             //controller.initStage(root);
+            gui008Stage.show();
             stage.hide();
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "An input-output error in handleUsers()",
@@ -123,6 +125,7 @@ public class AdminGenericController {
             controller.setStage(gui006Stage);
             controller.setUser(user);
             controller.initStage(root);
+            gui006Stage.show();
             stage.hide();
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "An input-output error in handleInformation()",

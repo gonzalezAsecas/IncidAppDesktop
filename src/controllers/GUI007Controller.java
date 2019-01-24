@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import exceptions.DeleteException;
 import exceptions.ReadException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -23,6 +24,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -81,6 +83,7 @@ public class GUI007Controller extends AdminGenericController{
             stage.setOnShowing(this::OnShowingHandler);
             mUsers.setOnAction((event) -> super.handleUsers(event));
             mInformation.setOnAction((event) -> super.handleInformation(event));
+            mInformation.setAccelerator(KeyCombination.keyCombination("Ctrl+I"));
             mLogOut.setOnAction((event) -> super.handleLogOut(event));
             btnNewTownhall.setOnAction((event) -> handleNewTownhall(event));
             btnModifyTownhall.setOnAction((event) -> handleModifyTownhall(event));
@@ -185,8 +188,15 @@ public class GUI007Controller extends AdminGenericController{
      */
     public void handleDelete(ActionEvent event){
         LOGGER.info("Begginning handleDelete()");
-        tableTownhalls.getItems().remove(tableTownhalls.getSelectionModel().getSelectedItem());
-        tableTownhalls.refresh();
+        try{
+            TownHallBean selectedth = (TownHallBean)tableTownhalls.getSelectionModel().getSelectedItem();
+            townHallImpl.removeTownHall(selectedth);
+            tableTownhalls.getItems().remove(tableTownhalls.getSelectionModel().getSelectedItem());
+            tableTownhalls.refresh();
+        } catch (DeleteException ex) {
+            LOGGER.log(Level.SEVERE, "An error ocurred in handleDelete()",
+                    ex.getMessage());
+        }
         LOGGER.info("Ending handleDelete()");
     }
     

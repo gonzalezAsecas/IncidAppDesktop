@@ -12,11 +12,13 @@ import interfaces.iTownHall;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.TownHallBean;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
@@ -84,6 +86,9 @@ public class GUI009Controller {
         stage.setOnShowing(this::OnShowingHandlerTownHall);
         btnAccept.setOnAction((event) -> handleAccept(event));
         btnCancel.setOnAction((event) -> handleCancel(event));
+        txtFName.textProperty().addListener(this::textChanged);
+        txtFEmail.textProperty().addListener(this::textChanged);
+        txtFPhone.textProperty().addListener(this::textChanged);
         
     }
     
@@ -96,6 +101,35 @@ public class GUI009Controller {
         btnAccept.setText("_Accept");
         btnCancel.setMnemonicParsing(true);
         btnCancel.setText("_Cancel");
+    }
+    
+    public void textChanged(ObservableValue observable, String oldValue,
+            String newValue){
+        if(txtFName.getText().trim().isEmpty() | txtFEmail.getText().trim().isEmpty()
+                | txtFPhone.getText().trim().isEmpty()){
+            btnAccept.setDisable(true);
+        }else{
+            btnAccept.setDisable(false);
+        }
+        
+        if(txtFName.getLength() == 256){
+            LOGGER.log(Level.INFO, "Name too long");
+            txtFName.setText(txtFName.getText().substring(0, 255));
+            new Alert(AlertType.INFORMATION, "Name too long", ButtonType.OK).showAndWait();
+        }
+
+        if(txtFEmail.getLength() == 256){
+            LOGGER.log(Level.INFO, "Email too long");
+            txtFEmail.setText(txtFName.getText().substring(0, 255));
+            new Alert(AlertType.INFORMATION, "Email too long", ButtonType.OK).showAndWait();
+        }
+
+        if(txtFPhone.getLength() == 13){
+            LOGGER.log(Level.INFO, "Phone too long");
+            txtFPhone.setText(txtFPhone.getText().substring(0, 12));
+            new Alert(AlertType.INFORMATION, "Phone too long", ButtonType.OK).showAndWait();
+        }
+        
     }
     
     /**

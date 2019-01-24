@@ -8,6 +8,7 @@ package javabeans;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    //private SimpleIntegerProperty idPerson;
+    private SimpleIntegerProperty id;
     private SimpleStringProperty login;
     private SimpleStringProperty email;
     private SimpleStringProperty password;
@@ -53,6 +54,7 @@ public class UserBean implements Serializable {
     
     public UserBean(String login, String email, String password, String fullName,
             Date lastPasswordChange, String street, TownHallBean townhall){
+        this.id = new SimpleIntegerProperty();
         this.login = new SimpleStringProperty(login);
         this.email = new SimpleStringProperty(email);
         this.password = new SimpleStringProperty(password);
@@ -61,6 +63,14 @@ public class UserBean implements Serializable {
         this.street = new SimpleStringProperty(street);
         this.townHall = new SimpleObjectProperty<TownHallBean>(townhall);
         
+    }
+    
+    public Integer getId() {
+        return this.id.get();
+    }
+    
+    public void setId(Integer id) {
+        this.id.set(id);
     }
     
     public String getLogin() {

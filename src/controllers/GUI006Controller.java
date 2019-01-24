@@ -6,6 +6,7 @@
 package controllers;
 
 
+import exceptions.CreateException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
 import factories.LogicFactory;
@@ -24,6 +25,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.Privilege;
+import javabeans.Status;
 import javabeans.TownHallBean;
 import javabeans.UserBean;
 import javafx.event.ActionEvent;
@@ -104,6 +106,24 @@ public class GUI006Controller {
      * @param root 
      */
     public void initStage(Parent root){
+        //try creado para hacer pruebas, eliminar para entregar o probar cuando
+        //se junte el proyecto
+        try{
+            TownHallBean th = new TownHallBean("Erandio", "erandio@erandio", "666666666");
+            user = new UserBean();
+            user.setDni("15490582J");
+            user.setEmail("lander@email.com");
+            user.setFullName("Lander Lluvia");
+            user.setLogin("Tesnal");
+            user.setPassword("abcd*1234");
+            user.setPrivilege(Privilege.USER);
+            user.setStatus(Status.ENABLED);
+            user.setStreet("Consulado de Bilbao 7 2º DI");
+            user.setTownHall(th);
+            userImpl.createUser(user);
+        } catch (CreateException ex) {
+            Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
         LOGGER.info("Initializing GUI006 stage");
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -121,6 +141,7 @@ public class GUI006Controller {
         tfStreet.setText(user.getStreet());
         tfTownhall.setText(user.getTownHall().getLocality());
         btnUpdate.setOnAction((event) -> handleUpdate(event));
+        stage.show();
     }
     
     /**
@@ -223,7 +244,7 @@ public class GUI006Controller {
         LOGGER.info("Begginning handleUpdate()");
         try{
             if(fieldsAreFilled()){
-                if(pfPassword.getText().trim().length() !=0){
+                if(pfPassword.getText().trim().length() != 0){
                     if(handlePassword()){
                         user.setFullName(tfFullName.getText());
                         user.setLogin(tfUsername.getText());
@@ -243,7 +264,7 @@ public class GUI006Controller {
                     user.setStreet(tfStreet.getText());
                     TownHallBean th = new TownHallBean();
                     th.setLocality(tfTownhall.getText());
-                    th = townHallImpl.findTownHallByName(th);
+                    //th = townHallImpl.findTownHallByName(th);
                     user.setTownHall(th);
                     user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
                 }
