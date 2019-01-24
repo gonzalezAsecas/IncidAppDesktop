@@ -22,12 +22,15 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.Privilege;
 import javabeans.Status;
 import javabeans.TownHallBean;
 import javabeans.UserBean;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +39,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -76,7 +80,7 @@ public class GUI006Controller {
     @FXML
     private TextField tfStreet;
     @FXML
-    private TextField tfTownhall;
+    private ChoiceBox chBTownhall;
     @FXML
     private Button btnUpdate;
     
@@ -139,7 +143,13 @@ public class GUI006Controller {
         pfPassword.setTooltip(new Tooltip("Use this field if you want to change your current password"));
         tfEmail.setText(user.getEmail());
         tfStreet.setText(user.getStreet());
-        tfTownhall.setText(user.getTownHall().getLocality());
+        Collection<TownHallBean> ths = null;
+        try{
+            ths = townHallImpl.findAllTownHalls();
+        }catch (ReadException ex) {
+            Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        chBTownhall.setItems((ObservableList) ths);
         btnUpdate.setOnAction((event) -> handleUpdate(event));
         stage.show();
     }
@@ -252,7 +262,7 @@ public class GUI006Controller {
                         user.setEmail(tfEmail.getText());
                         user.setStreet(tfStreet.getText());
                         TownHallBean th = new TownHallBean();
-                        th.setLocality(tfTownhall.getText());
+                        th.setLocality(chBTownhall.getSelectionModel().getSelectedItem().toString());
                         th = townHallImpl.findTownHallByName(th);
                         user.setTownHall(th);
                         user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
@@ -263,8 +273,8 @@ public class GUI006Controller {
                     user.setEmail(tfEmail.getText());
                     user.setStreet(tfStreet.getText());
                     TownHallBean th = new TownHallBean();
-                    th.setLocality(tfTownhall.getText());
-                    //th = townHallImpl.findTownHallByName(th);
+                    th.setLocality(chBTownhall.getSelectionModel().getSelectedItem().toString());
+                    th = townHallImpl.findTownHallByName(th);
                     user.setTownHall(th);
                     user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
                 }
@@ -283,7 +293,7 @@ public class GUI006Controller {
      */
     public boolean fieldsAreFilled(){
         boolean filled = true;
-        if(tfFullName.getText().trim().isEmpty() | tfUsername.getText().trim().isEmpty() | tfEmail.getText().trim().isEmpty() | tfStreet.getText().trim().isEmpty() | tfTownhall.getText().trim().isEmpty()){
+        if(tfFullName.getText().trim().isEmpty() | tfUsername.getText().trim().isEmpty() | tfEmail.getText().trim().isEmpty() | tfStreet.getText().trim().isEmpty() | chBTownhall.getSelectionModel().getSelectedIndex() == 0){
             filled = false;
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "At least all the fields except password must have information", ButtonType.OK);
             alert.showAndWait();
@@ -297,7 +307,7 @@ public class GUI006Controller {
      */
     public boolean handlePassword(){
         boolean pass = true;
-        if(pfPassword.getText().length() <4){
+        if(pfPassword.getText().length() < 4){
             pass = false;
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "The password must have at least 4 characters.", ButtonType.OK);
             alert.showAndWait();

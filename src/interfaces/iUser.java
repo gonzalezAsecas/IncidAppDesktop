@@ -9,7 +9,6 @@ import exceptions.CreateException;
 import exceptions.DeleteException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
-import java.util.Collection;
 import java.util.List;
 import javabeans.UserBean;
 
@@ -26,7 +25,7 @@ public interface iUser {
 
     public UserBean findUserbyId(UserBean user) throws ReadException;
 
-    public Collection<UserBean> findAllUsers() throws ReadException;
+    public List<UserBean> findAllUsers() throws ReadException;
     
     public UserBean findUserbyLogin(UserBean user) throws ReadException;
 

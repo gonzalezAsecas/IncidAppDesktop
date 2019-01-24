@@ -11,8 +11,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 
 /**
- * Jersey REST client generated for REST resource:UserRestFul
- * [entities.user]<br>
+ * Jersey REST client generated for REST resource:UserRestFul [user]<br>
  * USAGE:
  * <pre>
  *        UserRestFul client = new UserRestFul();
@@ -21,7 +20,7 @@ import javax.ws.rs.core.GenericType;
  *        client.close();
  * </pre>
  *
- * @author Lander Lluvia
+ * @author Jon Gonzalez
  */
 public class UserRestFul {
 
@@ -31,7 +30,7 @@ public class UserRestFul {
 
     public UserRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("entities.user");
+        webTarget = client.target(BASE_URI).path("user");
     }
 
     public void edit(Object requestEntity) throws ClientErrorException {
@@ -44,9 +43,9 @@ public class UserRestFul {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T findUserbyLogin(Class<T> responseType, String Login) throws ClientErrorException {
+    public <T> T findUserbyLogin(Class<T> responseType, String login, String password) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{Login}));
+        resource = resource.path(java.text.MessageFormat.format("{0}/{1}", new Object[]{login, password}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
@@ -54,9 +53,9 @@ public class UserRestFul {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
-    public <T> T findUserToChangePassword(Class<T> responseType, String Login) throws ClientErrorException {
+    public <T> T findUserToChangePassword(Class<T> responseType, String login) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("password/{0}", new Object[]{Login}));
+        resource = resource.path(java.text.MessageFormat.format("passwordChange/{0}", new Object[]{login}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
@@ -65,7 +64,7 @@ public class UserRestFul {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public void remove(Integer id) throws ClientErrorException {
+    public void remove(String id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
     }
 

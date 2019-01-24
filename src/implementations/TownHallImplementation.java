@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.TownHallBean;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.GenericType;
 import restfuls.TownHallRestFul;
 
@@ -99,6 +100,7 @@ public class TownHallImplementation implements iTownHall{
         }catch(Exception ex) {
             LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception finding a townhall by id",
                     ex.getMessage());
+            throw new ReadException("Error finding townhall by id");
         }
         return th;
     }
@@ -112,6 +114,7 @@ public class TownHallImplementation implements iTownHall{
         }catch(Exception ex) {
             LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception finding a townhall by id",
                     ex.getMessage());
+            throw new ReadException("Error finding townhall by name");
         }
         return th;
     }
@@ -140,8 +143,16 @@ public class TownHallImplementation implements iTownHall{
      * 
      */
     @Override
-    public void townHallAlreadyExists() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void townHallAlreadyExists(String name) throws ReadException {
+        try{
+            if(this.webClient.findByName(TownHallBean.class, name) != null){
+                throw new TownhallExistsException("Theres already a townhall with this name");
+            }
+        }catch(NotFoundException ex){
+            //Do nothing
+        }catch(Exception ex){
+            throw new ReadException("Error finding finding townhall by name alreadyExist method");
+        }
     }
     
 }

@@ -132,6 +132,7 @@ public class GUI007Controller extends AdminGenericController{
             controller.setStage(gui009Stage);
             controller.initStage(root);
             gui009Stage.initModality(Modality.APPLICATION_MODAL);
+            gui009Stage.setResizable(false);
             gui009Stage.showAndWait();
             TownHallBean th = controller.getTownHall();
             tableTownhalls.getItems().add(th);
@@ -166,6 +167,7 @@ public class GUI007Controller extends AdminGenericController{
             controller.setAlreadyExist(true);
             controller.initStage(root);
             gui009Stage.initModality(Modality.APPLICATION_MODAL);
+            gui009Stage.setResizable(false);
             gui009Stage.showAndWait();
             TownHallBean th = controller.getTownHall();
             selectedth = th;

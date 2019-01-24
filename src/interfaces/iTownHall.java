@@ -15,7 +15,7 @@ import javabeans.TownHallBean;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Lander Lluvia
  */
 public interface iTownHall {
      public void createTownHall(TownHallBean townhall) throws CreateException;
@@ -30,5 +30,5 @@ public interface iTownHall {
 
     public Collection<TownHallBean> findAllTownHalls() throws ReadException;
     
-    public void townHallAlreadyExists();
+    public void townHallAlreadyExists(String name) throws ReadException;
 }
