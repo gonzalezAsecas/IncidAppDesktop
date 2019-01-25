@@ -17,8 +17,8 @@ public interface iFTP {
     public FTPFileTV login() throws Exception;
     public void logout() throws Exception;
     public FTPFileTV[] showFiles(String dir) throws Exception;
-    public void loadFile(FTPFileTV ftpdirectory,File file) throws Exception;
-    public void makeDirectory(FTPFileTV dir, String dirName) throws Exception;
-    public void downloadFile(FTPFileTV file) throws Exception;
-    public void delete(FTPFileTV file) throws Exception;
+    public void loadFile(String ftpdirectory,File file) throws Exception;
+    public void makeDirectory(String dir, String dirName) throws Exception;
+    public void downloadFile(String file) throws Exception;
+    public void delete(String file) throws Exception;
 }

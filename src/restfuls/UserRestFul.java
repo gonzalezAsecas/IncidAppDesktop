@@ -26,7 +26,7 @@ public class UserRestFul {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/grupo4/webresources";
+    private static final String BASE_URI = "http://localhost:22461/grupo4/webresources";
 
     public UserRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();

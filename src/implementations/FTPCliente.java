@@ -116,10 +116,10 @@ public class FTPCliente implements iFTP{
      * @throws Exception 
      */
     @Override
-    public void loadFile(FTPFileTV dir, File file) throws Exception{
+    public void loadFile(String dir, File file) throws Exception{
         try {
             BufferedInputStream buffIn;
-            ftpclient.changeWorkingDirectory(dir.getPath() + "/" + dir.getName());
+            ftpclient.changeWorkingDirectory(dir);
             buffIn = new BufferedInputStream(new FileInputStream(file.getPath()));
             ftpclient.storeFile(file.getName(), buffIn);
         } catch (IOException ex) {
@@ -136,9 +136,9 @@ public class FTPCliente implements iFTP{
      * @throws Exception 
      */
     @Override
-    public void makeDirectory(FTPFileTV dir, String dirName) throws Exception {
+    public void makeDirectory(String dir, String dirName) throws Exception {
         try {
-            ftpclient.changeWorkingDirectory(dir.getPath() + "/" + dir.getName());
+            ftpclient.changeWorkingDirectory(dir);
             ftpclient.makeDirectory(dirName);
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE,
@@ -152,11 +152,11 @@ public class FTPCliente implements iFTP{
      * @param file 
      */
     @Override
-    public void downloadFile(FTPFileTV file) throws Exception {
+    public void downloadFile(String file) throws Exception {
         BufferedOutputStream out;
         try{
            out = new BufferedOutputStream(new FileOutputStream("filesDownloaded"));
-           ftpclient.retrieveFile(file.getPath() + "/" + file.getName(), out);
+           ftpclient.retrieveFile(file, out);
            out.close();
         }catch(IOException ex){
            LOGGER.log(Level.SEVERE, "", ex);
@@ -170,9 +170,9 @@ public class FTPCliente implements iFTP{
      * @throws Exception 
      */
     @Override
-    public void delete(FTPFileTV file) throws Exception {
+    public void delete(String file) throws Exception {
         try{
-            ftpclient.deleteFile(file.getPath() + "/" + file.getName());
+            ftpclient.deleteFile(file);
         }catch(IOException ex){
            LOGGER.log(Level.SEVERE, "", ex);
            throw new Exception(ex);

@@ -10,6 +10,7 @@ import interfaces.iFTP;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javabeans.FTPFileTV;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -197,14 +198,12 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleLoad(ActionEvent event){
-        /*
         try{
-            FTP.loadFile(file);
-        }catch(IOException ex){
+            FTP.loadFile(dirPath, file);
+        }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "Error loading file", ex);
             super.getAlert("An error had ocurred loading the file.");
         }
-        */
     }
     
     /**
@@ -212,7 +211,12 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleDownload(ActionEvent event){
-        //FTP.downloadFile(file); //el fichero que se hya seleccionado
+        try {
+            FTP.downloadFile(dirPath); 
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error downloading file", ex);
+            super.getAlert("An error had ocurred downloading the file.");
+        }
         
     }
     
@@ -221,7 +225,12 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleMakeDir(ActionEvent event){
-        //FTP.makeDirectory();
+        try {
+            FTP.makeDirectory(dirPath, txtFNameDirectory.getText());
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error making the directory", ex);
+            super.getAlert("An error had ocurred making the directory.");
+        }
     }
     
     /**
@@ -229,7 +238,12 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleDelete(ActionEvent event){
-        //FTP.delete();
+        try {
+            FTP.delete(dirPath);
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error deleting the file", ex);
+            super.getAlert("An error had ocurred deleting the file.");
+        }
     }
     
     /**
