@@ -155,7 +155,7 @@ public class GUI001Controller extends THUserGenericController{
             //get the user wrote
             user.setLogin(txtFUser.getText());
             //get the password wrote
-            user.setPassword(pwPassword.getText());//Encriptar
+            //user.setPassword(pwPassword.getText());//Encriptar
             try {
                 //send the password and the login for the password change
                 iuser.findUserToChangePassword(user);
@@ -193,7 +193,7 @@ public class GUI001Controller extends THUserGenericController{
         //Get the username and the password
         user=new UserBean();
         user.setLogin(txtFUser.getText());
-        user.setPassword(pwPassword.getText());// TODO: Sacar el hash!!!!
+        //user.setPassword(pwPassword.getText());// TODO: Sacar el hash!!!!
         try{
             //Send the user to compare the infomation with the database 
             //information and receive the user that it's login, 

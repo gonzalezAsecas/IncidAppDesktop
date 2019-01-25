@@ -91,4 +91,9 @@ public class TownHallBean implements Serializable{
     public void setUsers(List<UserBean> users) {
         this.users.set(users);
     }
+    
+    @Override
+    public String toString(){
+        return this.getLocality();
+    }
 }

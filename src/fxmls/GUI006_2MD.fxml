@@ -6,14 +6,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI006_2Controller">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI006_2Controller">
    <children>
       <AnchorPane prefHeight="120.0" prefWidth="736.0">
          <children>
             <Button fx:id="btnConfirm" layoutX="610.0" layoutY="81.0" mnemonicParsing="false" text="Confirm" />
             <TextField fx:id="txtFConfirmPass" layoutX="223.0" layoutY="69.0" prefHeight="25.0" prefWidth="254.0" />
-            <Label layoutX="161.0" layoutY="35.0" prefHeight="25.0" prefWidth="378.0" text="To confirm the password change, introduce your current password:" />
+            <Label layoutX="168.0" layoutY="33.0" prefHeight="26.0" prefWidth="463.0" text="To confirm the password change, introduce your current password:" />
          </children>
       </AnchorPane>
    </children>

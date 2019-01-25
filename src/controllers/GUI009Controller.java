@@ -63,9 +63,9 @@ public class GUI009Controller {
         return th;
     }
     
-    protected boolean alreadyExist = false;
-    public void setAlreadyExist(boolean bool){
-        alreadyExist = bool;
+    protected boolean edit = false;
+    public void setEdit(boolean bool){
+        edit = bool;
     }
     protected iTownHall townHallImpl = LogicFactory.getiTownHall();
     
@@ -78,7 +78,7 @@ public class GUI009Controller {
         LOGGER.info("Initializing GUI009 stage");
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        if(alreadyExist){
+        if(edit){
             txtFName.setText(th.getLocality());
             txtFEmail.setText(th.getEmail());
             txtFPhone.setText(th.getTelephoneNumber());
@@ -133,14 +133,14 @@ public class GUI009Controller {
     }
     
     /**
-     * Checks if the fields are filleds, and
+     * Checks if the fields are filled, and
      * @param event 
      */
     public void handleAccept(ActionEvent event) {
         try{
             if(fieldsAreFilled()){
                 //townHallImpl.townHallAlreadyExists();
-                if(alreadyExist){
+                if(edit){
                     th.setLocality(txtFName.getText().trim());
                     th.setEmail(txtFEmail.getText().trim());
                     th.setTelephoneNumber(txtFPhone.getText().trim());
@@ -155,11 +155,13 @@ public class GUI009Controller {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "All the fields must have information", ButtonType.OK);
                 alert.showAndWait();
             }
-        } catch (CreateException ex) {
+        }catch (CreateException ex) {
             LOGGER.log(Level.SEVERE, "Error creating a townhall");
-        } catch (UpdateException ex) {
-            Logger.getLogger(GUI009Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }catch (UpdateException ex) {
+            LOGGER.log(Level.SEVERE, "Error updating a townhall");
+        }/*catch (TownhallExistsException ex){
+            LOGGER.log(Level.SEVERE, "Townhall already exists");
+        }*/
     }
     
     /**

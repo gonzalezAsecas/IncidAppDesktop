@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.UserBean;
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.GenericType;
 import javax.xml.bind.DatatypeConverter;
 import restfuls.UserRestFul;
@@ -77,7 +78,7 @@ public class UserImplementation implements iUser{
     public void removeUser(UserBean user) throws DeleteException {
         LOGGER.info("UserImplementation: Beginning the erasing of the user.");
         try{
-            userRest.remove(user.getId());
+            userRest.remove(user.getId().toString());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception deleting the user.", ex);
             throw new DeleteException("UserImplementation: Error deleting an user");
@@ -159,4 +160,18 @@ public class UserImplementation implements iUser{
         }
         LOGGER.info("UserImplementation: Ending the search of the user for change the password");
     }
+    
+    @Override
+    public void findUserToConfirmPassword(UserBean user, byte[] pass) throws ClientErrorException{
+        LOGGER.info("UserImplementation: Begginning findUserToConfirmPassword()");
+        try{
+            userRest.findUserbyLogin(UserBean.class, user.getLogin(), DatatypeConverter.printHexBinary(pass));
+        }catch(ClientErrorException ex){
+            LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding an user to confirm password");
+            throw new ClientErrorException(ex.getMessage(), -1);
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE, "UserImplentation: An error ocurred during findUserToConfirmPassword()");
+        }
+    }
+        
 }

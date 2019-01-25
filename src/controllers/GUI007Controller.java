@@ -164,7 +164,7 @@ public class GUI007Controller extends AdminGenericController{
             GUI009Controller controller = loader.getController();
             controller.setTownHall(selectedth);
             controller.setStage(gui009Stage);
-            controller.setAlreadyExist(true);
+            controller.setEdit(true);
             controller.initStage(root);
             gui009Stage.initModality(Modality.APPLICATION_MODAL);
             gui009Stage.setResizable(false);

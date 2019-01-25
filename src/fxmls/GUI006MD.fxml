@@ -6,11 +6,12 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI006Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI006Controller">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -37,11 +38,11 @@
             <TextField fx:id="tfFullName" layoutX="375.0" layoutY="92.0" prefHeight="25.0" prefWidth="220.0" />
             <TextField fx:id="tfEmail" layoutX="375.0" layoutY="254.0" prefHeight="25.0" prefWidth="220.0" />
             <TextField fx:id="tfUsername" layoutX="375.0" layoutY="145.0" prefHeight="25.0" prefWidth="220.0" />
-            <TextField fx:id="pfPassword" layoutX="375.0" layoutY="198.0" prefHeight="25.0" prefWidth="220.0" />
             <TextField fx:id="tfStreet" layoutX="375.0" layoutY="311.0" prefHeight="25.0" prefWidth="220.0" />
             <Label layoutX="374.0" layoutY="293.0" text="Street" />
             <Button fx:id="btnUpdate" layoutX="708.0" layoutY="379.0" mnemonicParsing="false" text="Update" />
             <ChoiceBox fx:id="chBTownhall" layoutX="375.0" layoutY="367.0" prefHeight="25.0" prefWidth="220.0" />
+            <PasswordField fx:id="pfPassword" layoutX="375.0" layoutY="195.0" prefHeight="26.0" prefWidth="220.0" />
          </children>
       </AnchorPane>
    </center>

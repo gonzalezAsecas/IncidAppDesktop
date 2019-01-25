@@ -6,6 +6,7 @@
 package controllers;
 
 
+import static controllers.AdminGenericController.LOGGER;
 import exceptions.CreateException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
@@ -30,6 +31,7 @@ import javabeans.Privilege;
 import javabeans.Status;
 import javabeans.TownHallBean;
 import javabeans.UserBean;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,6 +46,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javax.crypto.BadPaddingException;
@@ -119,11 +122,11 @@ public class GUI006Controller {
             user.setEmail("lander@email.com");
             user.setFullName("Lander Lluvia");
             user.setLogin("Tesnal");
-            user.setPassword("abcd*1234");
             user.setPrivilege(Privilege.USER);
             user.setStatus(Status.ENABLED);
             user.setStreet("Consulado de Bilbao 7 2º DI");
-            user.setTownHall(th);
+            user.setTH(th);
+            user.setPassword(cypherPass("abcd*1234"));
             userImpl.createUser(user);
         } catch (CreateException ex) {
             Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -143,13 +146,13 @@ public class GUI006Controller {
         pfPassword.setTooltip(new Tooltip("Use this field if you want to change your current password"));
         tfEmail.setText(user.getEmail());
         tfStreet.setText(user.getStreet());
-        Collection<TownHallBean> ths = null;
+        ObservableList<TownHallBean> ths = null;
         try{
-            ths = townHallImpl.findAllTownHalls();
+            ths = FXCollections.observableArrayList(townHallImpl.findAllTownHalls());
         }catch (ReadException ex) {
             Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-        chBTownhall.setItems((ObservableList) ths);
+        chBTownhall.setItems(ths);
         btnUpdate.setOnAction((event) -> handleUpdate(event));
         stage.show();
     }
@@ -168,6 +171,7 @@ public class GUI006Controller {
         mUserInformation.setDisable(true);
         btnUpdate.setMnemonicParsing(true);
         btnUpdate.setText("_Update");
+        LOGGER.info("Ending OnShowingHandler()");
     }
     
     public void handleIncident(ActionEvent event){
@@ -263,9 +267,10 @@ public class GUI006Controller {
                         user.setStreet(tfStreet.getText());
                         TownHallBean th = new TownHallBean();
                         th.setLocality(chBTownhall.getSelectionModel().getSelectedItem().toString());
-                        th = townHallImpl.findTownHallByName(th);
-                        user.setTownHall(th);
+                        th = townHallImpl.findTownHallbyId(th);
+                        user.setTH(th);
                         user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+                        confirmPassword();
                     }
                 }else{
                     user.setFullName(tfFullName.getText());
@@ -275,10 +280,11 @@ public class GUI006Controller {
                     TownHallBean th = new TownHallBean();
                     th.setLocality(chBTownhall.getSelectionModel().getSelectedItem().toString());
                     th = townHallImpl.findTownHallByName(th);
-                    user.setTownHall(th);
+                    user.setTH(th);
                     user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+                    userImpl.editUser(user);
                 }
-                userImpl.editUser(user);
+                
             }
         }catch (UpdateException ex) {
             Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -293,7 +299,7 @@ public class GUI006Controller {
      */
     public boolean fieldsAreFilled(){
         boolean filled = true;
-        if(tfFullName.getText().trim().isEmpty() | tfUsername.getText().trim().isEmpty() | tfEmail.getText().trim().isEmpty() | tfStreet.getText().trim().isEmpty() | chBTownhall.getSelectionModel().getSelectedIndex() == 0){
+        if(tfFullName.getText().trim().isEmpty() | tfUsername.getText().trim().isEmpty() | tfEmail.getText().trim().isEmpty() | tfStreet.getText().trim().isEmpty() | chBTownhall.getSelectionModel().getSelectedIndex() == -1){
             filled = false;
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "At least all the fields except password must have information", ButtonType.OK);
             alert.showAndWait();
@@ -315,12 +321,38 @@ public class GUI006Controller {
         return pass;
     }
     
+    public void confirmPassword(){
+        LOGGER.info("Begginning confirmPassword()");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI006_2MD.fxml"));
+        Parent root;
+        try{
+            root = (Parent)loader.load();
+            Stage gui006_2Stage = new Stage();
+            GUI006_2Controller controller = loader.getController();
+            controller.setStage(gui006_2Stage);
+            controller.initStage(root);
+            gui006_2Stage.initModality(Modality.APPLICATION_MODAL);
+            gui006_2Stage.setResizable(false);
+            controller.setUser(user);
+            controller.setNewPass(pfPassword.getText().trim());
+            gui006_2Stage.showAndWait();
+        }catch(IOException ex){
+            LOGGER.log(Level.SEVERE, "An input-output error in handleUsers()",
+                    ex.getMessage());
+        }catch(Exception ex) {
+            ex.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An error ocurred in handleUsers()",
+                    ex.getMessage());
+        }    
+        LOGGER.info("Ending handleNewTownhall()");
+    }
+    
     /**
      * 
      * @param password
      * @return 
      */
-    private String cypherPass(String password) {
+    private byte[] cypherPass(String password) {
         LOGGER.info("Beginning cypherPass");
         FileInputStream fispublic;
         byte[] key;
@@ -344,7 +376,8 @@ public class GUI006Controller {
             cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             //intialize the cipher object for the encrypt mode with the public key
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-            password = new String(cipher.doFinal(password.getBytes()));
+            LOGGER.info("Ending cypherPass");
+            return cipher.doFinal(password.getBytes());
         } catch (FileNotFoundException ex) {
             LOGGER.log(Level.SEVERE, "Exception reading the file", ex);
         } catch (IOException | NoSuchAlgorithmException | 
@@ -353,8 +386,7 @@ public class GUI006Controller {
                 BadPaddingException ex) {
             LOGGER.log(Level.SEVERE, "Exception excrypting the password", ex);
         }
-        LOGGER.info("Ending cypherPass");
-        return password;
+        return null;
     }
     
 }

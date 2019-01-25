@@ -11,6 +11,7 @@ import exceptions.ReadException;
 import exceptions.UpdateException;
 import java.util.List;
 import javabeans.UserBean;
+import javax.ws.rs.ClientErrorException;
 
 /**
  *
@@ -30,4 +31,6 @@ public interface iUser {
     public UserBean findUserbyLogin(UserBean user) throws ReadException;
 
     public void findUserToChangePassword(UserBean user) throws ReadException;
+    
+    public void findUserToConfirmPassword(UserBean user, byte[] pass) throws ClientErrorException;
 }

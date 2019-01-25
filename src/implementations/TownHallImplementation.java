@@ -112,7 +112,7 @@ public class TownHallImplementation implements iTownHall{
             LOGGER.info("TownhallImplementation: Finding a townhall by id from REST service.");
             th = webClient.findByName(TownHallBean.class, townhall.getLocality());
         }catch(Exception ex) {
-            LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception finding a townhall by id",
+            LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception finding a townhall by name",
                     ex.getMessage());
             throw new ReadException("Error finding townhall by name");
         }
@@ -146,7 +146,7 @@ public class TownHallImplementation implements iTownHall{
     public void townHallAlreadyExists(String name) throws ReadException {
         try{
             if(this.webClient.findByName(TownHallBean.class, name) != null){
-                throw new TownhallExistsException("Theres already a townhall with this name");
+                //throw new TownhallExistsException("Theres already a townhall with this name");
             }
         }catch(NotFoundException ex){
             //Do nothing
