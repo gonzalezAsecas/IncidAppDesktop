@@ -99,7 +99,7 @@ public class FTPCliente implements iFTP{
             filestv = new FTPFileTV[files.length];
             for(int i=0; i<files.length; i++){
                 filestv[i] = fTPFiletoFTPFileTV(
-                        ftpclient.printWorkingDirectory(), files[i]);
+                        dir, files[i]);
             }
             return filestv;
         }catch(IOException ex){
@@ -155,7 +155,7 @@ public class FTPCliente implements iFTP{
     public void downloadFile(String file) throws Exception {
         BufferedOutputStream out;
         try{
-           out = new BufferedOutputStream(new FileOutputStream("filesDownloaded"));
+           out = new BufferedOutputStream(new FileOutputStream("C:/"));
            ftpclient.retrieveFile(file, out);
            out.close();
         }catch(IOException ex){
@@ -175,6 +175,7 @@ public class FTPCliente implements iFTP{
             ftpclient.deleteFile(file);
         }catch(IOException ex){
            LOGGER.log(Level.SEVERE, "", ex);
+           ex.printStackTrace();
            throw new Exception(ex);
         }
     }

@@ -40,11 +40,11 @@ public class Application extends javafx.application.Application{
     @Override
     public void start(Stage stage){
         FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI005CRUDF.fxml"));
+                .getResource("/fxmls/GUI001LI.fxml"));
         Parent root;
         try {
             root = (Parent)loader.load();
-            GUI005Controller controller = loader.getController();
+            GUI001Controller controller = loader.getController();
             controller.setStage(stage);
             controller.initStage(root);
         } catch (IOException ex) {

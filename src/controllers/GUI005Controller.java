@@ -10,7 +10,6 @@ import interfaces.iFTP;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javabeans.FTPFileTV;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -80,17 +79,21 @@ public class GUI005Controller extends THUserGenericController{
         
         //Set the window's event handlers handle
         stage.setOnShowing(this::OnShowingHandler);
-        mIncidents.setOnAction((event) -> this.handleIncidentsFTP(event));
-        mUserInfo.setOnAction((event) -> this.handleInfoFTP(event));
-        mLogOut.setOnAction((event) -> this.handleLogOutFTP(event));
-        btnSearch.setOnAction((event) -> this.handleSearch(event));
-        btnLoad.setOnAction((event) -> this.handleLoad(event));
-        btnDownload.setOnAction((event) -> this.handleDownload(event));
-        btnMakeDirectory.setOnAction((event) -> this.handleMakeDir(event));
-        btnDelete.setOnAction((event) -> this.handleDelete(event));
+        mIncidents.setOnAction(this::handleIncidentsFTP);
+        mUserInfo.setOnAction(this::handleInfoFTP);
+        mLogOut.setOnAction(this::handleLogOutFTP);
+        btnSearch.setOnAction(this::handleSearch);
+        btnLoad.setOnAction(this::handleLoad);
+        btnDownload.setOnAction(this::handleDownload);
+        btnMakeDirectory.setOnAction(this::handleMakeDir);
+        btnDelete.setOnAction(this::handleDelete);
+        //Load the files of the FTP server in the treeItem and make the listener
+        //for the click event
         try {
-            treeFTP.getSelectionModel().selectedItemProperty().addListener(this::handleClickFile);
+            treeFTP.getSelectionModel().selectedItemProperty()
+                    .addListener(this::handleClickFile);
             loadRoot(FTP.login());
+            dirPath = "/";
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "The login failed.", ex.getCause());
         }
@@ -100,7 +103,7 @@ public class GUI005Controller extends THUserGenericController{
     }
     
     /**
-     * 
+     * Set on showing the mnemonics for the buttons
      * @param event 
      */
     public void OnShowingHandler(WindowEvent event){
@@ -121,55 +124,71 @@ public class GUI005Controller extends THUserGenericController{
     }
     
     /**
-     * 
+     * The method unleashed when the "Search file" button is clicked or the key 
+     * combination is pressed. Open a filechooser and show the pdfs, excels 
+     * and words
      * @param event 
      */
     public void handleSearch(ActionEvent event){
         LOGGER.info("Beginning handleSearch");
+        //Create the filechooser
         FileChooser filechooser = new FileChooser();
-        filechooser.setTitle("Searching file");
+        //Set title
+        filechooser.setTitle("Searching file for load in the FTP server");
+        //set the filters for make more comfortable
         filechooser.getExtensionFilters().addAll(
                 new ExtensionFilter("PDF", "*.pdf"),
                 new ExtensionFilter("Word", "*.docx"),
                 new ExtensionFilter("Excel", "*.xls")
         );
+        //save the path of the file
         file = filechooser.showOpenDialog(stage);
+        //Verify that the file isn't null
         if(file!=null){
+            //set the path in the textfield
             txtFSearch.setText(file.getAbsolutePath());
+            //set the load button enable
             btnLoad.setDisable(false);
         }
         LOGGER.info("Ending handleSearch");
     }
     
     /**
-     * 
-     * @param dir 
+     * Load the root item of the treeview and it childs
+     * @param dir the root directory from the FTP server
      */
     public void loadRoot(FTPFileTV dir){
+        LOGGER.info("Beginning loadRoot");
+        TreeItem<FTPFileTV> root;
+        FTPFileTV[] files;
+        TreeItem<FTPFileTV> item;
         try {
-            TreeItem<FTPFileTV> root = new TreeItem<FTPFileTV>(dir);
-            FTPFileTV[] files = FTP.showFiles(dir.getPath());
-            TreeItem<FTPFileTV> item;
+            //create the root item
+            root = new TreeItem<FTPFileTV>(dir);
+            //get the list of files and directories in the root directory
+            files = FTP.showFiles(dir.getPath());
             treeFTP.setRoot(root);
             root.setExpanded(true);
             for(FTPFileTV file: files){
                 item = new TreeItem<FTPFileTV>(file);
                 if(file.isDirectory()){
                     item.getChildren().addAll(
-                            loadFiles(file.getPath() + "/" + file.getName()));
+                            loadFiles(file.getPath() + file.getName()));
                 }
                 root.getChildren().add(item);
                 
             }
             treeFTP = new TreeView<FTPFileTV>(root);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "An error have ocurred loading of root", ex);
         }
+        LOGGER.info("Ending loadRoot");
     }
     
     /**
-     * 
-     * @param path
+     * Load the files to her father and, if they are directorys, load her 
+     * childrens
+     * @param path the path that represents the father
      * @return 
      */
     public ArrayList<TreeItem<FTPFileTV>> loadFiles(String path){
@@ -188,7 +207,7 @@ public class GUI005Controller extends THUserGenericController{
                 arrayFiles.add(treeleaf);
             }
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "An error have ocurred loading of files", ex);
         }
         return arrayFiles;
     }
@@ -198,7 +217,13 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleLoad(ActionEvent event){
+        TreeItem<FTPFileTV> ti;
+        FTPFileTV filetv = new FTPFileTV();
+        FTPFileTV root = new FTPFileTV();
         try{
+            filetv.setName(file.getName());
+            filetv.setPath(dirPath);
+            filetv.setDirectory(false);
             FTP.loadFile(dirPath, file);
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "Error loading file", ex);
@@ -212,7 +237,9 @@ public class GUI005Controller extends THUserGenericController{
      */
     public void handleDownload(ActionEvent event){
         try {
-            FTP.downloadFile(dirPath); 
+            
+            FTP.downloadFile(dirPath + "/" + treeFTP.getSelectionModel()
+                    .getSelectedItem().getValue().getName()); 
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error downloading file", ex);
             super.getAlert("An error had ocurred downloading the file.");
@@ -238,10 +265,12 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleDelete(ActionEvent event){
+        TreeItem<FTPFileTV> ti = (TreeItem<FTPFileTV>) treeFTP.getSelectionModel().getSelectedItem();
         try {
-            FTP.delete(dirPath);
+            FTP.delete(dirPath + ti.getValue().getName());
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error deleting the file", ex);
+            ex.printStackTrace();
             super.getAlert("An error had ocurred deleting the file.");
         }
     }

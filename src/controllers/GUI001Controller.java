@@ -130,7 +130,7 @@ public class GUI001Controller{
         pwPassword.textProperty().addListener(this::handleTextChanged);
         pwPassword.setPromptText("Set the password...");
         hlPasswordForget.setOnAction(this::handleRecoverPassword);
-        makeUserInShow();
+        //makeUserInShow();
         //Show the LogIn window
         stage.show();
         LOGGER.info("Ending the initialization of the GUI001 stage");
@@ -176,7 +176,7 @@ public class GUI001Controller{
             txtFUser.setText(login);
             getAlert("The login can´t had more than twenty characters.");
             txtFUser.requestFocus();
-        }else if(pwPassword.getText().length()>16){
+        }else if(pwPassword.getText().length()>15){
             String password= pwPassword.getText();
             password = password.substring(0, password.length()-1);
             pwPassword.setText(password);
@@ -313,7 +313,7 @@ public class GUI001Controller{
         LOGGER.info("Beginning townHallUserLogin");
         //Create the loader for the xml
         FXMLLoader loader=new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI003.fxml"));
+                .getResource("/fxmls/GUI005CRUDF.fxml"));
         //Create the parent and load the tree
         Parent root;
         try{
@@ -321,7 +321,7 @@ public class GUI001Controller{
             //Create the Stage
             Stage gui003Stage=new Stage();
             //Load de controller to the town hall user application main window
-            GUI003Controller controller = loader.getController();
+            GUI005Controller controller = loader.getController();
             //Set the new stage
             controller.setStage(gui003Stage);
             //Pass the user to the next window
