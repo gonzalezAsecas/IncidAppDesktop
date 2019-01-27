@@ -66,6 +66,14 @@ public class GUI006_2Controller {
         this.newPass = newPass;
     }
     
+    protected boolean pass;
+    public void setPass(boolean pass) {
+        this.pass = pass;
+    }
+    public boolean getPass(){
+        return pass;
+    }
+    
     public void initStage(Parent root){
         LOGGER.info("Initializing GUI006_2 stage");
         Scene scene = new Scene(root);
@@ -92,7 +100,7 @@ public class GUI006_2Controller {
                 userImpl.findUserToConfirmPassword(user, passCypher);
                 if(newPass.equals(txtFConfirmPass.getText().trim())){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, "The old password and the new password can't be the same", ButtonType.OK);
-                    alert.showAndWait();
+                    alert.showAndWait(); 
                 }else{
                     user.setPassword(cypherPass(txtFConfirmPass.getText().trim()));
                     userImpl.editUser(user);

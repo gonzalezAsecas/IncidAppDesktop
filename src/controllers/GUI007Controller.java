@@ -8,6 +8,7 @@ package controllers;
 import exceptions.DeleteException;
 import exceptions.ReadException;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.TownHallBean;
@@ -19,8 +20,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -37,6 +42,8 @@ import javafx.stage.WindowEvent;
 public class GUI007Controller extends AdminGenericController{
     
     @FXML
+    private MenuBar menuBar;
+    @FXML
     private Menu mTownhall;
     @FXML
     private Menu mUsers;
@@ -44,6 +51,14 @@ public class GUI007Controller extends AdminGenericController{
     private Menu mInformation;
     @FXML
     private Menu mLogOut;
+    @FXML
+    private MenuItem miTownhalls;
+    @FXML
+    private MenuItem miUsers;
+    @FXML
+    private MenuItem miInformation;
+    @FXML
+    private MenuItem miLogOut;
     @FXML
     private TableColumn<?, ?> tcName;
     @FXML
@@ -56,6 +71,8 @@ public class GUI007Controller extends AdminGenericController{
     private Button btnModifyTownhall;
     @FXML
     private Button btnDelete;
+    @FXML
+    private Button btnReport;
     @FXML
     private TableView tableTownhalls;
     
@@ -75,19 +92,25 @@ public class GUI007Controller extends AdminGenericController{
             stage.setScene(scene);
             stage.setTitle("Townhalls");
             stage.setResizable(true);
+            menuBar.getMenus().addAll(mTownhall, mUsers, mInformation, mLogOut);
+            mTownhall.getItems().addAll(miTownhalls);
+            mUsers.getItems().addAll(miUsers);
+            mInformation.getItems().addAll(miInformation);
+            mLogOut.getItems().addAll(miLogOut);
+            miTownhalls.setOnAction((event) -> super.handleTownHalls(event));
+            miUsers.setOnAction((event) -> super.handleUsers(event));
+            miInformation.setOnAction((event) -> super.handleInformation(event));
+            miLogOut.setOnAction((event) -> super.handleLogOut(event));
             townhallData = FXCollections.observableArrayList(townHallImpl.findAllTownHalls());
             tableTownhalls.setItems(townhallData);
             tcName.setCellValueFactory(new PropertyValueFactory<>("locality"));
             tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
             tcTelephone .setCellValueFactory(new PropertyValueFactory<>("telephoneNumber"));
             stage.setOnShowing(this::OnShowingHandler);
-            mUsers.setOnAction((event) -> super.handleUsers(event));
-            mInformation.setOnAction((event) -> super.handleInformation(event));
-            mInformation.setAccelerator(KeyCombination.keyCombination("Ctrl+I"));
-            mLogOut.setOnAction((event) -> super.handleLogOut(event));
             btnNewTownhall.setOnAction((event) -> handleNewTownhall(event));
             btnModifyTownhall.setOnAction((event) -> handleModifyTownhall(event));
             btnDelete.setOnAction((event) -> handleDelete(event));
+            btnReport.setOnAction((event) -> handleReport(event));
             tableTownhalls.getSelectionModel().selectedItemProperty()
                     .addListener(this::handleTownhallsTable);
             stage.show();
@@ -112,6 +135,8 @@ public class GUI007Controller extends AdminGenericController{
         btnDelete.setDisable(true);
         btnDelete.setMnemonicParsing(true);
         btnDelete.setText("_Delete");
+        btnReport.setMnemonicParsing(true);
+        btnReport.setText("Print _report");
         LOGGER.info("Ending OnShowingHandler()");
     }
     
@@ -190,11 +215,17 @@ public class GUI007Controller extends AdminGenericController{
      */
     public void handleDelete(ActionEvent event){
         LOGGER.info("Begginning handleDelete()");
+        Alert alert = null;
         try{
-            TownHallBean selectedth = (TownHallBean)tableTownhalls.getSelectionModel().getSelectedItem();
-            townHallImpl.removeTownHall(selectedth);
-            tableTownhalls.getItems().remove(tableTownhalls.getSelectionModel().getSelectedItem());
-            tableTownhalls.refresh();
+            alert = new Alert(Alert.AlertType.CONFIRMATION,
+            "Delete the selected row?", ButtonType.OK, ButtonType.CANCEL);
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK){
+                TownHallBean selectedth = (TownHallBean)tableTownhalls.getSelectionModel().getSelectedItem();
+                townHallImpl.removeTownHall(selectedth);
+                tableTownhalls.getItems().remove(tableTownhalls.getSelectionModel().getSelectedItem());
+                tableTownhalls.refresh();
+            }
         } catch (DeleteException ex) {
             LOGGER.log(Level.SEVERE, "An error ocurred in handleDelete()",
                     ex.getMessage());
@@ -217,5 +248,9 @@ public class GUI007Controller extends AdminGenericController{
             btnModifyTownhall.setDisable(true);
             btnDelete.setDisable(true);
         }
+    }
+    
+    private void handleReport(ActionEvent event) {
+        //Hacer Jasper Report
     }
 }

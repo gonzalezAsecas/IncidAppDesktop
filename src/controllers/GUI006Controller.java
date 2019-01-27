@@ -6,7 +6,7 @@
 package controllers;
 
 
-import static controllers.AdminGenericController.LOGGER;
+import static controllers.GUI009Controller.LOGGER;
 import exceptions.CreateException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
@@ -23,14 +23,13 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.Privilege;
 import javabeans.Status;
 import javabeans.TownHallBean;
 import javabeans.UserBean;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,6 +42,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -63,6 +64,8 @@ public class GUI006Controller {
     protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
     
     @FXML
+    private MenuBar menuBar;
+    @FXML
     private Menu mIncident;
     @FXML
     private Menu mTownhall;
@@ -72,6 +75,16 @@ public class GUI006Controller {
     private Menu mUserInformation;
     @FXML
     private Menu mLogOut;
+    @FXML
+    private MenuItem miIncidents;
+    @FXML
+    private MenuItem miTownhalls;
+    @FXML
+    private MenuItem miFTP;
+    @FXML
+    private MenuItem miInformation;
+    @FXML
+    private MenuItem miLogOut;
     @FXML
     private TextField tfFullName;
     @FXML
@@ -137,6 +150,16 @@ public class GUI006Controller {
         stage.setTitle("User information");
         stage.setResizable(true);
         stage.setOnShowing(this::OnShowingHandler);
+        menuBar.getMenus().addAll(mIncident, mTownhall, mFile, mUserInformation, mLogOut);
+        mIncident.getItems().addAll(miIncidents);
+        mTownhall.getItems().addAll(miTownhalls);
+        mFile.getItems().addAll(miFTP);
+        mUserInformation.getItems().addAll(miInformation);
+        mLogOut.getItems().addAll(miLogOut);
+        miIncidents.setOnAction((event) -> handleIncident(event));
+        miTownhalls.setOnAction((event) -> handleTownhall(event));
+        miFTP.setOnAction((event) -> handleFile(event));
+        miLogOut.setOnAction((event) -> handleLogOut(event));
         mIncident.setOnAction((event) -> handleIncident(event));
         mTownhall.setOnAction((event) -> handleTownhall(event));
         mFile.setOnAction((event) -> handleFile(event));
@@ -153,6 +176,11 @@ public class GUI006Controller {
             Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
         chBTownhall.setItems(ths);
+        tfFullName.textProperty().addListener(this::textChanged);
+        tfUsername.textProperty().addListener(this::textChanged);
+        pfPassword.textProperty().addListener(this::textChanged);
+        tfEmail.textProperty().addListener(this::textChanged);
+        tfStreet.textProperty().addListener(this::textChanged);
         btnUpdate.setOnAction((event) -> handleUpdate(event));
         stage.show();
     }
@@ -172,6 +200,39 @@ public class GUI006Controller {
         btnUpdate.setMnemonicParsing(true);
         btnUpdate.setText("_Update");
         LOGGER.info("Ending OnShowingHandler()");
+    }
+    
+    public void textChanged(ObservableValue observable, String oldValue,
+            String newValue){
+        if(tfFullName.getLength() == 256){
+            LOGGER.log(Level.INFO, "Full name too long");
+            tfFullName.setText(tfFullName.getText().substring(0, 255));
+            new Alert(Alert.AlertType.INFORMATION, "Full name too long", ButtonType.OK).showAndWait();
+        }
+        
+        if(tfUsername.getLength() == 256){
+            LOGGER.log(Level.INFO, "Username too long");
+            tfUsername.setText(tfUsername.getText().substring(0, 255));
+            new Alert(Alert.AlertType.INFORMATION, "Username too long", ButtonType.OK).showAndWait();
+        }
+        
+        if(pfPassword.getLength() == 256){
+            LOGGER.log(Level.INFO, "Password too long");
+            pfPassword.setText(pfPassword.getText().substring(0, 255));
+            new Alert(Alert.AlertType.INFORMATION, "Password too long", ButtonType.OK).showAndWait();
+        }
+        
+        if(tfEmail.getLength() == 256){
+            LOGGER.log(Level.INFO, "Email too long");
+            tfEmail.setText(tfEmail.getText().substring(0, 255));
+            new Alert(Alert.AlertType.INFORMATION, "Email too long", ButtonType.OK).showAndWait();
+        }
+        
+        if(tfStreet.getLength() == 256){
+            LOGGER.log(Level.INFO, "Street too long");
+            tfStreet.setText(tfStreet.getText().substring(0, 255));
+            new Alert(Alert.AlertType.INFORMATION, "Street too long", ButtonType.OK).showAndWait();
+        }
     }
     
     public void handleIncident(ActionEvent event){
@@ -258,11 +319,25 @@ public class GUI006Controller {
         LOGGER.info("Begginning handleUpdate()");
         try{
             if(fieldsAreFilled()){
-                if(pfPassword.getText().trim().length() != 0){
-                    if(handlePassword()){
+                if(checkEmail(tfEmail.getText())){
+                    if(pfPassword.getText().trim().length() != 0){
+                        if(handlePassword()){
+                            user.setFullName(tfFullName.getText());
+                            user.setLogin(tfUsername.getText());
+                            user.setPassword(cypherPass(pfPassword.getText()));
+                            user.setEmail(tfEmail.getText());
+                            user.setStreet(tfStreet.getText());
+                            TownHallBean th = new TownHallBean();
+                            th.setLocality(chBTownhall.getSelectionModel().getSelectedItem().toString());
+                            th = townHallImpl.findTownHallbyId(th);
+                            user.setTH(th);
+                            user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+                            userImpl.editUser(user);
+                            confirmPassword();
+                            }
+                    }else{
                         user.setFullName(tfFullName.getText());
                         user.setLogin(tfUsername.getText());
-                        user.setPassword(cypherPass(pfPassword.getText()));
                         user.setEmail(tfEmail.getText());
                         user.setStreet(tfStreet.getText());
                         TownHallBean th = new TownHallBean();
@@ -270,21 +345,12 @@ public class GUI006Controller {
                         th = townHallImpl.findTownHallbyId(th);
                         user.setTH(th);
                         user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-                        confirmPassword();
+                        userImpl.editUser(user);
                     }
                 }else{
-                    user.setFullName(tfFullName.getText());
-                    user.setLogin(tfUsername.getText());
-                    user.setEmail(tfEmail.getText());
-                    user.setStreet(tfStreet.getText());
-                    TownHallBean th = new TownHallBean();
-                    th.setLocality(chBTownhall.getSelectionModel().getSelectedItem().toString());
-                    th = townHallImpl.findTownHallByName(th);
-                    user.setTH(th);
-                    user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-                    userImpl.editUser(user);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "The email must have the format: email@email.example", ButtonType.OK);
+                alert.showAndWait();
                 }
-                
             }
         }catch (UpdateException ex) {
             Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -305,6 +371,14 @@ public class GUI006Controller {
             alert.showAndWait();
         }
         return filled;
+    }
+    
+    public boolean checkEmail(String email){
+        boolean check = true;
+        if(!email.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+(.[a-zA-Z]{2,})$")){
+            check = false;
+        }
+        return check;
     }
     
     /**

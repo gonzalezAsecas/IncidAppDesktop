@@ -4,20 +4,33 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI007Controller">
+<BorderPane prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI007Controller">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
          <menus>
-            <Menu fx:id="mTownhall" mnemonicParsing="false" text="Townhalls" />
-            <Menu fx:id="mUsers" mnemonicParsing="false" text="Townhalls users" />
-            <Menu fx:id="mInformation" mnemonicParsing="false" text="User information" />
-            <Menu fx:id="mLogOut" mnemonicParsing="false" text="LogOut" />
+            <Menu fx:id="mTownhall" mnemonicParsing="false" text="Townhalls">
+               <items>
+                  <MenuItem fx:id="miTownhalls" mnemonicParsing="false" text="Townhalls" />
+               </items></Menu>
+            <Menu fx:id="mUsers" mnemonicParsing="false" text="Townhalls users">
+               <items>
+                  <MenuItem fx:id="miUsers" mnemonicParsing="false" text="Townhalls users" />
+               </items></Menu>
+            <Menu fx:id="mInformation" mnemonicParsing="false" text="User information">
+               <items>
+                  <MenuItem fx:id="miInformation" mnemonicParsing="false" text="User information" />
+               </items></Menu>
+            <Menu fx:id="mLogOut" mnemonicParsing="false" text="LogOut">
+               <items>
+                  <MenuItem fx:id="miLogOut" mnemonicParsing="false" text="LogOut" />
+               </items></Menu>
          </menus>
       </MenuBar>
    </top>
@@ -59,6 +72,11 @@
             <Button fx:id="btnDelete" disable="true" mnemonicParsing="false" prefWidth="120.0" text="Delete">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnReport" mnemonicParsing="false" prefWidth="120.0" text="Print report">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="75.0" />
                </VBox.margin>
             </Button>
          </children></VBox>

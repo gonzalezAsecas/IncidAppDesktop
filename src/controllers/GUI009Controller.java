@@ -105,13 +105,6 @@ public class GUI009Controller {
     
     public void textChanged(ObservableValue observable, String oldValue,
             String newValue){
-        if(txtFName.getText().trim().isEmpty() | txtFEmail.getText().trim().isEmpty()
-                | txtFPhone.getText().trim().isEmpty()){
-            btnAccept.setDisable(true);
-        }else{
-            btnAccept.setDisable(false);
-        }
-        
         if(txtFName.getLength() == 256){
             LOGGER.log(Level.INFO, "Name too long");
             txtFName.setText(txtFName.getText().substring(0, 255));
@@ -140,16 +133,21 @@ public class GUI009Controller {
         try{
             if(fieldsAreFilled()){
                 //townHallImpl.townHallAlreadyExists();
-                if(edit){
-                    th.setLocality(txtFName.getText().trim());
-                    th.setEmail(txtFEmail.getText().trim());
-                    th.setTelephoneNumber(txtFPhone.getText().trim());
-                    townHallImpl.editTownHall(th);
-                    stage.close();
+                if(checkEmail(txtFEmail.getText().trim())){
+                    if(edit){
+                        th.setLocality(txtFName.getText().trim());
+                        th.setEmail(txtFEmail.getText().trim());
+                        th.setTelephoneNumber(txtFPhone.getText().trim());
+                        townHallImpl.editTownHall(th);
+                        stage.close();
+                    }else{
+                        th = new TownHallBean(txtFName.getText().trim(), txtFEmail.getText().trim(), txtFPhone.getText().trim());
+                        townHallImpl.createTownHall(th);
+                        stage.close();
+                    }
                 }else{
-                    th = new TownHallBean(txtFName.getText().trim(), txtFEmail.getText().trim(), txtFPhone.getText().trim());
-                    townHallImpl.createTownHall(th);
-                    stage.close();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "The email must have the format: email@email.example", ButtonType.OK);
+                    alert.showAndWait();
                 }
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "All the fields must have information", ButtonType.OK);
@@ -174,6 +172,14 @@ public class GUI009Controller {
             filled = false;
         }
         return filled;
+    }
+    
+    public boolean checkEmail(String email){
+        boolean check = true;
+        if(!email.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+(.[a-zA-Z]{2,})$")){
+            check = false;
+        }
+        return check;
     }
         
     
