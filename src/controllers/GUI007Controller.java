@@ -92,11 +92,6 @@ public class GUI007Controller extends AdminGenericController{
             stage.setScene(scene);
             stage.setTitle("Townhalls");
             stage.setResizable(true);
-            menuBar.getMenus().addAll(mTownhall, mUsers, mInformation, mLogOut);
-            mTownhall.getItems().addAll(miTownhalls);
-            mUsers.getItems().addAll(miUsers);
-            mInformation.getItems().addAll(miInformation);
-            mLogOut.getItems().addAll(miLogOut);
             miTownhalls.setOnAction((event) -> super.handleTownHalls(event));
             miUsers.setOnAction((event) -> super.handleUsers(event));
             miInformation.setOnAction((event) -> super.handleInformation(event));

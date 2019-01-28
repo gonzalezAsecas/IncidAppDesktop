@@ -10,6 +10,8 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
@@ -21,6 +23,7 @@ import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
  *
  * @author Lander Lluvia
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GUI007ControllerTest extends ApplicationTest {
     //ToDo: focus cuando sale ventana
     
@@ -47,14 +50,16 @@ public class GUI007ControllerTest extends ApplicationTest {
      */
     @Test
     public void test1_InitialState(){
+        System.out.println("Test1");
         verifyThat("#btnNewTownhall", isEnabled());
         verifyThat("#btnModifyTownhall", isDisabled());
         verifyThat("#btnDelete", isDisabled());
         verifyThat("#btnReport", isEnabled());
-        verifyThat("#tableTownhalls", isVisible());
+        verifyThat("#tableView", isVisible());
         verifyThat("#tcName", isVisible());
         verifyThat("#tcEmail", isVisible());
         verifyThat("#tcTelephone", isVisible());
+        System.out.println("End Test1");
     }
     
     /**
@@ -62,6 +67,7 @@ public class GUI007ControllerTest extends ApplicationTest {
      */
     @Test
     public void test2_CheckAddAndCancel(){
+        System.out.println("Test2");
         clickOn("#btnNewTownhall");
         verifyThat("#txtFName", hasText(""));
         verifyThat("#txtFEmail", hasText(""));
@@ -69,6 +75,7 @@ public class GUI007ControllerTest extends ApplicationTest {
         verifyThat("#btnAccept", isEnabled());
         verifyThat("#btnCancel", isEnabled());
         clickOn("#btnCancel");
+        System.out.println("End Test2");
     }
     
     /**
@@ -76,20 +83,22 @@ public class GUI007ControllerTest extends ApplicationTest {
      */
     @Test
     public void test3_CheckFieldsMaxLength(){
+        System.out.println("Test3");
         clickOn("#btnNewTownhall");
         clickOn("#txtFName");
-        write("OVERSIZED_TEXT");
+        write(OVERSIZED_TEXT);
         verifyThat("Name too long", isVisible());
         clickOn("Aceptar");
         clickOn("#txtFEmail");
-        write("OVERSIZED_TEXT");
+        write(OVERSIZED_TEXT);
         verifyThat("Email too long", isVisible());
         clickOn("Aceptar");
         clickOn("#txtFPhone");
-        write("1010101010");
+        write("1010101010101");
         verifyThat("Phone too long", isVisible());
         clickOn("Aceptar");
         clickOn("#btnCancel");
+        System.out.println("Ending Test3");
     }
     
     /**
@@ -97,23 +106,24 @@ public class GUI007ControllerTest extends ApplicationTest {
      */
     @Test
     public void test4_CheckFieldsMustBeFilled(){
+        System.out.println("Test4");
         clickOn("#btnNewTownhall");
         
         clickOn("#txtFName");
-        write("must be filled");
+        write("mustbefilled");
         clickOn("#btnAccept");
         verifyThat("All the fields must have information", isVisible());
         clickOn("Aceptar");
-        clickOn("#txtFName");
-        eraseText(15);
+        doubleClickOn("#txtFName");
+        eraseText(1);
         
         clickOn("#txtFEmail");
-        write("must be filled");
+        write("mustbefilled");
         clickOn("#btnAccept");
         verifyThat("All the fields must have information", isVisible());
         clickOn("Aceptar");
-        clickOn("#txtFEmail");
-        eraseText(15);
+        doubleClickOn("#txtFEmail");
+        eraseText(1);
         
         clickOn("#txtFPhone");
         write("101010101");
@@ -130,6 +140,7 @@ public class GUI007ControllerTest extends ApplicationTest {
         clickOn("Aceptar");
         
         clickOn("#btnCancel");
+        System.out.println("Ending Test4");
     }
     
     /**
@@ -137,10 +148,9 @@ public class GUI007ControllerTest extends ApplicationTest {
      */
     @Test
     public void test5_AddTownhall(){
-        TableView table = lookup("#tableTownhalls").queryTableView();
+        System.out.println("Test5");
+        TableView table = lookup("#tableView").queryTableView();
         int rowCount = table.getItems().size();
-        assertNotEquals("Table has no data: Cannot test.",
-                    table.getItems().size(),0);
         clickOn("#btnNewTownhall");
         clickOn("#txtFName");
         write("testTownHall");
@@ -150,6 +160,7 @@ public class GUI007ControllerTest extends ApplicationTest {
         write("101010101"); 
         clickOn("#btnAccept");
         assertEquals("The townhall has not been added",rowCount+1,table.getItems().size());
+        System.out.println("Ending Test5");
     }
     
     /**
@@ -157,7 +168,8 @@ public class GUI007ControllerTest extends ApplicationTest {
      */
     @Test
     public void test6_CheckTable(){
-        TableView table = lookup("#tableTownhalls").queryTableView();
+        System.out.println("Test6");
+        TableView table = lookup("#tableView").queryTableView();
         assertNotEquals("Table has no data: Cannot test.",
                         table.getItems().size(),0);
         Node row = lookup(".table-row-cell").nth(0).query();
@@ -165,6 +177,7 @@ public class GUI007ControllerTest extends ApplicationTest {
         clickOn(row);
         verifyThat("#btnModifyTownhall", isEnabled());
         verifyThat("#btnDelete", isEnabled());
+        System.out.println("Ending Test6");
     }
     
     /**
@@ -172,7 +185,8 @@ public class GUI007ControllerTest extends ApplicationTest {
      */
     @Test
     public void test7_ModifyUser(){
-        TableView table = lookup("#tableTownhalls").queryTableView();
+        System.out.println("Test7");
+        TableView table = lookup("#tableView").queryTableView();
         assertNotEquals("Table has no data: Cannot test.",
                         table.getItems().size(),0);
         Node row = lookup(".table-row-cell").nth(0).query();
@@ -182,11 +196,21 @@ public class GUI007ControllerTest extends ApplicationTest {
         
         doubleClickOn("#txtFName");
         write("testTownHall");
-        clickOn("#txtFEmail");
+        doubleClickOn("#txtFEmail");
+        eraseText(1);
+        doubleClickOn("#txtFEmail");
+        eraseText(1);
+        doubleClickOn("#txtFEmail");
+        eraseText(1);
+        doubleClickOn("#txtFEmail");
+        eraseText(1);
+        doubleClickOn("#txtFEmail");
+        eraseText(1);
         write("email@email.com");
-        clickOn("#txtFPhone");
-        write("101010101"); 
+        doubleClickOn("#txtFPhone");
+        write("666666"); 
         clickOn("#btnAccept");
+        System.out.println("Ending Test7");
     }
     
     /**
@@ -194,15 +218,17 @@ public class GUI007ControllerTest extends ApplicationTest {
      */
     @Test
     public void test8_CancelDeleteUser(){
-        TableView table = lookup("#tableTownhalls").queryTableView();
+        System.out.println("Test8");
+        TableView table = lookup("#tableView").queryTableView();
         assertNotEquals("Table has no data: Cannot test.",
                     table.getItems().size(),0);
         Node row = lookup(".table-row-cell").nth(0).query();
         assertNotNull("Row is null: table has not that row. ",row);
         clickOn(row);
-        clickOn("#delete");
+        clickOn("#btnDelete");
         verifyThat("Delete the selected row?", isVisible());
-        clickOn("Cancel");;
+        clickOn("Cancelar");
+        System.out.println("Ending Test8");
     }
     
     /**
@@ -210,16 +236,18 @@ public class GUI007ControllerTest extends ApplicationTest {
      */
     @Test
     public void test9_DeleteUser(){
-        TableView table = lookup("#tableTownhalls").queryTableView();
+        System.out.println("Test9");
+        TableView table = lookup("#tableView").queryTableView();
         int rowCount = table.getItems().size();
         assertNotEquals("Table has no data: Cannot test.",
                     table.getItems().size(),0);
         Node row = lookup(".table-row-cell").nth(0).query();
         assertNotNull("Row is null: table has not that row. ",row);
         clickOn(row);
-        clickOn("#delete");
+        clickOn("#btnDelete");
         verifyThat("Delete the selected row?", isVisible());
-        clickOn("OK");
+        clickOn("Aceptar");
         assertEquals("The user has not been deleted",rowCount-1,table.getItems().size());
+        System.out.println("Ending Test9");
     }
 }

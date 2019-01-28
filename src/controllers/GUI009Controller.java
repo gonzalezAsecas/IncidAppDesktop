@@ -198,9 +198,7 @@ public class GUI009Controller {
      * @param event 
      */
     public void handleCancel(ActionEvent event) {
-        if(getAlert("Are your sure of this?") == ButtonType.OK){
-            stage.close();
-        }
+        stage.close();
     }
     
 }
