@@ -46,10 +46,10 @@ import javax.crypto.NoSuchPaddingException;
 
 /**
  * GUI001 FXML Controller class, in this window you can connect to the main 
- * application of the admin and the town hall user or go to the sign up window. 
+ * application of the admin and the town hall user or recover your password.
  * The application begin in this window
  * @author Jon Gonzalez
- * @version 1.0
+ * @version 2.0
  */
 public class GUI001Controller{
 
@@ -66,6 +66,9 @@ public class GUI001Controller{
     @FXML
     private Hyperlink hlPasswordForget;
     
+    /**
+     * the user interface
+     */
     iUser iuser= LogicFactory.getiUser();
     
     /**
@@ -313,7 +316,7 @@ public class GUI001Controller{
         LOGGER.info("Beginning townHallUserLogin");
         //Create the loader for the xml
         FXMLLoader loader=new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI005CRUDF.fxml"));
+                .getResource("/fxmls/GUI003SDI.fxml"));
         //Create the parent and load the tree
         Parent root;
         try{
@@ -321,7 +324,7 @@ public class GUI001Controller{
             //Create the Stage
             Stage gui003Stage=new Stage();
             //Load de controller to the town hall user application main window
-            GUI005Controller controller = loader.getController();
+            GUI003Controller controller = loader.getController();
             //Set the new stage
             controller.setStage(gui003Stage);
             //Pass the user to the next window
@@ -386,9 +389,7 @@ public class GUI001Controller{
         return null;
     }
     
-    /**
-     * 
-     */
+    //remove
     private void makeUserInShow() {
         LOGGER.info("GUI001Controller: Making the user.");
         UserBean us = new UserBean();
