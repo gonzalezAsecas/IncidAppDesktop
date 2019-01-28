@@ -62,6 +62,8 @@ public class GUI005Controller extends THUserGenericController{
     
     private final iFTP FTP = FTPFactory.getiFTP();
     
+    TreeItem<FTPFileTV> itemSelected;
+    
     /**
      * GUI005 FXML Controller class, this is the window for modify the data 
      * of the town hall user
@@ -265,9 +267,8 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleDelete(ActionEvent event){
-        TreeItem<FTPFileTV> ti = (TreeItem<FTPFileTV>) treeFTP.getSelectionModel().getSelectedItem();
         try {
-            FTP.delete(dirPath + ti.getValue().getName());
+            FTP.delete(dirPath + itemSelected.getValue().getName());
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error deleting the file", ex);
             ex.printStackTrace();
@@ -323,17 +324,17 @@ public class GUI005Controller extends THUserGenericController{
     public void handleClickFile(ObservableValue observable, 
             Object oldvalue, Object newvalue){
         if(!newvalue.equals(oldvalue)){
-            TreeItem<FTPFileTV> treeItem = (TreeItem<FTPFileTV>) newvalue;
-            if(treeItem.getValue().isDirectory()){
-                dirPath = treeItem.getValue().getPath() + "/" + treeItem.getValue().getName();
-                if(treeItem.getChildren()==null){
+            itemSelected = (TreeItem<FTPFileTV>) newvalue;
+            if(itemSelected.getValue().isDirectory()){
+                dirPath = itemSelected.getValue().getPath() + "/" + itemSelected.getValue().getName();
+                if(itemSelected.getChildren()==null){
                     btnDelete.setDisable(false);
                 }else{
                     btnDelete.setDisable(true);
                 }
                 btnDownload.setDisable(true);
             }else{
-                dirPath = treeItem.getValue().getPath();
+                dirPath = itemSelected.getValue().getPath();
                 btnDelete.setDisable(false);
                 btnDownload.setDisable(false);
             }
