@@ -10,5 +10,6 @@ package interfaces;
  * @author Jon Gonzalez
  */
 public interface iMongo {
-    
+    public void loginUser(String login);
+    public void deleteUser(String login);
 }

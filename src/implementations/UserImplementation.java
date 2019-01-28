@@ -63,7 +63,7 @@ public class UserImplementation implements iUser{
         LOGGER.info("UserImplementation: Beginning the modification of the user.");
         try{
             //modify the user
-            userRest.edit(user);
+            userRest.edit(user, "true");
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception modifing the user.", ex);
             throw new UpdateException();

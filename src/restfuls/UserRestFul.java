@@ -22,12 +22,11 @@ import javax.ws.rs.core.GenericType;
  * </pre>
  *
  * @author Jon Gonzalez
- * @version 
  */
 public class UserRestFul {
 
-    private final WebTarget webTarget;
-    private final Client client;
+    private WebTarget webTarget;
+    private Client client;
     private ResourceBundle properties = ResourceBundle
                     .getBundle("properties/ftpClientProperties");;
     private final String BASE_URI = properties.getString("ser_url");
@@ -37,8 +36,8 @@ public class UserRestFul {
         webTarget = client.target(BASE_URI).path("user");
     }
 
-    public void edit(Object requestEntity) throws ClientErrorException {
-        webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
+    public void edit(Object requestEntity, String pass) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{pass})).request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
     public <T> T find(Class<T> responseType, String id) throws ClientErrorException {
