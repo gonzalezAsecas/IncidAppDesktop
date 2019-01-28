@@ -5,6 +5,7 @@
  */
 package restfuls;
 
+import java.util.ResourceBundle;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -21,12 +22,15 @@ import javax.ws.rs.core.GenericType;
  * </pre>
  *
  * @author Jon Gonzalez
+ * @version 
  */
 public class UserRestFul {
 
-    private WebTarget webTarget;
-    private Client client;
-    private static final String BASE_URI = "http://localhost:8080/grupo4/webresources";
+    private final WebTarget webTarget;
+    private final Client client;
+    private ResourceBundle properties = ResourceBundle
+                    .getBundle("properties/ftpClientProperties");;
+    private final String BASE_URI = properties.getString("ser_url");
 
     public UserRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();

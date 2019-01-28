@@ -19,8 +19,9 @@ import javax.xml.bind.DatatypeConverter;
 import restfuls.UserRestFul;
 
 /**
- *
+ * The implementation of the iuser interface
  * @author Jon Gonzalez
+ * @version 1.0
  */
 public class UserImplementation implements iUser{
     
@@ -35,14 +36,15 @@ public class UserImplementation implements iUser{
     UserRestFul userRest = new UserRestFul();
     
     /**
-     * Create the user if there isn't any with this login
-     * @param user
-     * @throws CreateException 
+     * The method for create and user
+     * @param user the user is going to be created
+     * @throws CreateException if there are any error creating the user
      */
     @Override
     public void createUser(UserBean user) throws CreateException {
         LOGGER.info("UserImplementation: Beginning the creation of the user.");
         try{
+            //create the user
             userRest.create(user);
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception creating the user.", ex);
@@ -52,14 +54,15 @@ public class UserImplementation implements iUser{
     }
     
     /**
-     * 
-     * @param user
-     * @throws UpdateException 
+     * The method for modify an user
+     * @param user the user is going to be modified
+     * @throws UpdateException if there is any problem modifying the user
      */
     @Override
     public void editUser(UserBean user) throws UpdateException {
         LOGGER.info("UserImplementation: Beginning the modification of the user.");
         try{
+            //modify the user
             userRest.edit(user);
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception modifing the user.", ex);
@@ -69,14 +72,15 @@ public class UserImplementation implements iUser{
     }
     
     /**
-     * 
-     * @param user
-     * @throws DeleteException 
+     * The method for delete an user
+     * @param user the user is going to be deleted
+     * @throws DeleteException if there is any problem deleting the user
      */
     @Override
     public void removeUser(UserBean user) throws DeleteException {
         LOGGER.info("UserImplementation: Beginning the erasing of the user.");
         try{
+            //remove the user
             userRest.remove(user.getId().toString());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception deleting the user.", ex);
@@ -86,15 +90,16 @@ public class UserImplementation implements iUser{
     }
     
     /**
-     * 
-     * @param user
-     * @return
-     * @throws ReadException 
+     * The method for search an user by it id
+     * @param user the user is going to be found with her id
+     * @return the user if is found
+     * @throws ReadException if there is any problem finding by id the user
      */
     @Override
     public UserBean findUserbyId(UserBean user) throws ReadException {
         LOGGER.info("UserImplementation: Beginning the creation of the user.");
         try{
+            //find the user by id sending the clas and the id
             user = userRest.find(UserBean.class, user.getId().toString());
             LOGGER.info("UserImplementation: ");
             return user;
@@ -106,15 +111,16 @@ public class UserImplementation implements iUser{
     }
     
     /**
-     * 
-     * @return
-     * @throws ReadException 
+     * The method for find all users
+     * @return all the users in the database
+     * @throws ReadException if there is any problem finding the users
      */
     @Override
     public List<UserBean> findAllUsers() throws ReadException {
         LOGGER.info("UserImplementation: ");
         List<UserBean> us;
         try{
+            //finding the users
             us = userRest.findAll(new GenericType<List<UserBean>>() {});
             LOGGER.info("UserImplementation: ");
             return us;
@@ -125,15 +131,17 @@ public class UserImplementation implements iUser{
     }
     
     /**
-     * 
-     * @param user
-     * @return
-     * @throws ReadException 
+     * The method for search an user by it login
+     * @param user the user is going to be finded with her login
+     * @return the user if is finded
+     * @throws ReadException if there is any problem finding by login the user
      */
     @Override
     public UserBean findUserbyLogin(UserBean user) throws ReadException {
         LOGGER.info("UserImplementation: ");
         try{
+            //finding the user by loging sending the login and the password 
+            //encrypted in hexadecimal
             user = userRest.findUserbyLogin(UserBean.class, user.getLogin(), 
                     DatatypeConverter.printHexBinary(user.getPassword()));
             LOGGER.info("UserImplementation: ");
@@ -145,14 +153,15 @@ public class UserImplementation implements iUser{
     }
     
     /**
-     * 
-     * @param user
-     * @throws ReadException 
+     * The method for change the password of a user
+     * @param user the user is going to change the password
+     * @throws ReadException if there is any problem finding the user to change the password
      */
     @Override
     public void findUserToChangePassword(UserBean user) throws ReadException {
         LOGGER.info("UserImplementation: Beginning the search of the user for change the password");
         try{
+            //searching the user for change the password
             userRest.findUserToChangePassword(UserBean.class, user.getLogin());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user to change the password.", ex);

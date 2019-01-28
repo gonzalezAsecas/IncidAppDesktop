@@ -6,7 +6,6 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.UserBean;
@@ -16,7 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * This is the generic controller that contains the general methods and 
@@ -177,7 +175,9 @@ public class THUserGenericController {
      * @param event 
      */
     public void handleLogOut(ActionEvent event){
-        if(getAlert("Do you want to exit the application?").equals(ButtonType.OK)){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Do you want to exit the application?", ButtonType.OK, ButtonType.CANCEL);
+        if(alert.showAndWait().get().equals(ButtonType.OK)){
             stage.close();
         }
     }
