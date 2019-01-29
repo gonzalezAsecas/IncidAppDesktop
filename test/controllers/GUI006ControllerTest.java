@@ -113,5 +113,68 @@ public class GUI006ControllerTest extends ApplicationTest{
         write("email@email.com");
         clickOn("#tfStreet");
         write("Street");
+        //Elegir de la combo box
+        
+        clickOn("#btnUpdate");
+        verifyThat("#txtFConfirmPass", hasText(""));
+        verifyThat("#btnConfirm", isEnabled());
+        
+        //Click en X de la ventana
+    }
+    
+    @Test
+    public void test4_CheckUpdateMaxLength(){
+        clickOn("#btnUpdate");
+        clickOn("#txtFConfirmPass");
+        write(OVERSIZED_TEXT);
+        //ToDo en el controller
+        verifyThat("Password too long", isVisible());
+        clickOn("Aceptar");
+        
+        //Click en X de la ventana
+    }
+    
+    @Test
+    public void test5_CheckUpdateEmpty(){
+        clickOn("#btnUpdate");
+        clickOn("#btnConfirm");
+        verifyThat("You must fill the field!", isVisible());
+        clickOn("Aceptar");
+        
+        //Click en X de la ventana
+    }
+    
+    @Test
+    public void test6_CheckWrongPass(){
+        clickOn("#btnUpdate");
+        clickOn("#txtFConfirmPass");
+        write("wrongpass");
+        clickOn("#btnConfirm");
+        verifyThat("The password is wrong", isVisible());
+        clickOn("Aceptar");
+        
+        //Click en X de la ventana
+    }
+    
+    @Test
+    public void test6_CheckSamePass(){
+        clickOn("#btnUpdate");
+        clickOn("#txtFConfirmPass");
+        write("samepass");
+        clickOn("#btnConfirm");
+        verifyThat("The old password and the new password can't be the same", isVisible());
+        clickOn("Aceptar");
+        
+        //Click en X de la ventana
+    }
+    
+    @Test
+    public void test7_CheckNewPass(){
+        clickOn("#btnUpdate");
+        clickOn("#txtFConfirmPass");
+        write("newpass");
+        clickOn("#btnConfirm");
+        verifyThat("A confirmation email has been sent to you", isVisible());
+        clickOn("Aceptar");
     }
 }
