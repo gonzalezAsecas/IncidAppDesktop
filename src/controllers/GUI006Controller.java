@@ -336,6 +336,8 @@ public class GUI006Controller {
                         user.setTH(th);
                         user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
                         userImpl.editUser(user);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Your data has been changed. We have sent an email to confirm!", ButtonType.OK);
+                        alert.showAndWait();
                     }
                 }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "The email must have the format: email@email.example", ButtonType.OK);

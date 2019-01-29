@@ -41,12 +41,12 @@ public class Application extends javafx.application.Application{
      */
     @Override
     public void start(Stage stage){
-        String path = "/fxmls/GUI007SDTH.fxml";
+        String path = "/fxmls/GUI006MD.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
         Parent root;
         try {
             root = (Parent)loader.load();
-            GUI007Controller controller = (GUI007Controller)loader.getController();
+            GUI006Controller controller = (GUI006Controller)loader.getController();
             controller.setStage(stage);
             controller.initStage(root);
         } catch (IOException ex) {

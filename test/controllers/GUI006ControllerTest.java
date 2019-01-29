@@ -26,6 +26,7 @@ import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GUI006ControllerTest extends ApplicationTest{
+    //ToDo: checkbox todo lo que incluya su control
     
     private static final String OVERSIZED_TEXT="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"+
                                                "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"+
@@ -83,7 +84,34 @@ public class GUI006ControllerTest extends ApplicationTest{
         verifyThat("Street too long", isVisible());
         clickOn("Aceptar");
         
+        doubleClickOn("#tfFullName");
+        eraseText(1);
         
+        doubleClickOn("#tfUsername");
+        eraseText(1);
+        
+        clickOn("#pfPassword");
+        eraseText(1);
+        
+        doubleClickOn("#tfEmail");
+        eraseText(1);
+        
+        doubleClickOn("#tfStreet");
+        eraseText(1);
         System.out.println("Ending Test2");
+    }
+    
+    @Test
+    public void test3_CheckButtonUpdate(){
+        clickOn("#tfFullName");
+        write("Fullname");
+        clickOn("#tfUsername");
+        write("Username");
+        clickOn("#pfPassword");
+        write("Password");
+        clickOn("#tfEmail");
+        write("email@email.com");
+        clickOn("#tfStreet");
+        write("Street");
     }
 }

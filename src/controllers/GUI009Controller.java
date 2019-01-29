@@ -6,6 +6,7 @@
 package controllers;
 
 import exceptions.CreateException;
+import exceptions.ReadException;
 import exceptions.UpdateException;
 import factories.LogicFactory;
 import interfaces.iTownHall;
@@ -132,7 +133,7 @@ public class GUI009Controller {
     public void handleAccept(ActionEvent event) {
         try{
             if(fieldsAreFilled()){
-                //townHallImpl.townHallAlreadyExists();
+                townHallImpl.townHallAlreadyExists(txtFName.getText().trim());
                 if(checkEmail(txtFEmail.getText().trim())){
                     if(edit){
                         th.setLocality(txtFName.getText().trim());
@@ -157,9 +158,11 @@ public class GUI009Controller {
             LOGGER.log(Level.SEVERE, "Error creating a townhall");
         }catch (UpdateException ex) {
             LOGGER.log(Level.SEVERE, "Error updating a townhall");
-        }/*catch (TownhallExistsException ex){
+        } catch (ReadException ex) {
+            Logger.getLogger(GUI009Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (TownhallExistsException ex){
             LOGGER.log(Level.SEVERE, "Townhall already exists");
-        }*/
+        }
     }
     
     /**

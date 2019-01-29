@@ -66,7 +66,7 @@ public class UserImplementation implements iUser{
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception modifing the user.", ex);
             throw new UpdateException("UserImplementation: Error updating an user");
         }
-        LOGGER.info("UserImplementation: ");
+        LOGGER.info("UserImplementation: Ending");
     }
     
     /**
