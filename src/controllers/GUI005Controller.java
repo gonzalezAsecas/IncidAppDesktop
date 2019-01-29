@@ -13,11 +13,12 @@ import java.util.logging.Level;
 import javabeans.FTPFileTV;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -108,6 +109,7 @@ public class GUI005Controller extends THUserGenericController{
         btnDownload.setOnAction(this::handleDownload);
         btnMakeDirectory.setOnAction(this::handleMakeDir);
         btnDelete.setOnAction(this::handleDelete);
+        txtFNameDirectory.textProperty().addListener(this::handleTextChanged);
         //Load the files of the FTP server in the treeItem and make the listener
         //for the click event
         try {
@@ -142,7 +144,17 @@ public class GUI005Controller extends THUserGenericController{
         btnMakeDirectory.setText("_Make directory");
         btnDelete.setMnemonicParsing(true);
         btnDelete.setText("_Delete");
+        btnMakeDirectory.setDisable(true);
         LOGGER.info("Ending OnShowingHandler");
+    }
+    
+    public void handleTextChanged(ObservableValue observable, 
+            String oldvalue, String newvalue){
+        if(txtFNameDirectory.getText().trim().isEmpty()){
+            btnMakeDirectory.setDisable(true);
+        }else{
+            btnMakeDirectory.setDisable(false);
+        }
     }
     
     /**
@@ -156,6 +168,8 @@ public class GUI005Controller extends THUserGenericController{
         FileChooser filechooser = new FileChooser();
         //Set title
         filechooser.setTitle("Searching file for load in the FTP server");
+        filechooser.setInitialDirectory(
+            new File(System.getProperty("user.home")));
         //set the filters for make more comfortable
         filechooser.getExtensionFilters().addAll(
                 new ExtensionFilter("PDF", "*.pdf"),
@@ -246,12 +260,14 @@ public class GUI005Controller extends THUserGenericController{
     public void handleLoad(ActionEvent event){
         TreeItem<FTPFileTV> ti;
         FTPFileTV filetv = new FTPFileTV();
-        FTPFileTV root = new FTPFileTV();
         try{
             //set the FTPFileTV for know what is de directory for the file
             filetv.setName(file.getName());
             filetv.setPath(dirPath);
             filetv.setDirectory(false);
+            ti = new TreeItem<FTPFileTV>(filetv);
+            tiselected.getParent().getChildren().add(ti);
+            treeFTP.refresh();
             //load the file in the FTPServer
             FTP.loadFile(dirPath, file);
         }catch(Exception ex){
@@ -268,7 +284,9 @@ public class GUI005Controller extends THUserGenericController{
     public void handleDownload(ActionEvent event){
         try {
             //get the value of the treeitem selected and download it
-            FTP.downloadFile(tiselected.getValue()); 
+            FTP.downloadFile(tiselected.getValue());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "File downloaded.", ButtonType.OK);
+            alert.showAndWait();
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error downloading file", ex);
             super.getAlert("An error had ocurred downloading the file.");
@@ -300,6 +318,8 @@ public class GUI005Controller extends THUserGenericController{
         try {
             //send the selected item value for delete it
             FTP.delete(dirPath + "/" + tiselected.getValue().getName());
+            tiselected.getParent().getChildren().remove(tiselected);
+            treeFTP.refresh();
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error deleting the file", ex);
             super.getAlert("An error had ocurred deleting the file.");
@@ -371,6 +391,10 @@ public class GUI005Controller extends THUserGenericController{
                 btnDelete.setDisable(false);
                 btnDownload.setDisable(false);
             }
+        }else if(newvalue==null){
+            btnDelete.setDisable(true);
+            btnDownload.setDisable(true);
+            btnLoad.setDisable(true);
         }
     }
 }

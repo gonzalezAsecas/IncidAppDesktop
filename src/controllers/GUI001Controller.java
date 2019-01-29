@@ -133,7 +133,7 @@ public class GUI001Controller{
         pwPassword.textProperty().addListener(this::handleTextChanged);
         pwPassword.setPromptText("Set the password...");
         hlPasswordForget.setOnAction(this::handleRecoverPassword);
-        //makeUserInShow();
+        makeUserInShow();
         //Show the LogIn window
         stage.show();
         LOGGER.info("Ending the initialization of the GUI001 stage");
@@ -397,7 +397,7 @@ public class GUI001Controller{
         us.setLogin("jon");
         us.setPassword(cypherPass("1234"));
         us.setFullName("Jon Gonzalez");         
-        us.setPrivilege(Privilege.TOWNHALLUSER);
+        us.setPrivilege(Privilege.USER);
         us.setStatus(Status.ENABLED);
             try{
                 iuser.createUser(us);

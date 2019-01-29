@@ -28,8 +28,8 @@ public class UserRestFul {
     private WebTarget webTarget;
     private Client client;
     private ResourceBundle properties = ResourceBundle
-                    .getBundle("properties/ftpClientProperties");;
-    private final String BASE_URI = properties.getString("ser_url");
+                    .getBundle("properties/Properties");;
+    private final String BASE_URI = properties.getString("server_url");
 
     public UserRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
