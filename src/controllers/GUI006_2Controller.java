@@ -20,6 +20,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.UserBean;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -81,6 +82,7 @@ public class GUI006_2Controller {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setOnShowing(this::OnShowingHandler);
+        txtFConfirmPass.textProperty().addListener(this::textChanged);
         btnConfirm.setOnAction((event) -> handleConfirm(event));
         btnCancel.setOnAction((event) -> handleCancel(event));
     }
@@ -117,6 +119,15 @@ public class GUI006_2Controller {
             } catch (UpdateException ex) {
                 Logger.getLogger(GUI006_2Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+    
+    public void textChanged(ObservableValue observable, String oldValue,
+            String newValue){
+         if(txtFConfirmPass.getLength() == 256){
+            LOGGER.log(Level.INFO, "Password too long");
+            txtFConfirmPass.setText(txtFConfirmPass.getText().substring(0, 255));
+            new Alert(Alert.AlertType.INFORMATION, "Password too long", ButtonType.OK).showAndWait();
         }
     }
     

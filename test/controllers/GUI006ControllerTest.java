@@ -118,8 +118,9 @@ public class GUI006ControllerTest extends ApplicationTest{
         clickOn("#btnUpdate");
         verifyThat("#txtFConfirmPass", hasText(""));
         verifyThat("#btnConfirm", isEnabled());
+        verifyThat("#btnCancel", isEnabled());
         
-        //Click en X de la ventana
+        clickOn("#btnCancel");
     }
     
     @Test
@@ -127,11 +128,9 @@ public class GUI006ControllerTest extends ApplicationTest{
         clickOn("#btnUpdate");
         clickOn("#txtFConfirmPass");
         write(OVERSIZED_TEXT);
-        //ToDo en el controller
         verifyThat("Password too long", isVisible());
         clickOn("Aceptar");
-        
-        //Click en X de la ventana
+        clickOn("#btnCancel");
     }
     
     @Test
@@ -140,8 +139,7 @@ public class GUI006ControllerTest extends ApplicationTest{
         clickOn("#btnConfirm");
         verifyThat("You must fill the field!", isVisible());
         clickOn("Aceptar");
-        
-        //Click en X de la ventana
+        clickOn("#btnCancel");
     }
     
     @Test
@@ -153,7 +151,7 @@ public class GUI006ControllerTest extends ApplicationTest{
         verifyThat("The password is wrong", isVisible());
         clickOn("Aceptar");
         
-        //Click en X de la ventana
+        clickOn("#btnCancel");
     }
     
     @Test
@@ -165,7 +163,7 @@ public class GUI006ControllerTest extends ApplicationTest{
         verifyThat("The old password and the new password can't be the same", isVisible());
         clickOn("Aceptar");
         
-        //Click en X de la ventana
+        clickOn("#btnCancel");
     }
     
     @Test

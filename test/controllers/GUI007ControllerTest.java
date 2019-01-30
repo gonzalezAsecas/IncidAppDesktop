@@ -25,7 +25,6 @@ import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GUI007ControllerTest extends ApplicationTest {
-    //ToDo: focus cuando sale ventana
     
     private static final String OVERSIZED_TEXT="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"+
                                                "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"+
