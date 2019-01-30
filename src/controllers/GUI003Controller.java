@@ -6,9 +6,11 @@
 package controllers;
 
 import static controllers.THUserGenericController.LOGGER;
+import exceptions.DeleteException;
 import exceptions.ReadException;
 import java.util.logging.Level;
 import javabeans.IncidentBean;
+import javabeans.UserBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,10 +19,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -31,9 +34,10 @@ import javafx.stage.WindowEvent;
  * @author Gorka Redondo
  */
 public class GUI003Controller extends THUserGenericController {
-
     @FXML
-    private TextField txtFTitle;
+    private RadioButton rbtnAll;
+    @FXML
+    private RadioButton rbtnMyZone;
     @FXML
     private TableView<IncidentBean> tbIncidents;
     @FXML
@@ -47,15 +51,11 @@ public class GUI003Controller extends THUserGenericController {
     @FXML
     private TableColumn tCEstate;
     @FXML
-    private Button btnFilter;
-    @FXML
     private Button btnAddIncident;
     @FXML
     private Button btnModifyIncident;
     @FXML
     private Button btnDelete;
-    @FXML
-    private Button btnCollectSignatures;
     @FXML
     private Menu mIncidents;
     @FXML
@@ -66,7 +66,9 @@ public class GUI003Controller extends THUserGenericController {
     private Menu mLogOut;
     
     private ObservableList<IncidentBean> incidents = null;
-    private ObservableList<IncidentBean> incidentsCopy = null;
+    private ObservableList<IncidentBean> incidentsMyZone = null;
+    
+    private UserBean userr;
     
     /**
      * Set and initialize the stage and its properties.
@@ -87,11 +89,11 @@ public class GUI003Controller extends THUserGenericController {
         mFiles.setOnAction((event) -> handleFiles(event));
         mUserInfo.setOnAction((event) -> handleInfo(event));
         mLogOut.setOnAction((event) -> handleLogOut(event));
-        btnFilter.setOnAction((event) -> handleFilter(event));
+        rbtnAll.setOnAction((event) -> handleFilter(event));
+        rbtnMyZone.setOnAction((event) -> handleFilter(event));
         btnAddIncident.setOnAction((event) -> handleIncidentsEmpty(event));
         btnModifyIncident.setOnAction((event) -> handleIncidentsFull(event));
         btnDelete.setOnAction((event) -> handleDelete(event));
-        btnCollectSignatures.setOnAction((event) -> handleCollectSignatures(event));
         tbIncidents.getSelectionModel().selectedItemProperty()
             .addListener(this::handleIncidentsTableSelectionChanged);
         //load the all data
@@ -105,12 +107,15 @@ public class GUI003Controller extends THUserGenericController {
      * load all the incidents
      */
     private void loadData() {
+        UserBean userr = new UserBean();
         try {
             incidents = FXCollections
                 .observableArrayList(incidentManager.findAllIncidents());
+            incidentsMyZone = FXCollections
+                .observableArrayList(incidentManager.findIncidentsByUser(user));
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE,
-                "Exception finding all incidents",ex.getMessage());
+                "Exception finding all or my zone incidents",ex.getMessage());
         }
         tCTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         tCDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -126,8 +131,6 @@ public class GUI003Controller extends THUserGenericController {
      */
     public void OnShowingHandler(WindowEvent event){
         LOGGER.info("Beginning OnShowingHandler");
-        btnFilter.setMnemonicParsing(true);
-        btnFilter.setText("_Filter");
         btnAddIncident.setMnemonicParsing(true);
         btnAddIncident.setText("_Add Incident");
         btnModifyIncident.setMnemonicParsing(true);
@@ -136,9 +139,6 @@ public class GUI003Controller extends THUserGenericController {
         btnDelete.setMnemonicParsing(true);
         btnDelete.setText("_Delete");
         btnDelete.setDisable(true);
-        btnCollectSignatures.setMnemonicParsing(true);
-        btnCollectSignatures.setText("_Collect Signatures");
-        btnCollectSignatures.setDisable(true);
         LOGGER.info("Ending OnShowingHandler");
     }
     
@@ -148,20 +148,13 @@ public class GUI003Controller extends THUserGenericController {
      */
     public void handleFilter(ActionEvent event){
         LOGGER.info("Beginning handleFilter");
-        incidentsCopy = FXCollections.observableArrayList(incidents);
-        if(!(txtFTitle.getText().trim().isEmpty())) {
-            for(IncidentBean inc : incidentsCopy) {
-                if(!(inc.getTitle().toLowerCase()
-                    .contains((CharSequence)txtFTitle.getText().toLowerCase()))) {
-                    incidents.remove(inc);
-                }
-            }
+        if(rbtnMyZone.isSelected()) {
+            tbIncidents.setItems(incidentsMyZone);
+        } else {
+            tbIncidents.setItems(incidents);
         }
-        tbIncidents.getSelectionModel().clearSelection();
         tbIncidents.refresh();
-        incidents = FXCollections.observableArrayList(incidentsCopy);
         LOGGER.info("Ending handleFilter");
-        //TODO: El refresh solo funciona la primera vez
     }
     
     /**
@@ -170,17 +163,17 @@ public class GUI003Controller extends THUserGenericController {
      */
     public void handleDelete(ActionEvent event){
         LOGGER.info("Beginning handleDelete");
+        if (getAlert("Are you sure?").equals(ButtonType.OK)) {
+            try {
+                incidentManager.removeIncident(incident);
+                tbIncidents.getItems().remove(incident);
+                tbIncidents.refresh();
+            } catch (DeleteException ex) {
+                LOGGER.log(Level.SEVERE,
+                    "Exception deleting incident",ex.getMessage());
+            }
+        }
         LOGGER.info("Ending handleDelete");
-    }
-    
-    /**
-     * 
-     * @param event 
-     */
-    public void handleCollectSignatures(ActionEvent event){
-        LOGGER.info("Beginning handleCollectSignatures");
-        LOGGER.info("Ending handleCollectSignatures");
-       //TODO with MongoDB 
     }
     
     /**
@@ -196,8 +189,11 @@ public class GUI003Controller extends THUserGenericController {
         if(newValue != null){
             btnModifyIncident.setDisable(false);
             btnDelete.setDisable(false);
-            btnCollectSignatures.setDisable(false);
             incident = tbIncidents.getSelectionModel().getSelectedItem();
+        } else {
+            btnModifyIncident.setDisable(true);
+            btnDelete.setDisable(true);
+            incident = null;
         }
         LOGGER.info("Ending handleIncidentsTableSelectionChanged");
     }

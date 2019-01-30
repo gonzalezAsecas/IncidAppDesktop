@@ -28,6 +28,11 @@ public class TypeImplementation implements iType{
         webClient = new TypeRestFulClient();
     }
     
+    /**
+     * 
+     * @return types
+     * @throws ReadException 
+     */
     @Override
     public Collection<TypeBean> findAllTypes() throws ReadException {
         List<TypeBean> types = null;

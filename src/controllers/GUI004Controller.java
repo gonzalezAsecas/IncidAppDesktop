@@ -6,10 +6,17 @@
 package controllers;
 
 import static controllers.THUserGenericController.LOGGER;
+import exceptions.CreateException;
 import exceptions.ReadException;
+import exceptions.UpdateException;
+import java.util.Date;
 import java.util.logging.Level;
 import javabeans.Estate;
+import javabeans.IncidentBean;
+import javabeans.LocationBean;
+import javabeans.TownHallBean;
 import javabeans.TypeBean;
+import javabeans.UserBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,33 +41,20 @@ import javafx.stage.WindowEvent;
  * @author Gorka Redondo
  */
 public class GUI004Controller extends THUserGenericController {
-    
-    @FXML
-    private Label lblTitle;
     @FXML
     private TextField txtFTitle;
     @FXML
-    private Label lblDescription;
-    @FXML
     private TextArea txtADescription;
     @FXML
-    private Label lblComment;
-    @FXML
     private TextArea txtAComment;
-    @FXML
-    private Label lblPhoto;
     @FXML
     private Button btnPhoto;
     @FXML
     private ImageView iVPhoto;
     @FXML
-    private Label lblStreet;
-    @FXML
     private TextField txtFStreet;
     @FXML
-    private Label lblLocality;
-    @FXML
-    private TextField txtFLocality;
+    private ComboBox<TownHallBean> chcLocality;
     @FXML
     private ComboBox<TypeBean> chcType;
     @FXML
@@ -70,13 +64,11 @@ public class GUI004Controller extends THUserGenericController {
     @FXML
     private Button btnCancel;
     @FXML
-    private Label lblType;
-    @FXML
-    private Label lblEstate;
+    private Label lblSignature;
     @FXML
     private Button btnSignature;
-    @FXML
-    private Label lblSignature;
+    
+    private UserBean userr;
      
     /**
      * 
@@ -97,11 +89,11 @@ public class GUI004Controller extends THUserGenericController {
         txtFTitle.textProperty().addListener(this::textChanged);
         txtADescription.textProperty().addListener(this::textChanged);
         txtAComment.textProperty().addListener(this::textChanged);
-        txtFLocality.textProperty().addListener(this::textChanged);
         txtFStreet.textProperty().addListener(this::textChanged);
         btnPhoto.setOnAction((event) -> handlePhoto(event));
         btnAccept.setOnAction((event) -> handleAccept(event));
         btnCancel.setOnAction((event) -> handleCancel(event));
+        btnSignature.setOnAction((event) -> handleSignature(event));
         //load the all data
         loadData();
         //Show the LogIn window
@@ -114,15 +106,19 @@ public class GUI004Controller extends THUserGenericController {
             ObservableList<TypeBean> types = FXCollections
                 .observableArrayList(typeManager.findAllTypes());
             chcType.setItems(types);
-            chcEstate.setItems(FXCollections.observableArrayList(Estate.values()));
             chcType.setValue(types.get(0));
+            chcEstate.setItems(FXCollections.observableArrayList(Estate.values()));
             chcEstate.setValue(FXCollections.observableArrayList(Estate.values())
                 .get(0));
+            ObservableList<TownHallBean> ths = FXCollections
+                .observableArrayList(townHallManager.findAllTownHalls());
+            chcLocality.setItems(ths);
+            chcLocality.setValue(ths.get(0));
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE,
-                "Exception finding all types",ex.getMessage());
+                "Exception finding all types, estates or localitys",
+                ex.getMessage());
         }
-
     }
     
     /**
@@ -133,21 +129,27 @@ public class GUI004Controller extends THUserGenericController {
         LOGGER.info("Beginning OnShowingHandler");
         btnSignature.setMnemonicParsing(true);
         btnSignature.setText("_Sign it");
+        btnSignature.setDisable(true);
         btnAccept.setMnemonicParsing(true);
         btnAccept.setText("_Accept");
         btnAccept.setDisable(true);
         btnCancel.setMnemonicParsing(true);
         btnCancel.setText("_Cancel");
+        txtAComment.setDisable(true);
+        lblSignature.setText("0");
         if(incident != null) {
+            btnSignature.setDisable(false);
+            btnAccept.setDisable(false);
+            txtAComment.setDisable(false);
             txtFTitle.setText(incident.getTitle());
             txtADescription.setText(incident.getDescription());
             txtAComment.setText(incident.getComment());
             //Set de la photo
             txtFStreet.setText(incident.getLocation().getStreet());
-            txtFLocality.setText(incident.getLocation().getTownHall().getLocality());
+            chcLocality.setValue(incident.getLocation().getTownHall());
             chcType.setValue(incident.getType());
             chcEstate.setValue(incident.getEstate());
-            /*lblSignature.setText(String.valueOf(incident.getUsers().size()));*/
+            lblSignature.setText(String.valueOf(incident.getUsers().size()));
         }
         LOGGER.info("Ending OnShowingHandler");
     }
@@ -161,8 +163,7 @@ public class GUI004Controller extends THUserGenericController {
      private void textChanged(ObservableValue observable, String oldValue,
             String newValue) {
          if(!txtFTitle.getText().trim().isEmpty() && !txtADescription.getText()
-             .trim().isEmpty() && !txtFLocality.getText().trim().isEmpty() && 
-             !txtFStreet.getText().trim().isEmpty()) {
+             .trim().isEmpty() && !txtFStreet.getText().trim().isEmpty()) {
             btnAccept.setDisable(false);
          }else {
             btnAccept.setDisable(true);
@@ -183,11 +184,6 @@ public class GUI004Controller extends THUserGenericController {
             new Alert(AlertType.INFORMATION,"Comment too long",ButtonType.OK).show();
          }
          
-         if(txtFLocality.getLength() == 46){
-            txtFLocality.setText(txtFLocality.getText().substring(0,45));
-            new Alert(AlertType.INFORMATION,"Locality too long",ButtonType.OK).show();
-         }
-         
          if(txtFStreet.getLength() == 46){
             txtFStreet.setText(txtFStreet.getText().substring(0,45));
             new Alert(AlertType.INFORMATION,"Street too long",ButtonType.OK).show();
@@ -200,6 +196,7 @@ public class GUI004Controller extends THUserGenericController {
      * @param event 
      */
     public void handlePhoto(ActionEvent event){
+        //TODO
     } 
     
     /**
@@ -207,14 +204,80 @@ public class GUI004Controller extends THUserGenericController {
      * @param event 
      */
     public void handleAccept(ActionEvent event){
-        if(!txtFTitle.getText().trim().isEmpty() && !txtFStreet.getText().trim().isEmpty() && !txtFLocality.getText().trim().isEmpty() && !txtADescription.getText().trim().isEmpty()) {
-            btnAccept.setDisable(false);
-        } else {
-            btnAccept.setDisable(true);
+        boolean isInsert = true;
+        IncidentBean incidentInStage = new IncidentBean();
+        if(incident != null) {
+            isInsert = false;
+            incidentInStage = incident;
+        } 
+        //Insert or update an incident
+        incidentInStage.setTitle(txtFTitle.getText());
+        incidentInStage.setDescription(txtADescription.getText());
+        incidentInStage.setComment("");
+        /*Date date = new Date();
+        incidentInStage.setCreateDate(date);*/
+        incidentInStage.setEstate(chcEstate.getSelectionModel().getSelectedItem());
+        incidentInStage.setType(chcType.getSelectionModel().getSelectedItem());
+        incidentInStage.setUser(user);
+        //Location and townhall
+        LocationBean locationInStage = new LocationBean();
+        locationInStage.setStreet(txtFStreet.getText());
+        locationInStage.setTownHall(chcLocality.getSelectionModel().getSelectedItem());
+        LocationBean location = null;
+        boolean continuar = true;
+        try {
+            location = locationManager.findLocationByStreet(locationInStage);
+        } catch (ReadException ex) {
+            LOGGER.log(Level.SEVERE,"Exception finding location",ex.getMessage());
         }
-        if(super.getAlert("Incident added/updated successfully")==ButtonType.OK){
-            handleIncidents(event);
-            stage.hide();
+        if(location == null) {
+            if (getAlert("This street does not exist in " + chcLocality
+                .getSelectionModel().getSelectedItem().getLocality() + ", if you"
+                    + " continue you will create a new one. Do you want to"
+                    + " continue?").equals(ButtonType.OK)) {
+                try {
+                    locationManager.createLocation(locationInStage);
+                } catch (CreateException ex) {
+                    LOGGER.log(Level.SEVERE,
+                        "Exception creating location",ex.getMessage());
+                }
+                try {
+                    location = locationManager.findLocationByStreet(locationInStage);
+                } catch (ReadException ex) {
+                    LOGGER.log(Level.SEVERE,"Exception finding location",ex.getMessage());
+                }
+            } else {
+                continuar = false;
+            }
+        }
+        if(continuar) {
+            incidentInStage.setLocation(location);
+            if(isInsert) {
+                try {
+                    incidentManager.createIncident(incidentInStage);
+                    new Alert(AlertType.INFORMATION,"Incident added successfully"
+                        ,ButtonType.OK).showAndWait();
+                    handleIncidents(event);
+                    stage.hide();
+                } catch (CreateException ex) {
+                    LOGGER.log(Level.SEVERE,
+                        "IncidentRestFul: Exception adding the incident.", ex.getMessage());
+                }
+            } else {
+                if(!txtAComment.getText().trim().isEmpty()) {
+                    incidentInStage.setComment(txtAComment.getText());
+                }
+                try {
+                    incidentManager.editIncident(incidentInStage);
+                    new Alert(AlertType.INFORMATION,"Incident updated successfully"
+                        ,ButtonType.OK).showAndWait();
+                    handleIncidents(event);
+                    stage.hide();
+                } catch (UpdateException ex) {
+                    LOGGER.log(Level.SEVERE,
+                        "IncidentRestFul: Exception editting the incident.", ex.getMessage());
+                }
+            }
         }
     }
     
@@ -223,9 +286,24 @@ public class GUI004Controller extends THUserGenericController {
      * @param event 
      */
     public void handleCancel(ActionEvent event){
-        if(super.getAlert("Are your sure of this?")==ButtonType.OK){
-            handleIncidents(event);
-            stage.hide();
+        handleIncidents(event);
+        stage.hide();
+    }
+
+    private void handleSignature(ActionEvent event) {
+        /*boolean hay = false;
+        for(UserBean u : incident.getUsers()){
+            if(u.equals(user)){
+                hay = true;
+                if(getAlert("You have already signatured this incident")==ButtonType.OK){
+                    handleIncidents(event);
+                    stage.hide();
+                }
+            }
         }
+        if(!hay){
+            //insertar user en users
+            lblSignature.setText(String.valueOf(incident.getUsers().size()+1));
+        }*/
     }
 }

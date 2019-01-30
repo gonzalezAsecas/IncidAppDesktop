@@ -7,13 +7,11 @@ package factories;
 
 import implementations.IncidentImplementation;
 import implementations.LocationImplementation;
-import implementations.SignatureImplementation;
 import implementations.TownHallImplementation;
 import implementations.TypeImplementation;
 import implementations.UserImplementation;
 import interfaces.iIncident;
 import interfaces.iLocation;
-import interfaces.iSignature;
 import interfaces.iTownHall;
 import interfaces.iType;
 import interfaces.iUser;
@@ -26,17 +24,14 @@ public class LogicFactory {
     public static iIncident getiIncident(){
         return new IncidentImplementation();
     }
-    public static iLocation getiLocation(){
-        return new LocationImplementation();
-    }
-    public static iSignature getiSignature(){
-        return new SignatureImplementation();
-    }
     public static iTownHall getiTownHall(){
         return new TownHallImplementation();
     }
     public static iType getiType(){
         return new TypeImplementation();
+    }
+    public static iLocation getiLocation(){
+        return new LocationImplementation();
     }
     public static iUser getiUser(){
         return new UserImplementation();

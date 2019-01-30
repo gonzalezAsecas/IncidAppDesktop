@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Jon Gonzalez
  */
-@XmlRootElement(name="user")
+@XmlRootElement(name="userBean")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;

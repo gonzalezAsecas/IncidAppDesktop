@@ -5,10 +5,14 @@
  */
 package interfaces;
 
+import exceptions.ReadException;
+import java.util.Collection;
+import javabeans.TownHallBean;
+
 /**
  *
  * @author Jon Gonzalez
  */
 public interface iTownHall {
-    
+    public Collection<TownHallBean> findAllTownHalls() throws ReadException;
 }

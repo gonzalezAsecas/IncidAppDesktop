@@ -63,12 +63,24 @@ public class GUI001Controller extends THUserGenericController{
         stage.setResizable(false);
         //Set window's event handlers and the textfield's promptext
         stage.setOnShowing(this::handleWindowShowing);
-        btnLogIn.setOnAction((event) -> handleLogIn(event));
+        //btnLogIn.setOnAction((event) -> handleLogIn(event));
+        btnLogIn.setOnAction((event) -> handleIncidents(event));
         txtFUser.textProperty().addListener(this::handleTextChanged);
         txtFUser.setPromptText("Set the username...");
         pwPassword.textProperty().addListener(this::handleTextChanged);
         pwPassword.setPromptText("Set the password...");
         hlPasswordForget.setOnAction((event) -> handleRecoverPassword(event));
+        
+        //User
+        UserBean userInStage = new UserBean();
+        userInStage.setLogin("gorka");
+        try {
+            user = userManager.findUserbyLogin(userInStage);
+        } catch (ReadException ex) {
+            LOGGER.log(Level.SEVERE,"Exception finding user ",ex.getMessage());
+        }
+        //User
+        
         //Show the LogIn window
         stage.show();
         LOGGER.info("Ending the initialization of the GUI001 stage");
@@ -144,7 +156,7 @@ public class GUI001Controller extends THUserGenericController{
      */
     public void handleRecoverPassword(ActionEvent event){
         LOGGER.info("Beginning handleRecoverPassword");
-        //Verify that the login textfield isn't empty
+        /*//Verify that the login textfield isn't empty
         if(txtFUser.getText().isEmpty()){
             super.getAlert("You need to put the login in the user field");
             txtFUser.requestFocus();
@@ -164,7 +176,7 @@ public class GUI001Controller extends THUserGenericController{
                 iuser.findUserToChangePassword(user);
             } catch (ReadException ex) {
                 //Run when the login don't exist
-                /*if(ex.getWhy().equals("login")){
+                if(ex.getWhy().equals("login")){
                     LOGGER.log(Level.SEVERE,"The user don´t exist",ex);
                     super.getAlert("This user don´t exist.");
                     txtFUser.requestFocus();
@@ -178,9 +190,9 @@ public class GUI001Controller extends THUserGenericController{
                     lblPass.setTextFill(Color.web("#ff0000"));
                     pwPassword.requestFocus();
                     super.getAlert("The password is the same.");
-                }*/
+                }
             }
-        }
+        }*/
         LOGGER.info("Ending handleRecoverPassword");
     }
     
@@ -238,7 +250,6 @@ public class GUI001Controller extends THUserGenericController{
             lblPass.setTextFill(Color.web("#237bf7"));
             super.getAlert("An error with the program has ocurred.");
         }*/
-        handleIncidents(event);
         LOGGER.info("Ending handleLogIn");
     }
     
@@ -278,7 +289,6 @@ public class GUI001Controller extends THUserGenericController{
             super.getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }
-        
         LOGGER.info("Ending adminLogin");
     }
 }

@@ -6,9 +6,10 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -45,14 +46,18 @@
             <VBox HBox.hgrow="ALWAYS">
                <children>
                   <AnchorPane VBox.vgrow="NEVER">
-                     <children>
-                        <Label fx:id="lblTitle" layoutX="14.0" layoutY="22.0" text="Title:" AnchorPane.topAnchor="22.0" />
-                        <TextField fx:id="txtFTitle" layoutX="50.0" layoutY="18.0" prefHeight="25.0" prefWidth="710.0" AnchorPane.topAnchor="20.0" />
-                        <Button fx:id="btnFilter" layoutX="762.0" layoutY="20.0" mnemonicParsing="false" prefWidth="120.0" text="Filter" />
-                     </children>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
+                     <children>
+                        <Label fx:id="lblFind" layoutX="14.0" layoutY="15.0" text="Find incidents:" />
+                        <RadioButton fx:id="rbtnAll" layoutX="175.0" layoutY="15.0" mnemonicParsing="false" selected="true" text="All">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="filter" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="rbtnMyZone" layoutX="275.0" layoutY="15.0" mnemonicParsing="false" text="My zone" toggleGroup="$filter" />
+                     </children>
                   </AnchorPane>
                   <AnchorPane VBox.vgrow="ALWAYS">
                      <children>
@@ -87,11 +92,6 @@
                      </VBox.margin>
                   </Button>
                   <Button fx:id="btnDelete" mnemonicParsing="false" prefWidth="120.0" text="Delete">
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="btnCollectSignatures" mnemonicParsing="false" prefWidth="120.0" text="Collect signatures">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>

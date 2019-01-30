@@ -5,9 +5,13 @@
  */
 package controllers;
 
+import exceptions.ReadException;
 import factories.LogicFactory;
 import interfaces.iIncident;
+import interfaces.iLocation;
+import interfaces.iTownHall;
 import interfaces.iType;
+import interfaces.iUser;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +36,6 @@ public class THUserGenericController {
      * The logger for the desktop app
      */
     protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
-    
     
     /**
      * The stage for the scene
@@ -71,6 +74,7 @@ public class THUserGenericController {
     public void setUser(UserBean user) {
         this.user = user;
     }
+    
     
     /**
      * incident
@@ -133,6 +137,64 @@ public class THUserGenericController {
     
     
     /**
+     * The business logic object
+     */
+    protected iTownHall townHallManager = LogicFactory.getiTownHall();
+    /**
+     * The getter of the townHallManager
+     * @return townHallManager The townHallManager of the application
+     */
+    public iTownHall getTownHallManager() {
+        return townHallManager;
+    }
+    /**
+     * The setter of the townHallManager
+     * @param townHallManager The townHallManager of the application
+     */
+    public void setTownHallManager(iTownHall townHallManager) {
+        this.townHallManager = townHallManager;
+    }
+    
+    /**
+     * The business logic object
+     */
+    protected iLocation locationManager = LogicFactory.getiLocation();
+    /**
+     * The getter of the locationManager
+     * @return locationManager The locationManager of the application
+     */
+    public iLocation getLocationManager() {
+        return locationManager;
+    }
+    /**
+     * The setter of the locationManager
+     * @param locationManager The locationManager of the application
+     */
+    public void setLocationManager(iLocation locationManager) {
+        this.locationManager = locationManager;
+    }
+    
+    /**
+     * The business logic object
+     */
+    protected iUser userManager = LogicFactory.getiUser();
+    /**
+     * The getter of the userManager
+     * @return userManager The userManager of the application
+     */
+    public iUser getUserManager() {
+        return userManager;
+    }
+    /**
+     * The setter of the userManager
+     * @param userManager The userManager of the application
+     */
+    public void setUserManager(iUser userManager) {
+        this.userManager = userManager;
+    }
+    
+    
+    /**
      * The method for get a customized alert sending the message for the user
      * @param message the message that the user is going to read 
      * @return the type of the button clicked
@@ -141,7 +203,6 @@ public class THUserGenericController {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK, ButtonType.CANCEL);
         return alert.showAndWait().get();
     }
-    
     
     /**
      * Load the GUI003 xml and pass the control to it controller 
@@ -162,7 +223,7 @@ public class THUserGenericController {
             //Set the new stage
             controller.setStage(gui003Stage);
             //Pass the user to the next window
-            //controller.setUser(user);
+            controller.setUser(user);
             //Pass the control to the controller
             controller.initStage(root);
             //Hide this stage
@@ -172,6 +233,7 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI003Controller.");
         }catch(Exception ex){
+            ex.printStackTrace();
             LOGGER.log(Level.SEVERE, "An error loading GUI003Controller.", 
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI003Controller.");
@@ -197,7 +259,7 @@ public class THUserGenericController {
             //Set the new stage
             controller.setStage(gui004Stage);
             //Pass the user to the next window
-            //controller.setUser(user);
+            controller.setUser(user);
             //Pass the control to the controller
             controller.initStage(root);
             //Hide this stage
@@ -232,7 +294,7 @@ public class THUserGenericController {
             //Set the new stage
             controller.setStage(gui004Stage);
             //Pass the user to the next window
-            //controller.setUser(user);
+            controller.setUser(user);
             //Pass the incident to the next window
             controller.setIncident(incident);
             //Pass the control to the controller

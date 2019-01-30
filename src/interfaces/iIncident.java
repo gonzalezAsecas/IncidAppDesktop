@@ -11,7 +11,7 @@ import exceptions.ReadException;
 import exceptions.UpdateException;
 import java.util.Collection;
 import javabeans.IncidentBean;
-import javabeans.LocationBean;
+import javabeans.UserBean;
 
 /**
  *
@@ -26,5 +26,5 @@ public interface iIncident {
     
     public Collection<IncidentBean> findAllIncidents() throws ReadException;
     
-    public Collection<IncidentBean> findIncidentsbyLocation(LocationBean location) throws ReadException;
+    public Collection<IncidentBean> findIncidentsByUser(UserBean user) throws ReadException;
 }

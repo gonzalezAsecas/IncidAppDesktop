@@ -7,95 +7,70 @@ package javabeans;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Gorka Redondo
  */
-@XmlRootElement(name="location")
+@XmlRootElement(name="locationBean")
 public class LocationBean implements Serializable{
-    private Integer idLocation;
-    private String street;
-    private TownHallBean townHall;
-    private List<IncidentBean> incidents;
+    private final SimpleIntegerProperty idLocation;
+    private final SimpleStringProperty street;
+    private final SimpleObjectProperty<TownHallBean> townHall;
+    private final SimpleObjectProperty<List<IncidentBean>> incidents;
 
-    public LocationBean(){}
-
-    public Integer getIdLocation() {
-        return idLocation;
+    public LocationBean() {
+        this.idLocation = new SimpleIntegerProperty();
+        this.street = new SimpleStringProperty();
+        this.townHall = new SimpleObjectProperty();
+        this.incidents = new SimpleObjectProperty<List<IncidentBean>>();
     }
 
+    public LocationBean(String street, TownHallBean townHall) {
+        this.idLocation = new SimpleIntegerProperty();
+        this.street = new SimpleStringProperty(street);
+        this.townHall = new SimpleObjectProperty(townHall);
+        this.incidents = new SimpleObjectProperty<List<IncidentBean>>();
+    }
+
+    public Integer getIdLocation() {
+        return this.idLocation.get();
+    }
+    
     public void setIdLocation(Integer idLocation) {
-        this.idLocation = idLocation;
+        this.idLocation.set(idLocation);
     }
 
     public String getStreet() {
-        return street;
+        return this.street.get();
     }
 
     public void setStreet(String street) {
-        this.street = street;
+        this.street.set(street);
     }
 
     public TownHallBean getTownHall() {
-        return townHall;
+        return this.townHall.get();
     }
 
     public void setTownHall(TownHallBean townHall) {
-        this.townHall = townHall;
+        this.townHall.set(townHall);
     }
 
-    @XmlTransient
     public List<IncidentBean> getIncidents() {
-        return incidents;
+        return this.incidents.get();
     }
 
     public void setIncidents(List<IncidentBean> incidents) {
-        this.incidents = incidents;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.idLocation);
-        hash = 83 * hash + Objects.hashCode(this.street);
-        hash = 83 * hash + Objects.hashCode(this.townHall);
-        hash = 83 * hash + Objects.hashCode(this.incidents);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final LocationBean other = (LocationBean) obj;
-        if (!Objects.equals(this.street, other.street)) {
-            return false;
-        }
-        if (!Objects.equals(this.idLocation, other.idLocation)) {
-            return false;
-        }
-        if (!Objects.equals(this.townHall, other.townHall)) {
-            return false;
-        }
-        if (!Objects.equals(this.incidents, other.incidents)) {
-            return false;
-        }
-        return true;
+        this.incidents.set(incidents);
     }
 
     @Override
     public String toString() {
-        return street;
+        return this.getStreet();
     }
 }
