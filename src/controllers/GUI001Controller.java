@@ -133,7 +133,6 @@ public class GUI001Controller{
         pwPassword.textProperty().addListener(this::handleTextChanged);
         pwPassword.setPromptText("Set the password...");
         hlPasswordForget.setOnAction(this::handleRecoverPassword);
-        makeUserInShow();
         //Show the LogIn window
         stage.show();
         LOGGER.info("Ending the initialization of the GUI001 stage");
@@ -387,23 +386,5 @@ public class GUI001Controller{
             LOGGER.log(Level.SEVERE, "Exception excrypting the password", ex);
         }
         return null;
-    }
-    
-    //remove
-    private void makeUserInShow() {
-        LOGGER.info("GUI001Controller: Making the user.");
-        UserBean us = new UserBean();
-        us.setEmail("jonasecas97@gmail.com");
-        us.setLogin("jon");
-        us.setPassword(cypherPass("1234"));
-        us.setFullName("Jon Gonzalez");         
-        us.setPrivilege(Privilege.USER);
-        us.setStatus(Status.ENABLED);
-            try{
-                iuser.createUser(us);
-            }catch(CreateException e){
-                LOGGER.log(Level.SEVERE, "GUI001Controller: Error creating user.", e.getCause());
-            }
-        LOGGER.info("GUI001Controller: Finishing making the user");
     }
 }

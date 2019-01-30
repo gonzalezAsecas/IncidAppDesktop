@@ -73,8 +73,11 @@ public class GUI005ControllerIT extends ApplicationTest{
     /**
      * Test of loadRoot and loadFiles method, of class GUI005Controller.
      */
+    @Ignore
     @Test
     public void test4_LoadRootAndLoadFiles() {
+        //hacer un set con el controlador de file para poder añadir un file 
+        //directamente en vez de usar el filechooser
         verifyThat("ADT libro", isVisible());
         doubleClickOn("ADT libro");
         verifyThat("DFSFB", isVisible());
@@ -93,12 +96,13 @@ public class GUI005ControllerIT extends ApplicationTest{
         clickOn("ADT libro");
         clickOn("#btnLoad");
         doubleClickOn("ADT libro");
-        verifyThat("MongoDBEjercicio", isVisible()  );
+        verifyThat("MongoDBEjercicio", isVisible());
     }
 
     /**
      * Test of handleDownload method, of class GUI005Controller.
      */
+    @Ignore
     @Test
     public void testHandleDownload() {
         doubleClickOn("ADT libro");
