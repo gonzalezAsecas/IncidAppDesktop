@@ -160,8 +160,6 @@ public class GUI009Controller {
             LOGGER.log(Level.SEVERE, "Error updating a townhall");
         } catch (ReadException ex) {
             Logger.getLogger(GUI009Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }catch (TownhallExistsException ex){
-            LOGGER.log(Level.SEVERE, "Townhall already exists");
         }
     }
     

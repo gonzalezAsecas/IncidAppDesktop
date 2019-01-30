@@ -48,6 +48,8 @@ public class GUI006_2Controller {
     private TextField txtFConfirmPass;
     @FXML
     private Button btnConfirm;
+    @FXML
+    private Button btnCancel;
     
     protected iUser userImpl = LogicFactory.getiUser();
     
@@ -80,6 +82,7 @@ public class GUI006_2Controller {
         stage.setScene(scene);
         stage.setOnShowing(this::OnShowingHandler);
         btnConfirm.setOnAction((event) -> handleConfirm(event));
+        btnCancel.setOnAction((event) -> handleCancel(event));
     }
     
     public void OnShowingHandler(WindowEvent event){
@@ -115,6 +118,10 @@ public class GUI006_2Controller {
                 Logger.getLogger(GUI006_2Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public void handleCancel(ActionEvent event){
+        stage.close();
     }
     
     private byte[] cypherPass(String password) {

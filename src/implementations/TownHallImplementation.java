@@ -77,7 +77,7 @@ public class TownHallImplementation implements iTownHall{
     public void removeTownHall(TownHallBean townhall) throws DeleteException {
         try{
             LOGGER.info("TownhallImplementation: Deleting a townhall from REST service.");
-            webClient.remove(townhall.getId());
+            webClient.remove(townhall.getId().toString());
         }catch(Exception ex) {
             LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception removing a townhall",
                     ex.getMessage());
@@ -96,7 +96,7 @@ public class TownHallImplementation implements iTownHall{
         TownHallBean th = null;
         try{
             LOGGER.info("TownhallImplementation: Finding a townhall by id from REST service.");
-            th = webClient.findById(TownHallBean.class, townhall.getId().toString());
+            th = webClient.find(TownHallBean.class, townhall.getId().toString());
         }catch(Exception ex) {
             LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception finding a townhall by id",
                     ex.getMessage());
@@ -110,7 +110,7 @@ public class TownHallImplementation implements iTownHall{
         TownHallBean th = null;
         try{
             LOGGER.info("TownhallImplementation: Finding a townhall by id from REST service.");
-            th = webClient.findByName(TownHallBean.class, townhall.getLocality());
+            th = webClient.findbyName(TownHallBean.class, townhall.getLocality());
         }catch(Exception ex) {
             LOGGER.log(Level.SEVERE, "TownhallImplementation: Exception finding a townhall by name",
                     ex.getMessage());
@@ -145,7 +145,7 @@ public class TownHallImplementation implements iTownHall{
     @Override
     public void townHallAlreadyExists(String name) throws ReadException {
         try{
-            if(this.webClient.findByName(TownHallBean.class, name) != null){
+            if(this.webClient.findbyName(TownHallBean.class, name) != null){
                 //throw new TownhallExistsException("Theres already a townhall with this name");
             }
         }catch(NotFoundException ex){

@@ -12,10 +12,10 @@ import javax.ws.rs.core.GenericType;
 
 /**
  * Jersey REST client generated for REST resource:TownHallRestFul
- * [entities.townhallbean]<br>
+ * [townhall/th]<br>
  * USAGE:
  * <pre>
- *        TownHallRestFul client = new TownHallRestFul();
+ *        TownhallRestFul client = new TownhallRestFul();
  *        Object response = client.XXX(...);
  *        // do whatever with response
  *        client.close();
@@ -31,22 +31,22 @@ public class TownHallRestFul {
 
     public TownHallRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("entities.townhallbean");
+        webTarget = client.target(BASE_URI).path("townhall/th");
     }
 
     public void edit(Object requestEntity) throws ClientErrorException {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
-    public <T> T findById(Class<T> responseType, String id) throws ClientErrorException {
+    public <T> T find(Class<T> responseType, String id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
-    
-    public <T> T findByName(Class<T> responseType, String name) throws ClientErrorException {
+
+    public <T> T findbyName(Class<T> responseType, String locality) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{name}));
+        resource = resource.path(java.text.MessageFormat.format("th/{0}", new Object[]{locality}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
@@ -59,7 +59,7 @@ public class TownHallRestFul {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public void remove(Integer id) throws ClientErrorException {
+    public void remove(String id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
     }
 

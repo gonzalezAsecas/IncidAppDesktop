@@ -128,8 +128,13 @@ public class GUI006Controller {
     public void initStage(Parent root){
         //try creado para hacer pruebas, eliminar para entregar o probar cuando
         //se junte el proyecto
+        ObservableList<TownHallBean> ths = null;
         try{
-            TownHallBean th = new TownHallBean("Erandio", "erandio@erandio", "666666666");
+            ths = FXCollections.observableArrayList(townHallImpl.findAllTownHalls());
+        }catch (ReadException ex) {
+            Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try{
             user = new UserBean();
             user.setDni("15490582J");
             user.setEmail("lander@email.com");
@@ -138,7 +143,7 @@ public class GUI006Controller {
             user.setPrivilege(Privilege.ADMIN);
             user.setStatus(Status.ENABLED);
             user.setStreet("Consulado de Bilbao 7 2º DI");
-            user.setTH(th);
+            user.setTH(ths.get(0));
             user.setPassword(cypherPass("abcd*1234"));
             userImpl.createUser(user);
         } catch (CreateException ex) {
@@ -159,13 +164,9 @@ public class GUI006Controller {
         pfPassword.setTooltip(new Tooltip("Use this field if you want to change your current password"));
         tfEmail.setText(user.getEmail());
         tfStreet.setText(user.getStreet());
-        ObservableList<TownHallBean> ths = null;
-        try{
-            ths = FXCollections.observableArrayList(townHallImpl.findAllTownHalls());
-        }catch (ReadException ex) {
-            Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
+          
         chBTownhall.setItems(ths);
+        chBTownhall.getSelectionModel().select(user.getTH());
         tfFullName.textProperty().addListener(this::textChanged);
         tfUsername.textProperty().addListener(this::textChanged);
         pfPassword.textProperty().addListener(this::textChanged);
