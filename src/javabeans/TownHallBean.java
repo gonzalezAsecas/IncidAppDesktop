@@ -7,123 +7,93 @@ package javabeans;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Lander Lluvia
  */
-@XmlRootElement(name="TownHallBean")
+@XmlRootElement(name="townHallBean")
 public class TownHallBean implements Serializable{
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty locality;
+    private final SimpleStringProperty email;
+    private final SimpleStringProperty telephoneNumber;
+    private final SimpleObjectProperty<List<LocationBean>> locations;
+    private final SimpleObjectProperty<List<UserBean>> users;
+
+    public TownHallBean(){
+        this.id = new SimpleIntegerProperty();
+        this.locality = new SimpleStringProperty();
+        this.email = new SimpleStringProperty();
+        this.telephoneNumber = new SimpleStringProperty();
+        this.locations = new SimpleObjectProperty<List<LocationBean>>();
+        this.users = new SimpleObjectProperty<List<UserBean>>();
+    }
     
-    private Integer id;
-    private String locality;
-    private String email;
-    private String telephoneNumber;
-    private List<LocationBean> locations;
-    private List<UserBean> users;
-
-    public TownHallBean(){}
-
-    public Integer getId() {
-        return id;
+    public TownHallBean(String locality, String email, String telephoneNumber) {
+        this.id = new SimpleIntegerProperty();
+        this.locality = new SimpleStringProperty(locality);
+        this.email = new SimpleStringProperty(email);
+        this.telephoneNumber = new SimpleStringProperty(telephoneNumber);
+        this.locations = new SimpleObjectProperty<List<LocationBean>>();
+        this.users = new SimpleObjectProperty<List<UserBean>>();
     }
 
+    
+    public Integer getId() {
+        return this.id.get();
+    }
+    
     public void setId(Integer id) {
-        this.id = id;
+        this.id.set(id);
     }
 
     public String getLocality() {
-        return locality;
+        return this.locality.get();
     }
 
     public void setLocality(String locality) {
-        this.locality = locality;
+        this.locality.set(locality);
     }
 
     public String getEmail() {
-        return email;
+        return this.email.get();
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email.set(email);
     }
 
     public String getTelephoneNumber() {
-        return telephoneNumber;
+        return this.telephoneNumber.get();
     }
 
     public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
+        this.telephoneNumber.set(telephoneNumber);
     }
-
-    @XmlTransient
-    public List<LocationBean> getLocations() {
-        return locations;
+    
+    public List<LocationBean> getLocations(List<LocationBean> locations) {
+        return this.locations.get();
     }
-
-    public void setLocations(List<LocationBean> locations) {
-        this.locations = locations;
+    
+    public void setLocation(List<LocationBean> locations) {
+        this.locations.set(locations);
     }
-
-    @XmlTransient
-    public List<UserBean> getUsers() {
-        return users;
+    
+    public List<UserBean> getUsers(List<UserBean> users) {
+        return this.users.get();
     }
-
+    
     public void setUsers(List<UserBean> users) {
-        this.users = users;
+        this.users.set(users);
     }
-
+    
     @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 47 * hash + Objects.hashCode(this.id);
-        hash = 47 * hash + Objects.hashCode(this.locality);
-        hash = 47 * hash + Objects.hashCode(this.email);
-        hash = 47 * hash + Objects.hashCode(this.telephoneNumber);
-        hash = 47 * hash + Objects.hashCode(this.locations);
-        hash = 47 * hash + Objects.hashCode(this.users);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final TownHallBean other = (TownHallBean) obj;
-        if (!Objects.equals(this.locality, other.locality)) {
-            return false;
-        }
-        if (!Objects.equals(this.email, other.email)) {
-            return false;
-        }
-        if (!Objects.equals(this.telephoneNumber, other.telephoneNumber)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.locations, other.locations)) {
-            return false;
-        }
-        if (!Objects.equals(this.users, other.users)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "TownHallBean{" + "idTownHall=" + id + ", locality=" + locality + ", email=" + email + ", telephoneNumber=" + telephoneNumber + ", locations=" + locations + ", users=" + users + '}';
+    public String toString(){
+        return this.getLocality();
     }
 }

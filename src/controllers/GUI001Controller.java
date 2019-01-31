@@ -5,7 +5,6 @@
  */
 package controllers;
 
-import exceptions.CreateException;
 import exceptions.ReadException;
 import factories.LogicFactory;
 import interfaces.iUser;
@@ -21,8 +20,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javabeans.Privilege;
-import javabeans.Status;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -82,17 +79,18 @@ public class GUI001Controller{
     protected Stage stage;
     
     /**
-     * The user that is login or logged in the application
-     */
-    protected UserBean user = new UserBean();
-    
-    /**
      * The setter of the stage
      * @param stage The stage of the application
      */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+    
+    /**
+     * The user that is login or logged in the application
+     */
+    protected UserBean user = new UserBean();
+    
     
     /**
      * the setter for the user
@@ -275,7 +273,7 @@ public class GUI001Controller{
         LOGGER.info("Beginning adminLogin");
         //Create the loader for the xml
         FXMLLoader loader=new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI007.fxml"));
+                .getResource("/fxmls/GUI007SDTH.fxml"));
         //Create the parent and load the tree
         Parent root;
         try{

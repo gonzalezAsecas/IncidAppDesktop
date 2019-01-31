@@ -8,24 +8,25 @@ package restfuls;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 
 /**
  * Jersey REST client generated for REST resource:IncidentRestFul [incident]<br>
  * USAGE:
  * <pre>
- *        IncidentRestFul client = new IncidentRestFul();
- *        Object response = client.XXX(...);
- *        // do whatever with response
- *        client.close();
- * </pre>
+        IncidentRestFul client = new IncidentRestFul();
+        Object response = client.XXX(...);
+        // do whatever with response
+        client.close();
+ </pre>
  *
- * @author Usuario
+ * @author Jon Gonzalez
  */
 public class IncidentRestFul {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:22461/grupo4/webresources";
+    private static final String BASE_URI = "http://localhost:8080/grupo4/webresources";
 
     public IncidentRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -46,7 +47,7 @@ public class IncidentRestFul {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
-    public <T> T findAll(Class<T> responseType) throws ClientErrorException {
+    public <T> T findAll(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }

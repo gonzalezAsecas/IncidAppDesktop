@@ -9,27 +9,27 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Gorka Redondo
  */
-@XmlRootElement(name="TypeBean")
+@XmlRootElement(name="typeBean")
 public class TypeBean implements Serializable{
-    private Integer id;
+    private Integer idType;
     private String name;
-    private Integer Severity;
+    private Integer severity;
     private List<IncidentBean> incidents;
 
-    public TypeBean(){}
-
-    public Integer getId() {
-        return id;
+    public TypeBean(){
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getIdType() {
+        return idType;
+    }
+
+    public void setIdType(Integer idType) {
+        this.idType = idType;
     }
 
     public String getName() {
@@ -41,14 +41,13 @@ public class TypeBean implements Serializable{
     }
 
     public Integer getSeverity() {
-        return Severity;
+        return severity;
     }
 
-    public void setSeverity(Integer Severity) {
-        this.Severity = Severity;
+    public void setSeverity(Integer severity) {
+        this.severity = severity;
     }
-
-    @XmlTransient
+    
     public List<IncidentBean> getIncidents() {
         return incidents;
     }
@@ -60,10 +59,10 @@ public class TypeBean implements Serializable{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.id);
-        hash = 67 * hash + Objects.hashCode(this.name);
-        hash = 67 * hash + Objects.hashCode(this.Severity);
-        hash = 67 * hash + Objects.hashCode(this.incidents);
+        hash = 61 * hash + Objects.hashCode(this.idType);
+        hash = 61 * hash + Objects.hashCode(this.name);
+        hash = 61 * hash + Objects.hashCode(this.severity);
+        hash = 61 * hash + Objects.hashCode(this.incidents);
         return hash;
     }
 
@@ -82,10 +81,10 @@ public class TypeBean implements Serializable{
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.idType, other.idType)) {
             return false;
         }
-        if (!Objects.equals(this.Severity, other.Severity)) {
+        if (!Objects.equals(this.severity, other.severity)) {
             return false;
         }
         if (!Objects.equals(this.incidents, other.incidents)) {
@@ -96,6 +95,6 @@ public class TypeBean implements Serializable{
 
     @Override
     public String toString() {
-        return "TypeBean{" + "idType=" + id + ", name=" + name + ", Severity=" + Severity + ", incidents=" + incidents + '}';
+        return name;
     }
 }

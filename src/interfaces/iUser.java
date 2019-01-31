@@ -11,6 +11,7 @@ import exceptions.ReadException;
 import exceptions.UpdateException;
 import java.util.List;
 import javabeans.UserBean;
+import javax.ws.rs.ClientErrorException;
 
 /**
  * The interface for the user bean
@@ -31,7 +32,7 @@ public interface iUser {
      * @param user the user is going to be modified
      * @throws UpdateException if there is any problem modifying the user
      */
-    public void editUser(UserBean user) throws UpdateException;
+    public void editUser(UserBean user, Boolean pass) throws UpdateException;
     
     /**
      * The method for delete an user
@@ -69,4 +70,12 @@ public interface iUser {
      * @throws ReadException if there is any problem finding the user to change the password
      */
     public void findUserToChangePassword(UserBean user) throws ReadException;
+    
+    /**
+     * 
+     * @param user
+     * @param password
+     * @throws ClientErrorException 
+     */
+    public void findUserToConfirmPassword(UserBean user, byte[] password) throws ClientErrorException;
 }

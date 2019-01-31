@@ -5,18 +5,44 @@
  */
 package implementations;
 
+import static implementations.FTPCliente.LOGGER;
 import exceptions.ReadException;
 import interfaces.iType;
+import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 import javabeans.TypeBean;
+import javax.ws.rs.core.GenericType;
+import restfuls.TypeRestFul;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Gorka Redondo
  */
 public class TypeImplementation implements iType{
+    
+    //REST incident web client
+    private TypeRestFul webClient;
+
+    public TypeImplementation() {
+        webClient = new TypeRestFul();
+    }
+    
+    /**
+     * 
+     * @return types
+     * @throws ReadException 
+     */
     @Override
-    public List<TypeBean> findAllTypes() throws ReadException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection<TypeBean> findAllTypes() throws ReadException {
+        List<TypeBean> types = null;
+        try{
+            types = webClient.findAll(new GenericType<List<TypeBean>>() {});
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE,
+                "Exception finding all types",ex.getMessage());
+            throw new ReadException("Error finding all types:\n"+ex.getMessage());
+        }
+        return types;
     }
 }

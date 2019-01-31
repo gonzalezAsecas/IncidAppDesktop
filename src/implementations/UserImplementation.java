@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.UserBean;
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.GenericType;
 import javax.xml.bind.DatatypeConverter;
 import restfuls.UserRestFul;
@@ -59,11 +60,11 @@ public class UserImplementation implements iUser{
      * @throws UpdateException if there is any problem modifying the user
      */
     @Override
-    public void editUser(UserBean user) throws UpdateException {
+    public void editUser(UserBean user, Boolean pass) throws UpdateException {
         LOGGER.info("UserImplementation: Beginning the modification of the user.");
         try{
             //modify the user
-            userRest.edit(user, "true");
+            userRest.edit(user, pass.toString());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception modifing the user.", ex);
             throw new UpdateException();
@@ -168,5 +169,23 @@ public class UserImplementation implements iUser{
             throw new ReadException();
         }
         LOGGER.info("UserImplementation: Ending the search of the user for change the password");
+    }
+    
+    /**
+     * 
+     * @param user
+     * @param password
+     * @throws ClientErrorException 
+     */
+    @Override
+    public void findUserToConfirmPassword(UserBean user, byte[] password) throws ClientErrorException{
+        LOGGER.info("UserImplementation: beginning findUserToConfirmPassword");
+        try{
+            userRest.findUserbyLogin(UserBean.class, user.getLogin(), DatatypeConverter.printHexBinary(password));
+        }catch(ClientErrorException ex){
+            LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding an user to confirm password", ex);
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE, "UserImplementation: an error have ocurred in findUserToConfirmPassword", e);
+        }
     }
 }

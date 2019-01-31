@@ -5,7 +5,6 @@
  */
 package restfuls;
 
-import java.util.ResourceBundle;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -15,11 +14,11 @@ import javax.ws.rs.core.GenericType;
  * Jersey REST client generated for REST resource:UserRestFul [user]<br>
  * USAGE:
  * <pre>
- *        UserRestFul client = new UserRestFul();
- *        Object response = client.XXX(...);
- *        // do whatever with response
- *        client.close();
- * </pre>
+        UserRestFul client = new UserRestFul();
+        Object response = client.XXX(...);
+        // do whatever with response
+        client.close();
+ </pre>
  *
  * @author Jon Gonzalez
  */
@@ -27,9 +26,7 @@ public class UserRestFul {
 
     private WebTarget webTarget;
     private Client client;
-    private ResourceBundle properties = ResourceBundle
-                    .getBundle("properties/Properties");;
-    private final String BASE_URI = properties.getString("server_url");
+    private static final String BASE_URI = "http://localhost:8080/grupo4/webresources";
 
     public UserRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();

@@ -2,16 +2,17 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI003Controller">
@@ -45,63 +46,62 @@
             <VBox HBox.hgrow="ALWAYS">
                <children>
                   <AnchorPane VBox.vgrow="NEVER">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                      <children>
-                        <Label fx:id="lblTitle" layoutX="14.0" layoutY="22.0" text="Title:" AnchorPane.topAnchor="22.0" />
-                        <TextField fx:id="txtFTitle" layoutX="50.0" layoutY="18.0" prefHeight="25.0" prefWidth="248.0" AnchorPane.topAnchor="20.0" />
-                        <Label fx:id="lblType" layoutX="336.0" layoutY="22.0" text="Type:" AnchorPane.topAnchor="22.0" />
-                        <ChoiceBox fx:id="chcType" layoutX="375.0" layoutY="18.0" prefWidth="150.0" AnchorPane.topAnchor="20.0" />
-                        <Label fx:id="lblEstate" layoutX="568.0" layoutY="22.0" text="Estate:" AnchorPane.topAnchor="22.0" />
-                        <ChoiceBox fx:id="chcEstate" layoutX="613.0" layoutY="18.0" prefWidth="150.0" AnchorPane.topAnchor="20.0" />
+                        <Label fx:id="lblFind" layoutX="14.0" layoutY="15.0" text="Find incidents:" />
+                        <RadioButton fx:id="rbtnAll" layoutX="175.0" layoutY="15.0" mnemonicParsing="false" selected="true" text="All">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="filter" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="rbtnMyZone" layoutX="275.0" layoutY="15.0" mnemonicParsing="false" text="My zone" toggleGroup="$filter" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane VBox.vgrow="ALWAYS">
+                     <children>
+                        <TableView fx:id="tbIncidents" layoutX="14.0" layoutY="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+                           <columns>
+                              <TableColumn fx:id="tCTitle" maxWidth="-1.0" minWidth="175.0" prefWidth="-1.0" text="Title" />
+                              <TableColumn fx:id="tCDescription" maxWidth="-1.0" minWidth="175.0" prefWidth="-1.0" text="Description" />
+                              <TableColumn fx:id="tCLocation" maxWidth="-1.0" minWidth="175.0" prefWidth="-1.0" text="Location" />
+                              <TableColumn fx:id="tCType" maxWidth="-1.0" minWidth="175.0" prefWidth="-1.0" text="Type" />
+                              <TableColumn fx:id="tCEstate" maxWidth="-1.0" minWidth="171.0" prefWidth="-1.0" text="Estate" />
+                           </columns>
+                        </TableView>
                      </children>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </AnchorPane>
-                  <AnchorPane VBox.vgrow="ALWAYS">
-                     <children>
-                        <TableView fx:id="tableView" layoutX="14.0" layoutY="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
-                           <columns>
-                              <TableColumn fx:id="tCTitle" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Title" />
-                              <TableColumn fx:id="tCDescription" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Description" />
-                              <TableColumn fx:id="tCLocation" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Location" />
-                              <TableColumn fx:id="tCType" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Type" />
-                              <TableColumn fx:id="tCEstate" maxWidth="145.0" minWidth="97.0" prefWidth="97.0" text="Estate" />
-                              <TableColumn fx:id="tCSignatures" minWidth="180.0" prefWidth="59.0" text="Number of Signatures" />
-                           </columns>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
                </children>
             </VBox>
-            <VBox prefHeight="551.0" prefWidth="140.0">
+            <Pane prefWidth="10.0" />
+            <VBox>
                <children>
-                  <Button fx:id="btnFilter" mnemonicParsing="false" prefWidth="120.0" text="Filter">
-                     <VBox.margin>
-                        <Insets left="10.0" top="20.0" />
-                     </VBox.margin>
-                  </Button>
+                  <Pane prefHeight="80.0" />
                   <Button fx:id="btnAddIncident" mnemonicParsing="false" prefWidth="120.0" text="Add new incident">
                      <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </Button>
                   <Button fx:id="btnModifyIncident" mnemonicParsing="false" prefWidth="120.0" text="Modify incident">
                      <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets top="15.0" />
                      </VBox.margin>
                   </Button>
                   <Button fx:id="btnDelete" mnemonicParsing="false" prefWidth="120.0" text="Delete">
                      <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="btnCollectSignatures" mnemonicParsing="false" prefWidth="120.0" text="Collect signatures">
-                     <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets top="15.0" />
                      </VBox.margin>
                   </Button>
                </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </VBox>
+            <Pane prefWidth="10.0" />
          </children>
       </HBox>
    </children>
