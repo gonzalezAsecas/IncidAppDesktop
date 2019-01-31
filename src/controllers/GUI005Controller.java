@@ -333,7 +333,7 @@ public class GUI005Controller extends THUserGenericController{
         try {
             FTP.logout();
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "An error have ocurred in the menu item incident event", ex);
         }
         super.handleIncidents(event);
     }
@@ -346,7 +346,7 @@ public class GUI005Controller extends THUserGenericController{
         try {
             FTP.logout();
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "An error have ocurred in the menu item info event", ex);
         }
         super.handleInfo(event);
     }
@@ -359,7 +359,7 @@ public class GUI005Controller extends THUserGenericController{
         try {
             FTP.logout();
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "", ex);
+            LOGGER.log(Level.SEVERE, "An error have ocurred in the menu item logout event", ex);
         }
         super.handleLogOut(event);
     }

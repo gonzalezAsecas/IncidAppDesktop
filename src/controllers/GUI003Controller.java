@@ -110,8 +110,8 @@ public class GUI003Controller extends THUserGenericController {
         try {
             incidents = FXCollections
                 .observableArrayList(incidentManager.findAllIncidents());
-            /*incidentsMyZone = FXCollections
-                .observableArrayList(incidentManager.findIncidentsByUser(user));*/
+            incidentsMyZone = FXCollections
+                .observableArrayList(incidentManager.findIncidentsByUser(user));
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE,
                 "Exception finding all or my zone incidents",ex.getMessage());

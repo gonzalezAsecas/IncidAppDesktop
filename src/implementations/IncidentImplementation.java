@@ -11,6 +11,7 @@ import exceptions.DeleteException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
 import interfaces.iIncident;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -114,7 +115,7 @@ public class IncidentImplementation implements iIncident {
     public Collection<IncidentBean> findIncidentsByUser(UserBean user) throws ReadException {
         LOGGER.info("Finding incidents by user");
         List<IncidentBean> incidentsAll = null;
-        List<IncidentBean> incidents = null;
+        List<IncidentBean> incidents = new ArrayList<IncidentBean>();
         try{
             incidentsAll = webClient.findAll(new GenericType<List<IncidentBean>>() {});
             for(IncidentBean in : incidentsAll){

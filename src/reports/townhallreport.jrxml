@@ -3,10 +3,10 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-        <field name="locality" class="java.lang.String"/>
+	<field name="locality" class="java.lang.String"/>
 	<field name="email" class="java.lang.String"/>
-        <field name="telephone" class="java.lang.String"/>
-        <background>
+	<field name="telephoneNumber" class="java.lang.String"/>
+	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
@@ -59,8 +59,8 @@
 				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="425" y="49" width="90" height="20" uuid="04b3fda3-a693-4983-a2e3-15557d8866bd"/>
-				<textFieldExpression><![CDATA[$F{telephone}]]></textFieldExpression>
+				<reportElement x="425" y="49" width="103" height="20" uuid="04b3fda3-a693-4983-a2e3-15557d8866bd"/>
+				<textFieldExpression><![CDATA[$F{telephoneNumber}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

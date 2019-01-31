@@ -40,12 +40,6 @@ public class THUserGenericController {
      * The stage for the scene
      */
     protected Stage stage;
-    
-    /**
-     * The user that is login or logged in the application
-     */
-    protected UserBean user;
-    
     /**
      * The setter of the stage
      * @param stage The stage of the application
@@ -55,24 +49,33 @@ public class THUserGenericController {
     }
     
     /**
+     * The user that is login or logged in the application
+     */
+    protected UserBean user;
+    /**
      * the setter for the town hall user
      * @param user the object for the user
      */
     public void setUser(UserBean user) {
         this.user = user;
+    } 
+    
+    /**
+     * The business logic object
+     */
+    protected iUser userManager = LogicFactory.getiUser();
+    /**
+     * The setter of the userManager
+     * @param userManager The userManager of the application
+     */
+    public void setUserManager(iUser userManager) {
+        this.userManager = userManager;
     }
     
     /**
      * incident
      */
     protected IncidentBean incident;
-    /**
-     * The getter of the incident
-     * @return incident The incident of the application
-     */
-    public IncidentBean getIncident() {
-        return incident;
-    }
     /**
      * The setter of the incident
      * @param incident The incident of the application
@@ -81,18 +84,10 @@ public class THUserGenericController {
         this.incident = incident;
     }
     
-    
     /**
      * The business logic object
      */
     protected iIncident incidentManager = LogicFactory.getiIncident();
-    /**
-     * The getter of the incidentManager
-     * @return incidentManager The incidentManager of the application
-     */
-    public iIncident getIncidentManager() {
-        return incidentManager;
-    }
     /**
      * The setter of the incidentManager
      * @param incidentManager The incidentManager of the application
@@ -106,13 +101,6 @@ public class THUserGenericController {
      */
     protected iType typeManager = LogicFactory.getiType();
     /**
-     * The getter of the typeManager
-     * @return typeManager The typeManager of the application
-     */
-    public iType getTypeManager() {
-        return typeManager;
-    }
-    /**
      * The setter of the typeManager
      * @param typeManager The typeManager of the application
      */
@@ -124,13 +112,6 @@ public class THUserGenericController {
      * The business logic object
      */
     protected iTownHall townHallManager = LogicFactory.getiTownHall();
-    /**
-     * The getter of the townHallManager
-     * @return townHallManager The townHallManager of the application
-     */
-    public iTownHall getTownHallManager() {
-        return townHallManager;
-    }
     /**
      * The setter of the townHallManager
      * @param townHallManager The townHallManager of the application
@@ -144,37 +125,11 @@ public class THUserGenericController {
      */
     protected iLocation locationManager = LogicFactory.getiLocation();
     /**
-     * The getter of the locationManager
-     * @return locationManager The locationManager of the application
-     */
-    public iLocation getLocationManager() {
-        return locationManager;
-    }
-    /**
      * The setter of the locationManager
      * @param locationManager The locationManager of the application
      */
     public void setLocationManager(iLocation locationManager) {
         this.locationManager = locationManager;
-    }
-    
-    /**
-     * The business logic object
-     */
-    protected iUser userManager = LogicFactory.getiUser();
-    /**
-     * The getter of the userManager
-     * @return userManager The userManager of the application
-     */
-    public iUser getUserManager() {
-        return userManager;
-    }
-    /**
-     * The setter of the userManager
-     * @param userManager The userManager of the application
-     */
-    public void setUserManager(iUser userManager) {
-        this.userManager = userManager;
     }
     
     /**
@@ -229,6 +184,78 @@ public class THUserGenericController {
             LOGGER.log(Level.SEVERE, "An error loading GUI003Controller.", 
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI003Controller.");
+        }
+    }
+    
+    /**
+     * Load the GUI004 xml and pass the control to it controller 
+     * @param event
+     */
+    public void handleIncidentsEmpty(ActionEvent event) {
+        //Create the loader for the xml
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/fxmls/GUI004SAMI.fxml"));
+        //Create the parent and load the tree
+        Parent root;
+        try{
+            root = (Parent) loader.load();
+            //Create the Stage
+            Stage gui004Stage = new Stage();
+            //Load de controller
+            GUI004Controller controller = loader.getController();
+            //Set the new stage
+            controller.setStage(gui004Stage);
+            //Pass the user to the next window
+            controller.setUser(user);
+            //Pass the control to the controller
+            controller.initStage(root);
+            //Hide this stage
+            stage.hide();
+        }catch(IOException ex) {
+            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }
+    }
+    
+    /**
+     * Load the GUI004 xml and pass the control to it controller 
+     * @param event
+     */
+    public void handleIncidentsFull(ActionEvent event) {
+        //Create the loader for the xml
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/fxmls/GUI004SAMI.fxml"));
+        //Create the parent and load the tree
+        Parent root;
+        try{
+            root = (Parent) loader.load();
+            //Create the Stage
+            Stage gui004Stage = new Stage();
+            //Load de controller
+            GUI004Controller controller = loader.getController();
+            //Set the new stage
+            controller.setStage(gui004Stage);
+            //Pass the user to the next window
+            controller.setUser(user);
+            //Pass the incident to the next window
+            controller.setIncident(incident);
+            //Pass the control to the controller
+            controller.initStage(root);
+            //Hide this stage
+            stage.hide();
+        }catch(IOException ex) {
+            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
+                    ex.getMessage());
+            this.getAlert("A error have ocurred loading the GUI004Controller.");
         }
     }
     
@@ -312,81 +339,5 @@ public class THUserGenericController {
         if(alert.showAndWait().get().equals(ButtonType.OK)){
             stage.close();
         }
-    }
-    
-    
-    /**
-     * Load the GUI004 xml and pass the control to it controller 
-     * @param event
-     */
-    public void handleIncidentsEmpty(ActionEvent event) {
-        //Create the loader for the xml
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI004SAMI.fxml"));
-        //Create the parent and load the tree
-        Parent root;
-        try{
-            root = (Parent) loader.load();
-            //Create the Stage
-            Stage gui004Stage = new Stage();
-            //Load de controller
-            GUI004Controller controller = loader.getController();
-            //Set the new stage
-            controller.setStage(gui004Stage);
-            //Pass the user to the next window
-            controller.setUser(user);
-            //Pass the control to the controller
-            controller.initStage(root);
-            //Hide this stage
-            stage.hide();
-        }catch(IOException ex) {
-            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
-                    ex.getMessage());
-            ex.printStackTrace();
-            this.getAlert("A error have ocurred loading the GUI004Controller.");
-        }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
-                    ex.getMessage());
-            ex.printStackTrace();
-            this.getAlert("A error have ocurred loading the GUI004Controller.");
-        }
-    }
-    
-    /**
-     * Load the GUI004 xml and pass the control to it controller 
-     * @param event
-     */
-    public void handleIncidentsFull(ActionEvent event) {
-        //Create the loader for the xml
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI004SAMI.fxml"));
-        //Create the parent and load the tree
-        Parent root;
-        try{
-            root = (Parent) loader.load();
-            //Create the Stage
-            Stage gui004Stage = new Stage();
-            //Load de controller
-            GUI004Controller controller = loader.getController();
-            //Set the new stage
-            controller.setStage(gui004Stage);
-            //Pass the user to the next window
-            controller.setUser(user);
-            //Pass the incident to the next window
-            controller.setIncident(incident);
-            //Pass the control to the controller
-            controller.initStage(root);
-            //Hide this stage
-            stage.hide();
-        }catch(IOException ex) {
-            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
-                    ex.getMessage());
-            this.getAlert("A error have ocurred loading the GUI004Controller.");
-        }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
-                    ex.getMessage());
-            this.getAlert("A error have ocurred loading the GUI004Controller.");
-        }
-    }
-    
+    } 
 }

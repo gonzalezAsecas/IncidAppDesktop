@@ -5,6 +5,7 @@
  */
 package restfuls;
 
+import java.util.ResourceBundle;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -26,7 +27,9 @@ public class IncidentRestFul {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/grupo4/webresources";
+    private ResourceBundle properties = ResourceBundle
+                    .getBundle("properties/Properties");
+    private final String BASE_URI = properties.getString("server_url");
 
     public IncidentRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
