@@ -7,37 +7,42 @@ package javabeans;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Lander Lluvia
+ * @author Gorka Redondo
  */
-@XmlRootElement(name="location")
+@XmlRootElement(name="locationBean")
 public class LocationBean implements Serializable{
-    private final SimpleIntegerProperty id;
+    private final SimpleIntegerProperty idLocation;
     private final SimpleStringProperty street;
     private final SimpleObjectProperty<TownHallBean> townHall;
     private final SimpleObjectProperty<List<IncidentBean>> incidents;
 
-    public LocationBean(){
-        this.id = new SimpleIntegerProperty();
+    public LocationBean() {
+        this.idLocation = new SimpleIntegerProperty();
         this.street = new SimpleStringProperty();
-        this.townHall = new SimpleObjectProperty<TownHallBean>();
+        this.townHall = new SimpleObjectProperty();
         this.incidents = new SimpleObjectProperty<List<IncidentBean>>();
     }
 
-    public Integer getId() {
-        return this.id.get();
+    public LocationBean(String street, TownHallBean townHall) {
+        this.idLocation = new SimpleIntegerProperty();
+        this.street = new SimpleStringProperty(street);
+        this.townHall = new SimpleObjectProperty(townHall);
+        this.incidents = new SimpleObjectProperty<List<IncidentBean>>();
     }
 
+    public Integer getIdLocation() {
+        return this.idLocation.get();
+    }
+    
     public void setIdLocation(Integer idLocation) {
-        this.id.set(idLocation);
+        this.idLocation.set(idLocation);
     }
 
     public String getStreet() {
@@ -55,11 +60,17 @@ public class LocationBean implements Serializable{
     public void setTownHall(TownHallBean townHall) {
         this.townHall.set(townHall);
     }
+
     public List<IncidentBean> getIncidents() {
         return this.incidents.get();
     }
 
     public void setIncidents(List<IncidentBean> incidents) {
         this.incidents.set(incidents);
+    }
+
+    @Override
+    public String toString() {
+        return this.getStreet();
     }
 }

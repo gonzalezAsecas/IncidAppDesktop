@@ -307,6 +307,7 @@ public class GUI006Controller {
      * @param event 
      */
     public void handleUpdate(ActionEvent event){
+        /*
         LOGGER.info("Begginning handleUpdate()");
         try{
             if(fieldsAreFilled()){
@@ -323,7 +324,7 @@ public class GUI006Controller {
                             th = townHallImpl.findTownHallbyId(th);
                             user.setTH(th);
                             user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-                            userImpl.editUser(user);
+                            //userImpl.editUser(user, true);
                             confirmPassword();
                             }
                     }else{
@@ -335,9 +336,8 @@ public class GUI006Controller {
                         th.setLocality(chBTownhall.getSelectionModel().getSelectedItem().toString());
                         th = townHallImpl.findTownHallbyId(th);
                         user.setTH(th);
-                        user.setLastPasswordChange(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-                        userImpl.editUser(user);
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Your data has been changed. We have sent an email to confirm!", ButtonType.OK);
+                        //userImpl.editUser(user, false);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Your data has been changed.", ButtonType.OK);
                         alert.showAndWait();
                     }
                 }else{
@@ -349,7 +349,7 @@ public class GUI006Controller {
             Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ReadException ex) {
             Logger.getLogger(GUI006Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     } 
      
     /**

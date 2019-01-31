@@ -20,8 +20,9 @@ import javax.xml.bind.DatatypeConverter;
 import restfuls.UserRestFul;
 
 /**
- *
+ * The implementation of the iuser interface
  * @author Jon Gonzalez
+ * @version 1.0
  */
 public class UserImplementation implements iUser{
     
@@ -36,142 +37,155 @@ public class UserImplementation implements iUser{
     UserRestFul userRest = new UserRestFul();
     
     /**
-     * Create the user if there isn't any with this login
-     * @param user
-     * @throws CreateException 
+     * The method for create and user
+     * @param user the user is going to be created
+     * @throws CreateException if there are any error creating the user
      */
     @Override
     public void createUser(UserBean user) throws CreateException {
         LOGGER.info("UserImplementation: Beginning the creation of the user.");
         try{
+            //create the user
             userRest.create(user);
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception creating the user.", ex);
-            throw new CreateException("UserImplememtatio: Error creating an user");
+            throw new CreateException("");
         }
         LOGGER.info("UserImplementation: Ending the creation of the user.");
     }
     
     /**
-     * 
-     * @param user
-     * @throws UpdateException 
+     * The method for modify an user
+     * @param user the user is going to be modified
+     * @throws UpdateException if there is any problem modifying the user
      */
     @Override
     public void editUser(UserBean user) throws UpdateException {
         LOGGER.info("UserImplementation: Beginning the modification of the user.");
         try{
+            //modify the user
             userRest.edit(user);
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception modifing the user.", ex);
-            throw new UpdateException("UserImplementation: Error updating an user");
+            throw new UpdateException("");
         }
-        LOGGER.info("UserImplementation: Ending");
+        LOGGER.info("UserImplementation: ");
     }
     
     /**
-     * 
-     * @param user
-     * @throws DeleteException 
+     * The method for delete an user
+     * @param user the user is going to be deleted
+     * @throws DeleteException if there is any problem deleting the user
      */
     @Override
     public void removeUser(UserBean user) throws DeleteException {
         LOGGER.info("UserImplementation: Beginning the erasing of the user.");
         try{
+            //remove the user
             userRest.remove(user.getId().toString());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception deleting the user.", ex);
-            throw new DeleteException("UserImplementation: Error deleting an user");
+            throw new DeleteException("");
         }
+        LOGGER.info("UserImplementation: ");
     }
     
     /**
-     * 
-     * @param user
-     * @return
-     * @throws ReadException 
+     * The method for search an user by it id
+     * @param user the user is going to be found with her id
+     * @return the user if is found
+     * @throws ReadException if there is any problem finding by id the user
      */
     @Override
     public UserBean findUserbyId(UserBean user) throws ReadException {
         LOGGER.info("UserImplementation: Beginning the creation of the user.");
         try{
+            //find the user by id sending the clas and the id
             user = userRest.find(UserBean.class, user.getId().toString());
             LOGGER.info("UserImplementation: ");
             return user;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user by id.", ex);
-            throw new ReadException("UserImplementation: Error creating an user");
+            throw new ReadException("");
         }
         
     }
     
     /**
-     * 
-     * @return
-     * @throws ReadException 
+     * The method for find all users
+     * @return all the users in the database
+     * @throws ReadException if there is any problem finding the users
      */
     @Override
     public List<UserBean> findAllUsers() throws ReadException {
         LOGGER.info("UserImplementation: ");
         List<UserBean> us;
         try{
+            //finding the users
             us = userRest.findAll(new GenericType<List<UserBean>>() {});
             LOGGER.info("UserImplementation: ");
             return us;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding all the users.", ex);
-            throw new ReadException("UserImplementation: Error finding all users");
+            throw new ReadException("");
         }
     }
     
     /**
-     * 
-     * @param user
-     * @return
-     * @throws ReadException 
+     * The method for search an user by it login
+     * @param user the user is going to be finded with her login
+     * @return the user if is finded
+     * @throws ReadException if there is any problem finding by login the user
      */
     @Override
     public UserBean findUserbyLogin(UserBean user) throws ReadException {
         LOGGER.info("UserImplementation: ");
         try{
+            //finding the user by loging sending the login and the password 
+            //encrypted in hexadecimal
             user = userRest.findUserbyLogin(UserBean.class, user.getLogin(), 
                     DatatypeConverter.printHexBinary(user.getPassword()));
             LOGGER.info("UserImplementation: ");
             return user;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user by login.", ex);
-            throw new ReadException("UserImplementation: Error finding an user");
+            throw new ReadException("");
         }
     }
     
     /**
-     * 
-     * @param user
-     * @throws ReadException 
+     * The method for change the password of a user
+     * @param user the user is going to change the password
+     * @throws ReadException if there is any problem finding the user to change the password
      */
     @Override
     public void findUserToChangePassword(UserBean user) throws ReadException {
         LOGGER.info("UserImplementation: Beginning the search of the user for change the password");
         try{
+            //searching the user for change the password
             userRest.findUserToChangePassword(UserBean.class, user.getLogin());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user to change the password.", ex);
-            throw new ReadException("UserImplementation: Error finding an user");
+            throw new ReadException("");
         }
         LOGGER.info("UserImplementation: Ending the search of the user for change the password");
     }
     
+    /**
+     * 
+     * @param user
+     * @param password
+     * @throws ClientErrorException 
+     */
     @Override
-    public void findUserToConfirmPassword(UserBean user, byte[] pass) throws ClientErrorException{
-        LOGGER.info("UserImplementation: Begginning findUserToConfirmPassword()");
+    public void findUserToConfirmPassword(UserBean user, byte[] password) throws ClientErrorException{
+        LOGGER.info("UserImplementation: beginning findUserToConfirmPassword");
         try{
-            userRest.findUserbyLogin(UserBean.class, user.getLogin(), DatatypeConverter.printHexBinary(pass));
+            userRest.findUserbyLogin(UserBean.class, user.getLogin(), DatatypeConverter.printHexBinary(password));
         }catch(ClientErrorException ex){
-            LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding an user to confirm password");
-            throw new ClientErrorException(ex.getMessage(), -1);
+            LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding an user to confirm password", ex);
         }catch(Exception e){
-            LOGGER.log(Level.SEVERE, "UserImplentation: An error ocurred during findUserToConfirmPassword()");
+            LOGGER.log(Level.SEVERE, "UserImplementation: an error have ocurred in findUserToConfirmPassword", e);
         }
     }
-        
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.TownHallBean;
+import javabeans.UserBean;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.GenericType;
 import restfuls.TownHallRestFul;

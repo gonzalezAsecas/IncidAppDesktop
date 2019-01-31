@@ -6,7 +6,9 @@
 package controllers;
 
 import factories.LogicFactory;
+import interfaces.iLocation;
 import interfaces.iTownHall;
+import interfaces.iUser;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +46,8 @@ public class AdminGenericController {
         this.user = user;
     }
     
+    protected iUser userImpl = LogicFactory.getiUser();
+    protected iLocation locationImpl = LogicFactory.getiLocation();
     protected iTownHall townHallImpl = LogicFactory.getiTownHall();
     
     protected TownHallBean townhall;

@@ -76,7 +76,7 @@ public class TownHallBean implements Serializable{
         this.telephoneNumber.set(telephoneNumber);
     }
     
-    public List<LocationBean> getLocations(List<LocationBean> locations) {
+    public List<LocationBean> getLocations() {
         return this.locations.get();
     }
     
@@ -84,7 +84,7 @@ public class TownHallBean implements Serializable{
         this.locations.set(locations);
     }
     
-    public List<UserBean> getUsers(List<UserBean> users) {
+    public List<UserBean> getUsers() {
         return this.users.get();
     }
     
