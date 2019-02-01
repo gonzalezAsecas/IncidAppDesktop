@@ -15,8 +15,9 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 /**
- *
+ * The java class for initialize the application
  * @author Jon Gonzalez
+ * @version 2.0
  */
 public class Application extends javafx.application.Application{
     

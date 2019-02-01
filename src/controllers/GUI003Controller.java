@@ -10,7 +10,6 @@ import exceptions.DeleteException;
 import exceptions.ReadException;
 import java.util.logging.Level;
 import javabeans.IncidentBean;
-import javabeans.UserBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,7 +67,6 @@ public class GUI003Controller extends THUserGenericController {
     private ObservableList<IncidentBean> incidents = null;
     private ObservableList<IncidentBean> incidentsMyZone = null;
     
-    private UserBean userr;
     
     /**
      * Set and initialize the stage and its properties.
@@ -86,6 +84,7 @@ public class GUI003Controller extends THUserGenericController {
         stage.setResizable(true);
         //Set the window's event handlers handle
         stage.setOnShowing(this::OnShowingHandler);
+        mIncidents.setOnAction((event) -> handleIncidents(event));
         mFiles.setOnAction((event) -> handleFiles(event));
         mUserInfo.setOnAction((event) -> handleInfo(event));
         mLogOut.setOnAction((event) -> handleLogOut(event));
@@ -107,7 +106,6 @@ public class GUI003Controller extends THUserGenericController {
      * load all the incidents
      */
     private void loadData() {
-        UserBean userr = new UserBean();
         try {
             incidents = FXCollections
                 .observableArrayList(incidentManager.findAllIncidents());
@@ -131,6 +129,7 @@ public class GUI003Controller extends THUserGenericController {
      */
     public void OnShowingHandler(WindowEvent event){
         LOGGER.info("Beginning OnShowingHandler");
+        mIncidents.setDisable(true);
         btnAddIncident.setMnemonicParsing(true);
         btnAddIncident.setText("_Add Incident");
         btnModifyIncident.setMnemonicParsing(true);
@@ -163,7 +162,7 @@ public class GUI003Controller extends THUserGenericController {
      */
     public void handleDelete(ActionEvent event){
         LOGGER.info("Beginning handleDelete");
-        if (getAlert("Are you sure?").equals(ButtonType.OK)) {
+        if (getAlertConfirmation("Are you sure?").equals(ButtonType.OK)) {
             try {
                 incidentManager.removeIncident(incident);
                 tbIncidents.getItems().remove(incident);

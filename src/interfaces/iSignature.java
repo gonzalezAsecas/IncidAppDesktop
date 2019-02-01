@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javabeans;
+package interfaces;
 
 /**
  *
  * @author Jon Gonzalez
  */
-public enum Privilege {
-    USER,
-    TOWNHALLUSER,
-    ADMIN
+public interface iSignature {
+    
 }

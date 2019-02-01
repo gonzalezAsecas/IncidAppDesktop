@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers;
+package interfaces;
 
 /**
  *
  * @author Jon Gonzalez
  */
-public class GUI009UpdateController {
-    
+public interface iMongo {
+    public void loginUser(String login);
+    public void deleteUser(String login);
 }

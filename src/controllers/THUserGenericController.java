@@ -5,7 +5,6 @@
  */
 package controllers;
 
-import exceptions.ReadException;
 import factories.LogicFactory;
 import interfaces.iIncident;
 import interfaces.iLocation;
@@ -42,13 +41,6 @@ public class THUserGenericController {
      */
     protected Stage stage;
     /**
-     * The getter of the stage
-     * @return stage The stage of the application
-     */
-    public Stage getStage() {
-        return stage;
-    }
-    /**
      * The setter of the stage
      * @param stage The stage of the application
      */
@@ -56,17 +48,11 @@ public class THUserGenericController {
         this.stage = stage;
     }
     
+    
     /**
      * user
      */
     protected UserBean user;
-    /**
-     * The getter of the user
-     * @return user The user of the application
-     */
-    public UserBean getUser() {
-        return user;
-    }
     /**
      * The setter of the user
      * @param user The user of the application
@@ -74,6 +60,10 @@ public class THUserGenericController {
     public void setUser(UserBean user) {
         this.user = user;
     }
+    /**
+     * The business logic object
+     */
+    protected iUser userManager = LogicFactory.getiUser();
     
     
     /**
@@ -81,117 +71,34 @@ public class THUserGenericController {
      */
     protected IncidentBean incident;
     /**
-     * The getter of the incident
-     * @return incident The incident of the application
-     */
-    public IncidentBean getIncident() {
-        return incident;
-    }
-    /**
      * The setter of the incident
      * @param incident The incident of the application
      */
     public void setIncident(IncidentBean incident) {
         this.incident = incident;
     }
-    
-    
     /**
      * The business logic object
      */
     protected iIncident incidentManager = LogicFactory.getiIncident();
-    /**
-     * The getter of the incidentManager
-     * @return incidentManager The incidentManager of the application
-     */
-    public iIncident getIncidentManager() {
-        return incidentManager;
-    }
-    /**
-     * The setter of the incidentManager
-     * @param incidentManager The incidentManager of the application
-     */
-    public void setIncidentManager(iIncident incidentManager) {
-        this.incidentManager = incidentManager;
-    }
     
     
     /**
      * The business logic object
      */
     protected iType typeManager = LogicFactory.getiType();
-    /**
-     * The getter of the typeManager
-     * @return typeManager The typeManager of the application
-     */
-    public iType getTypeManager() {
-        return typeManager;
-    }
-    /**
-     * The setter of the typeManager
-     * @param typeManager The typeManager of the application
-     */
-    public void setTypeManager(iType typeManager) {
-        this.typeManager = typeManager;
-    }
     
     
     /**
      * The business logic object
      */
     protected iTownHall townHallManager = LogicFactory.getiTownHall();
-    /**
-     * The getter of the townHallManager
-     * @return townHallManager The townHallManager of the application
-     */
-    public iTownHall getTownHallManager() {
-        return townHallManager;
-    }
-    /**
-     * The setter of the townHallManager
-     * @param townHallManager The townHallManager of the application
-     */
-    public void setTownHallManager(iTownHall townHallManager) {
-        this.townHallManager = townHallManager;
-    }
+    
     
     /**
      * The business logic object
      */
     protected iLocation locationManager = LogicFactory.getiLocation();
-    /**
-     * The getter of the locationManager
-     * @return locationManager The locationManager of the application
-     */
-    public iLocation getLocationManager() {
-        return locationManager;
-    }
-    /**
-     * The setter of the locationManager
-     * @param locationManager The locationManager of the application
-     */
-    public void setLocationManager(iLocation locationManager) {
-        this.locationManager = locationManager;
-    }
-    
-    /**
-     * The business logic object
-     */
-    protected iUser userManager = LogicFactory.getiUser();
-    /**
-     * The getter of the userManager
-     * @return userManager The userManager of the application
-     */
-    public iUser getUserManager() {
-        return userManager;
-    }
-    /**
-     * The setter of the userManager
-     * @param userManager The userManager of the application
-     */
-    public void setUserManager(iUser userManager) {
-        this.userManager = userManager;
-    }
     
     
     /**
@@ -201,6 +108,16 @@ public class THUserGenericController {
      */
     public ButtonType getAlert(String message){
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK, ButtonType.CANCEL);
+        return alert.showAndWait().get();
+    }
+    
+    /**
+     * The method for get a customized alert sending the message for the user
+     * @param message the message that the user is going to read 
+     * @return the type of the button clicked
+     */
+    public ButtonType getAlertConfirmation(String message){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.OK, ButtonType.CANCEL);
         return alert.showAndWait().get();
     }
     
@@ -233,7 +150,6 @@ public class THUserGenericController {
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI003Controller.");
         }catch(Exception ex){
-            ex.printStackTrace();
             LOGGER.log(Level.SEVERE, "An error loading GUI003Controller.", 
                     ex.getMessage());
             this.getAlert("A error have ocurred loading the GUI003Controller.");
@@ -331,7 +247,7 @@ public class THUserGenericController {
             //Set the new stage
             controller.setStage(gui005Stage);
             //Pass the user to the next window
-            //controller.setUser(user);
+            controller.setUser(user);
             //Pass the control to the controller
             controller.initStage(root);
             //Hide this stage
@@ -366,7 +282,7 @@ public class THUserGenericController {
             //Set the new stage
             controller.setStage(gui006Stage);
             //Pass the user to the next window
-            //controller.setUser(user);
+            controller.setUser(user);
             //Pass the control to the controller
             controller.initStage(root);
             //Hide this stage
@@ -387,7 +303,7 @@ public class THUserGenericController {
      * @param event 
      */
     public void handleLogOut(ActionEvent event){
-        if(getAlert("Do you want to exit the application?").equals(ButtonType.OK)){
+        if(getAlertConfirmation("Do you want to exit the application?").equals(ButtonType.OK)){
             stage.close();
         }
     }

@@ -6,15 +6,15 @@
 package implementations;
 
 import exceptions.CreateException;
-import static implementations.FTPCliente.LOGGER;
 import exceptions.ReadException;
 import interfaces.iLocation;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javabeans.LocationBean;
 import javax.ws.rs.core.GenericType;
-import restfuls.LocationRestFulClient;
+import restfuls.LocationRestFul;
 
 /**
  *
@@ -23,10 +23,12 @@ import restfuls.LocationRestFulClient;
 public class LocationImplementation implements iLocation{
     
     //REST incident web client
-    private LocationRestFulClient webClient;
+    private LocationRestFul webClient;
+    
+    protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
 
     public LocationImplementation() {
-        webClient = new LocationRestFulClient();
+        webClient = new LocationRestFul();
     }
     
     /**

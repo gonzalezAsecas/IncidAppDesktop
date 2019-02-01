@@ -11,26 +11,27 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 
 /**
- * Jersey REST client generated for REST resource:LocationRestFul [location]<br>
+ * Jersey REST client generated for REST resource:TownHallRestFul
+ * [townhall/th]<br>
  * USAGE:
  * <pre>
- *        LocationRestFulClient client = new LocationRestFulClient();
- *        Object response = client.XXX(...);
- *        // do whatever with response
- *        client.close();
- * </pre>
+        TownHallRestFul client = new TownHallRestFul();
+        Object response = client.XXX(...);
+        // do whatever with response
+        client.close();
+ </pre>
  *
- * @author Gorka Redondo
+ * @author Jon Gonzalez
  */
-public class LocationRestFulClient {
+public class TownHallRestFul {
 
     private WebTarget webTarget;
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/grupo4/webresources";
 
-    public LocationRestFulClient() {
+    public TownHallRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("location");
+        webTarget = client.target(BASE_URI).path("townhall/th");
     }
 
     public void edit(Object requestEntity) throws ClientErrorException {
@@ -40,6 +41,12 @@ public class LocationRestFulClient {
     public <T> T find(Class<T> responseType, String id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T findbyName(Class<T> responseType, String locality) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("th/{0}", new Object[]{locality}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 

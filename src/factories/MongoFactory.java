@@ -3,12 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers;
+package factories;
+
+import implementations.MongoImplementation;
+import interfaces.iMongo;
 
 /**
  *
  * @author Jon Gonzalez
  */
-public class GUI009AddController {
-    
+public class MongoFactory {
+    public static iMongo getIMongo(){
+        return new MongoImplementation();
+    }
 }

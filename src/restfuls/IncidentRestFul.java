@@ -11,26 +11,30 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 
 /**
- * Jersey REST client generated for REST resource:UserRestFul [user]<br>
+ * Jersey REST client generated for REST resource:IncidentRestFul [incident]<br>
  * USAGE:
  * <pre>
- *        UserRestFulClient client = new UserRestFulClient();
- *        Object response = client.XXX(...);
- *        // do whatever with response
- *        client.close();
- * </pre>
+        IncidentRestFul client = new IncidentRestFul();
+        Object response = client.XXX(...);
+        // do whatever with response
+        client.close();
+ </pre>
  *
- * @author Gorka Redondo
+ * @author Jon Gonzalez
  */
-public class UserRestFulClient {
+public class IncidentRestFul {
 
     private WebTarget webTarget;
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/grupo4/webresources";
 
-    public UserRestFulClient() {
+    public IncidentRestFul() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("user");
+        webTarget = client.target(BASE_URI).path("incident");
+    }
+
+    public void edit(Object requestEntity) throws ClientErrorException {
+        webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
     public <T> T find(Class<T> responseType, String id) throws ClientErrorException {
@@ -38,13 +42,22 @@ public class UserRestFulClient {
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
-    
+
+    public void create(Object requestEntity) throws ClientErrorException {
+        webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
+    }
+
     public <T> T findAll(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    public void remove(String id) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
+    }
+
     public void close() {
         client.close();
     }
+    
 }

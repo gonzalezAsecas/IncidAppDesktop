@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javabeans;
+package implementations;
+
+import interfaces.iSignature;
 
 /**
  *
  * @author Jon Gonzalez
  */
-public enum Privilege {
-    USER,
-    TOWNHALLUSER,
-    ADMIN
+public class SignatureImplementation implements iSignature{
+    
 }

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import javabeans.TypeBean;
 import javax.ws.rs.core.GenericType;
-import restfuls.TypeRestFulClient;
+import restfuls.TypeRestFul;
 
 /**
  *
@@ -22,10 +22,36 @@ import restfuls.TypeRestFulClient;
 public class TypeImplementation implements iType{
     
     //REST incident web client
-    private TypeRestFulClient webClient;
+    private TypeRestFul webClient;
 
     public TypeImplementation() {
-        webClient = new TypeRestFulClient();
+        webClient = new TypeRestFul();
+    }
+    
+    /**
+     * 
+     * @param type
+     * @return typ
+     * @throws ReadException 
+     */
+    @Override
+    public TypeBean findTypeByName(TypeBean type) throws ReadException {
+        List<TypeBean> types = null;
+        TypeBean typ = null;
+        try{
+            types = webClient.findAll(new GenericType<List<TypeBean>>() {});
+            for(TypeBean t : types){
+                if(t.getName().equalsIgnoreCase(type.getName())) {
+                    typ = t;
+                    break;
+                }
+            }
+        }catch(Exception ex){
+            LOGGER.log(Level.SEVERE,
+                "Exception finding type",ex.getMessage());
+            throw new ReadException("Error finding type:\n"+ex.getMessage());
+        }
+        return typ;
     }
     
     /**

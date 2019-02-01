@@ -9,72 +9,81 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Jon Gonzalez
  */
-@XmlRootElement(name="userBean")
+@XmlRootElement
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Integer idPerson;
-    private String login;
-    private String email;
-    private String password;
-    private String fullName;
+    private Integer id;
+    private final SimpleStringProperty login;
+    private final SimpleStringProperty email;
+    private byte[] password;
+    private final SimpleStringProperty fullName;
     private Status status;
     private Privilege privilege;
     private Date lastAccess;
     private Date lastPasswordChange;
     private String dni;
     private String street;
-    private TownHallBean townHall;
+    private TownHallBean th;
     private List<IncidentBean> incidents;
     private List<IncidentBean> signatureIncidents;
     
     public UserBean() {
+        this.login = new SimpleStringProperty();
+        this.email = new SimpleStringProperty();
+        this.fullName = new SimpleStringProperty();
+    }
+    
+    public UserBean(String login, String email, String fullName, TownHallBean th ) {
+        this.login = new SimpleStringProperty(login);
+        this.email = new SimpleStringProperty(email);
+        this.fullName = new SimpleStringProperty(fullName);
     }
 
-    public Integer getIdPerson() {
-        return idPerson;
-    }
 
-    public void setIdPerson(Integer idPerson) {
-        this.idPerson = idPerson;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
-
+    
+    
     public String getLogin() {
-        return login;
+        return login.get();
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        this.login.set(login);
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(byte[] password) {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email.get();
+    }
+
+    public void setEmail(String email) {
+        this.email.set(email);
+    }
+
     public String getFullName() {
-        return fullName;
+        return fullName.get();
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.fullName.set(fullName);
     }
 
     public Status getStatus() {
@@ -109,6 +118,15 @@ public class UserBean implements Serializable {
         this.lastPasswordChange = lastPasswordChange;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+  
     public String getDni() {
         return dni;
     }
@@ -125,14 +143,15 @@ public class UserBean implements Serializable {
         this.street = street;
     }
 
-    public TownHallBean getTownHall() {
-        return townHall;
+    public TownHallBean getTH() {
+        return th;
     }
 
-    public void setTownHall(TownHallBean townHall) {
-        this.townHall = townHall;
+    public void setTH(TownHallBean th) {
+        this.th = th;
     }
 
+    @XmlTransient
     public List<IncidentBean> getIncidents() {
         return incidents;
     }
@@ -141,6 +160,7 @@ public class UserBean implements Serializable {
         this.incidents = incidents;
     }
 
+    @XmlTransient
     public List<IncidentBean> getSignatureIncidents() {
         return signatureIncidents;
     }
@@ -152,20 +172,20 @@ public class UserBean implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash + Objects.hashCode(this.idPerson);
-        hash = 17 * hash + Objects.hashCode(this.login);
-        hash = 17 * hash + Objects.hashCode(this.email);
-        hash = 17 * hash + Objects.hashCode(this.password);
-        hash = 17 * hash + Objects.hashCode(this.fullName);
-        hash = 17 * hash + Objects.hashCode(this.status);
-        hash = 17 * hash + Objects.hashCode(this.privilege);
-        hash = 17 * hash + Objects.hashCode(this.lastAccess);
-        hash = 17 * hash + Objects.hashCode(this.lastPasswordChange);
-        hash = 17 * hash + Objects.hashCode(this.dni);
-        hash = 17 * hash + Objects.hashCode(this.street);
-        hash = 17 * hash + Objects.hashCode(this.townHall);
-        hash = 17 * hash + Objects.hashCode(this.incidents);
-        hash = 17 * hash + Objects.hashCode(this.signatureIncidents);
+        hash = 37 * hash + Objects.hashCode(this.id);
+        hash = 37 * hash + Objects.hashCode(this.login);
+        hash = 37 * hash + Objects.hashCode(this.email);
+        hash = 37 * hash + Objects.hashCode(this.password);
+        hash = 37 * hash + Objects.hashCode(this.fullName);
+        hash = 37 * hash + Objects.hashCode(this.status);
+        hash = 37 * hash + Objects.hashCode(this.privilege);
+        hash = 37 * hash + Objects.hashCode(this.lastAccess);
+        hash = 37 * hash + Objects.hashCode(this.lastPasswordChange);
+        hash = 37 * hash + Objects.hashCode(this.dni);
+        hash = 37 * hash + Objects.hashCode(this.street);
+        hash = 37 * hash + Objects.hashCode(this.th);
+        hash = 37 * hash + Objects.hashCode(this.incidents);
+        hash = 37 * hash + Objects.hashCode(this.signatureIncidents);
         return hash;
     }
 
@@ -199,7 +219,7 @@ public class UserBean implements Serializable {
         if (!Objects.equals(this.street, other.street)) {
             return false;
         }
-        if (!Objects.equals(this.idPerson, other.idPerson)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (this.status != other.status) {
@@ -214,7 +234,7 @@ public class UserBean implements Serializable {
         if (!Objects.equals(this.lastPasswordChange, other.lastPasswordChange)) {
             return false;
         }
-        if (!Objects.equals(this.townHall, other.townHall)) {
+        if (!Objects.equals(this.th, other.th)) {
             return false;
         }
         if (!Objects.equals(this.incidents, other.incidents)) {
@@ -228,6 +248,6 @@ public class UserBean implements Serializable {
 
     @Override
     public String toString() {
-        return fullName;
+        return "PersonBean{" + "idPerson=" + id + ", login=" + login + ", email=" + email + ", password=" + password + ", fullName=" + fullName + ", status=" + status + ", privilege=" + privilege + ", lastAccess=" + lastAccess + ", lastPasswordChange=" + lastPasswordChange + ", dni=" + dni + ", street=" + street + ", townHall=" + th + ", incidents=" + incidents + ", signatureIncidents=" + signatureIncidents + '}';
     }
 }
