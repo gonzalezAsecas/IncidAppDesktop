@@ -51,6 +51,5 @@ public class MongoImplementation implements iMongo{
         collection = database.getCollection(properties.getString("mongo_collection"));
         collection.deleteOne(Filters.eq("login", login));
         client.close();
-    }
-    
+    }  
 }

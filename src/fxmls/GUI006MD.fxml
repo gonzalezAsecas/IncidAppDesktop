@@ -11,29 +11,29 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI006Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI006Controller">
    <top>
       <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
         <menus>
           <Menu fx:id="mIncident" mnemonicParsing="false" text="Incidents">
                <items>
-                  <MenuItem fx:id="miIncidents" mnemonicParsing="false" text="Incidents" />
+                  <MenuItem fx:id="miIncidents" mnemonicParsing="false" text="IncidentsList" />
                </items></Menu>
           <Menu fx:id="mTownhall" mnemonicParsing="false" text="Townhalls">
                <items>
                   <MenuItem fx:id="miTownhalls" mnemonicParsing="false" text="Townhalls" />
                </items></Menu>
-            <Menu fx:id="mFile" mnemonicParsing="false" text="FTP">
+            <Menu fx:id="mFile" mnemonicParsing="false" text="Files">
                <items>
                   <MenuItem fx:id="miFTP" mnemonicParsing="false" text="FTP" />
                </items></Menu>
             <Menu fx:id="mUserInformation" mnemonicParsing="false" text="User Information">
                <items>
-                  <MenuItem fx:id="miInformation" mnemonicParsing="false" text="User information" />
+                  <MenuItem fx:id="miInformation" mnemonicParsing="false" text="Settings" />
                </items></Menu>
-            <Menu fx:id="mLogOut" mnemonicParsing="false" text="Log Out">
+            <Menu fx:id="mLogOut" mnemonicParsing="false" text="LogOut">
                <items>
-                  <MenuItem fx:id="miLogOut" mnemonicParsing="false" text="Log Out" />
+                  <MenuItem fx:id="miLogOut" mnemonicParsing="false" text="LogOut" />
                </items>
             </Menu>
         </menus>

@@ -14,5 +14,7 @@ import javabeans.TypeBean;
  * @author Jon Gonzalez
  */
 public interface iType {
+    public TypeBean findTypeByName(TypeBean type) throws ReadException;
+    
     public Collection<TypeBean> findAllTypes() throws ReadException;
 }

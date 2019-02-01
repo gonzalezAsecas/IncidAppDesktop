@@ -43,7 +43,6 @@ public class IncidentImplementation implements iIncident {
     public void createIncident(IncidentBean incident) throws CreateException {
         try{
             LOGGER.info("Creating incident");
-            //incident.setId(null);
             webClient.create(incident);
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE,
@@ -78,7 +77,7 @@ public class IncidentImplementation implements iIncident {
     public void removeIncident(IncidentBean incident) throws DeleteException {
         try{
             LOGGER.info("Deleting  incident");
-            webClient.remove(String.valueOf(incident.getIdIncident()));
+            webClient.remove(String.valueOf(incident.getId()));
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE,
                     "Exception deleting incident",ex.getMessage());
@@ -115,11 +114,12 @@ public class IncidentImplementation implements iIncident {
     public Collection<IncidentBean> findIncidentsByUser(UserBean user) throws ReadException {
         LOGGER.info("Finding incidents by user");
         List<IncidentBean> incidentsAll = null;
-        List<IncidentBean> incidents = new ArrayList<IncidentBean>();
+        List<IncidentBean> incidents = new ArrayList<>();
         try{
             incidentsAll = webClient.findAll(new GenericType<List<IncidentBean>>() {});
             for(IncidentBean in : incidentsAll){
-                if(in.getLocation().getTownHall().equals(user.getTH())){
+                if(in.getLocation().getTownHall().getLocality().trim()
+                    .equalsIgnoreCase(user.getTH().getLocality().trim())){
                     incidents.add(in);
                 }
             }

@@ -38,7 +38,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * FXML Controller class
+ * Show the data from all the townhall in a table. Allows the user to add, 
+ * modify or delete townhalls.
  *
  * @author Lander Lluvia
  */

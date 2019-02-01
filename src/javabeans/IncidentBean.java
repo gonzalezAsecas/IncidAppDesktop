@@ -19,13 +19,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="incidentBean")
 public class IncidentBean implements Serializable{
-    private final SimpleIntegerProperty idIncident;
+    private final SimpleIntegerProperty id;
     private final SimpleStringProperty title;
-    //private byte[] photo;
+    private byte[] photo;
     private final SimpleStringProperty description;
     private final SimpleStringProperty comment;
-    //private Date createDate;
-    //private Date endDate;
+    private final SimpleObjectProperty<Date> createDate;
+    private Date endDate;
     private final SimpleObjectProperty<Estate> estate;
     private final SimpleObjectProperty<UserBean> user;
     private final SimpleObjectProperty<LocationBean> location;
@@ -33,13 +33,11 @@ public class IncidentBean implements Serializable{
     private final SimpleObjectProperty<List<UserBean>> users;
 
     public IncidentBean() {
-        this.idIncident = new SimpleIntegerProperty();
+        this.id = new SimpleIntegerProperty();
         this.title = new SimpleStringProperty();
-        //this.photo = photo;
         this.description = new SimpleStringProperty();
         this.comment = new SimpleStringProperty();
-        //this.createDate = createDate;
-        //this.endDate = endDate;
+        this.createDate = new SimpleObjectProperty();
         this.estate = new SimpleObjectProperty();
         this.user = new SimpleObjectProperty();
         this.location = new SimpleObjectProperty();
@@ -47,13 +45,13 @@ public class IncidentBean implements Serializable{
         this.users = new SimpleObjectProperty<List<UserBean>>();
     }
     
-    public IncidentBean(String title, String description, String comment, Estate estate, UserBean user, LocationBean location, TypeBean type) {
-        this.idIncident = new SimpleIntegerProperty();
+    public IncidentBean(String title, String description, String comment, Date createDate, Estate estate, UserBean user, LocationBean location, TypeBean type) {
+        this.id = new SimpleIntegerProperty();
         this.title = new SimpleStringProperty(title);
         //this.photo = photo;
         this.description = new SimpleStringProperty(description);
         this.comment = new SimpleStringProperty(comment);
-        //this.createDate = createDate;
+        this.createDate = new SimpleObjectProperty(createDate);
         //this.endDate = endDate;
         this.estate = new SimpleObjectProperty(estate);
         this.user = new SimpleObjectProperty(user);
@@ -62,12 +60,12 @@ public class IncidentBean implements Serializable{
         this.users = new SimpleObjectProperty<List<UserBean>>();
     }
     
-    public Integer getIdIncident() {
-        return this.idIncident.get();
+    public Integer getId() {
+        return this.id.get();
     }
     
-    public void setIdIncident(Integer idIncident) {
-        this.idIncident.set(idIncident);
+    public void setId(Integer id) {
+        this.id.set(id);
     }
     
     public String getTitle() {
@@ -78,13 +76,13 @@ public class IncidentBean implements Serializable{
         this.title.set(title);
     }
 
-    /*public byte[] getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
-    }*/
+    }
     
     public String getDescription() {
         return this.description.get();
@@ -102,12 +100,12 @@ public class IncidentBean implements Serializable{
         this.comment.set(comment);
     }
 
-    /*public Date getCreateDate() {
-        return createDate;
+    public Date getCreateDate() {
+        return this.createDate.get();
     }
 
     public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+        this.createDate.set(createDate);
     }
 
     public Date getEndDate() {
@@ -116,7 +114,7 @@ public class IncidentBean implements Serializable{
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }*/
+    }
 
     public Estate getEstate() {
         return this.estate.get();
