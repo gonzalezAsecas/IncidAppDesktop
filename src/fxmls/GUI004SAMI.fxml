@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI004Controller">
+   <children>
+      <AnchorPane prefHeight="576.0" prefWidth="662.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="lblTitle" layoutX="15.0" layoutY="25.0" text="Title:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="25.0" />
+            <TextField fx:id="txtFTitle" layoutX="51.0" layoutY="21.0" prefHeight="25.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0" />
+            <Label fx:id="lblDescription" layoutX="15.0" layoutY="71.0" text="Description:" AnchorPane.leftAnchor="14.0" />
+            <TextArea fx:id="txtADescription" layoutX="15.0" layoutY="93.0" prefHeight="200.0" prefWidth="570.0" wrapText="true" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label fx:id="lblComment" layoutX="15.0" layoutY="302.0" text="Comment:" AnchorPane.leftAnchor="9.0" />
+            <TextArea fx:id="txtAComment" layoutX="15.0" layoutY="323.0" prefHeight="200.0" prefWidth="572.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="324.0" />
+         </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </AnchorPane>
+      <AnchorPane HBox.hgrow="NEVER">
+         <children>
+            <Label fx:id="lblPhoto" layoutX="14.0" layoutY="14.0" text="Photo" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="25.0" />
+            <Button fx:id="btnPhoto" layoutX="14.0" layoutY="45.0" mnemonicParsing="false" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+               <graphic>
+                  <ImageView fx:id="iVPhoto" fitHeight="225.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Button>
+            <Label fx:id="lblStreet" layoutX="10.0" layoutY="435.0" text="Street:" AnchorPane.leftAnchor="12.0" />
+            <TextField fx:id="txtFStreet" layoutX="10.0" layoutY="457.0" prefHeight="25.0" prefWidth="300.0" promptText="Example: Street" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label fx:id="lblLocality" layoutX="10.0" layoutY="375.0" text="Locality:" />
+            <Label fx:id="lblType" layoutX="10.0" layoutY="310.0" text="Type:" AnchorPane.leftAnchor="14.0" />
+            <ComboBox fx:id="chcType" layoutX="10.0" layoutY="332.0" prefHeight="25.0" prefWidth="150.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="172.0" />
+            <Label fx:id="lblEstate" layoutX="176.0" layoutY="310.0" text="Estate:" AnchorPane.leftAnchor="176.0" />
+            <ComboBox fx:id="chcEstate" layoutX="176.0" layoutY="332.0" prefHeight="25.0" prefWidth="150.0" AnchorPane.leftAnchor="176.0" AnchorPane.rightAnchor="10.0" />
+            <Button fx:id="btnAccept" layoutX="200.0" layoutY="515.0" mnemonicParsing="false" text="Accept" AnchorPane.leftAnchor="201.0" />
+            <Button fx:id="btnCancel" layoutX="270.0" layoutY="515.0" mnemonicParsing="false" text="Cancel" AnchorPane.leftAnchor="270.0" />
+            <Button fx:id="btnSignature" layoutX="55.0" layoutY="515.0" mnemonicParsing="false" prefWidth="53.0" text="Sign it" />
+            <Label fx:id="lblSignature" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="519.0" prefHeight="17.0" prefWidth="29.0" text="0" />
+            <ComboBox fx:id="chcLocality" layoutX="10.0" layoutY="400.0" prefHeight="25.0" prefWidth="316.0" />
+         </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </AnchorPane>
+   </children>
+</HBox>

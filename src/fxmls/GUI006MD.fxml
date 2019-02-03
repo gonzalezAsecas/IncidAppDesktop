@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GUI006Controller">
+   <top>
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu fx:id="mIncident" mnemonicParsing="false" text="Incidents">
+               <items>
+                  <MenuItem fx:id="miIncidents" mnemonicParsing="false" text="IncidentsList" />
+               </items></Menu>
+          <Menu fx:id="mTownhall" mnemonicParsing="false" text="Townhalls">
+               <items>
+                  <MenuItem fx:id="miTownhalls" mnemonicParsing="false" text="Townhalls" />
+               </items></Menu>
+            <Menu fx:id="mFile" mnemonicParsing="false" text="Files">
+               <items>
+                  <MenuItem fx:id="miFTP" mnemonicParsing="false" text="FTP" />
+               </items></Menu>
+            <Menu fx:id="mUserInformation" mnemonicParsing="false" text="User Information">
+               <items>
+                  <MenuItem fx:id="miInformation" mnemonicParsing="false" text="Settings" />
+               </items></Menu>
+            <Menu fx:id="mLogOut" mnemonicParsing="false" text="LogOut">
+               <items>
+                  <MenuItem fx:id="miLogOut" mnemonicParsing="false" text="LogOut" />
+               </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="375.0" layoutY="75.0" text="Fullname" />
+            <Label layoutX="375.0" layoutY="233.0" text="Email" />
+            <Label layoutX="374.0" layoutY="177.0" text="Password" />
+            <Label layoutX="375.0" layoutY="128.0" text="Username" />
+            <Label layoutX="375.0" layoutY="348.0" text="Townhall" />
+            <TextField fx:id="tfFullName" layoutX="375.0" layoutY="92.0" prefHeight="25.0" prefWidth="220.0" />
+            <TextField fx:id="tfEmail" layoutX="375.0" layoutY="254.0" prefHeight="25.0" prefWidth="220.0" />
+            <TextField fx:id="tfUsername" layoutX="375.0" layoutY="145.0" prefHeight="25.0" prefWidth="220.0" />
+            <TextField fx:id="tfStreet" layoutX="375.0" layoutY="311.0" prefHeight="25.0" prefWidth="220.0" />
+            <Label layoutX="374.0" layoutY="293.0" text="Street" />
+            <Button fx:id="btnUpdate" layoutX="708.0" layoutY="379.0" mnemonicParsing="false" text="Update" />
+            <ChoiceBox fx:id="chBTownhall" layoutX="375.0" layoutY="367.0" prefHeight="25.0" prefWidth="220.0" />
+            <PasswordField fx:id="pfPassword" layoutX="375.0" layoutY="195.0" prefHeight="26.0" prefWidth="220.0" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
