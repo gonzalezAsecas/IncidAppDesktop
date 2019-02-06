@@ -67,15 +67,25 @@ public class GUI005Controller extends THUserGenericController{
     @FXML
     private TextField txtFNameDirectory;
     
+    public GUI005Controller() {}
+    
     /**
      * the file is going to be loaded in the FTP server
      */
     private File file;
     
+    public void setFile(File file){
+        this.file = file;
+    }
+    
     /**
      * the path of the directory
      */
     private String dirPath;
+    
+    public void setDirPath(String dirPath){
+        this.dirPath = dirPath;
+    }
     
     /**
      * the ftp interface

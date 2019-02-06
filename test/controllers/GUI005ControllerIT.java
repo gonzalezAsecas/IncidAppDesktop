@@ -5,6 +5,8 @@
  */
 package controllers;
 
+import java.io.File;
+import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -67,7 +69,7 @@ public class GUI005ControllerIT extends ApplicationTest{
     @Test
     public void test3_HandleSearch() {
         clickOn("#btnSearch");
-        verifyThat("Searching file for load in the FTP server", isVisible());//no vale
+        verifyThat("Searching file for load in the FTP server", isVisible());
     }
 
     /**
@@ -89,14 +91,10 @@ public class GUI005ControllerIT extends ApplicationTest{
     @Ignore
     @Test
     public void testHandleLoad() {
-        clickOn("#btnSearch");
-        doubleClickOn("Escritorio");
-        clickOn("MongoDBEjercicio");
-        clickOn("Abrir");
-        clickOn("ADT libro");
-        clickOn("#btnLoad");
-        doubleClickOn("ADT libro");
-        verifyThat("MongoDBEjercicio", isVisible());
+        GUI005Controller controller = new GUI005Controller();
+        controller.setFile(new File("hello.txt"));
+        controller.setDirPath("/");
+        controller.handleLoad(new ActionEvent());
     }
 
     /**

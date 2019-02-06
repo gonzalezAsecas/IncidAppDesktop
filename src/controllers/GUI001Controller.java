@@ -20,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
@@ -64,6 +65,9 @@ public class GUI001Controller{
     private Button btnLogIn;
     @FXML
     private Hyperlink hlPasswordForget;
+    
+    private ResourceBundle properties= ResourceBundle
+                    .getBundle("properties/ftpClientProperties");
     
     /**
      * the user interface
@@ -363,7 +367,7 @@ public class GUI001Controller{
         Cipher cipher;
         try{
             //open the stream for read the public key file 
-            fispublic = new FileInputStream("public.key");
+            fispublic = new FileInputStream(properties.getString("key"));
             //set the size for the byte array
             key = new byte[fispublic.available()];
             //read the file
