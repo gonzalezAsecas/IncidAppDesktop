@@ -21,22 +21,22 @@
          <menus>
             <Menu fx:id="mIncidents" mnemonicParsing="false" text="Incidents">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="IncidentList" />
               </items>
             </Menu>
             <Menu fx:id="mFiles" mnemonicParsing="false" text="Files">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="FTP" />
               </items>
             </Menu>
             <Menu fx:id="mUserInfo" mnemonicParsing="false" text="User information">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Settings" />
               </items>
             </Menu>
             <Menu fx:id="mLogOut" mnemonicParsing="false" text="LogOut">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="LogOut" />
               </items>
             </Menu>
          </menus>

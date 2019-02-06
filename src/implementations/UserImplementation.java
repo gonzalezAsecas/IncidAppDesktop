@@ -49,7 +49,7 @@ public class UserImplementation implements iUser{
             userRest.create(user);
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception creating the user.", ex);
-            throw new CreateException("Error creating user:\n"+ex.getMessage());
+            throw new CreateException();
         }
         LOGGER.info("UserImplementation: Ending the creation of the user.");
     }
@@ -67,7 +67,7 @@ public class UserImplementation implements iUser{
             userRest.edit(user, pass.toString());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception modifing the user.", ex);
-            throw new UpdateException("Error updating user:\n"+ex.getMessage());
+            throw new UpdateException();
         }
         LOGGER.info("UserImplementation: ");
     }
@@ -85,7 +85,7 @@ public class UserImplementation implements iUser{
             userRest.remove(user.getId().toString());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception deleting the user.", ex);
-            throw new DeleteException("Error deleting user:\n"+ex.getMessage());
+            throw new DeleteException();
         }
         LOGGER.info("UserImplementation: ");
     }
@@ -106,7 +106,7 @@ public class UserImplementation implements iUser{
             return user;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user by id.", ex);
-            throw new ReadException("Error finding users by id:\n"+ex.getMessage());
+            throw new ReadException();
         }
         
     }
@@ -127,7 +127,7 @@ public class UserImplementation implements iUser{
             return us;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding all the users.", ex);
-            throw new ReadException("Error finding all users:\n"+ex.getMessage());
+            throw new ReadException();
         }
     }
     
@@ -149,7 +149,7 @@ public class UserImplementation implements iUser{
             return user;
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user by login.", ex);
-            throw new ReadException("Error finding users by login:\n"+ex.getMessage());
+            throw new ReadException();
         }
     }
     
@@ -166,7 +166,7 @@ public class UserImplementation implements iUser{
             userRest.findUserToChangePassword(UserBean.class, user.getLogin());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user to change the password.", ex);
-            throw new ReadException("Error user:\n"+ex.getMessage());
+            throw new ReadException();
         }
         LOGGER.info("UserImplementation: Ending the search of the user for change the password");
     }

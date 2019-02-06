@@ -6,6 +6,8 @@
 package controllers;
 
 
+import static controllers.GUI009Controller.LOGGER;
+import exceptions.CreateException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
 import factories.LogicFactory;
@@ -24,7 +26,9 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.Privilege;
+import javabeans.Status;
 import javabeans.TownHallBean;
+
 import javabeans.UserBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -53,7 +57,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 /**
- *
+ * Allow the user to see all his data and modify it
  * @author Lander Lluvia
  */
 public class GUI006Controller {
@@ -102,8 +106,8 @@ public class GUI006Controller {
     
     protected Stage stage;
     /**
-     * 
-     * @param stage 
+     * The setter of the stage
+     * @param stage The stage of the application
      */
     public void setStage(Stage stage){
         this.stage = stage;
@@ -111,7 +115,7 @@ public class GUI006Controller {
     
     protected UserBean user;
     /**
-     * 
+     * Set the user that has logged
      * @param user 
      */
     void setUser(UserBean user) {
@@ -119,12 +123,11 @@ public class GUI006Controller {
     }
     
     /**
-     * 
+     * Set and initialize the stage and its properties
      * @param root 
      */
     public void initStage(Parent root){
-        //try creado para hacer pruebas, eliminar para entregar o probar cuando
-        //se junte el proyecto
+        //Get all the Townhall that will be charged in the comboBox
         ObservableList<TownHallBean> ths = null;
         try{
             ths = FXCollections.observableArrayList(townHallImpl.findAllTownHalls());
@@ -159,7 +162,8 @@ public class GUI006Controller {
     }
     
     /**
-     * 
+     * Enable or disable some of the elements in the stage and also set the
+     * mnemonic in the buttons
      * @param event 
      */
     public void OnShowingHandler(WindowEvent event){
@@ -176,6 +180,13 @@ public class GUI006Controller {
         LOGGER.info("Ending OnShowingHandler()");
     }
     
+    /**
+     * Checks when the textFields exceeds the maximum of characters allowed
+     * and shows and alert indicating that X is too long
+     * @param observable
+     * @param oldValue
+     * @param newValue 
+     */
     public void textChanged(ObservableValue observable, String oldValue,
             String newValue){
         if(tfFullName.getLength() == 256){
@@ -209,6 +220,10 @@ public class GUI006Controller {
         }
     }
     
+    /**
+     * Load the view when the corresponding menu item is clicked
+     * @param event 
+     */
     public void handleIncident(ActionEvent event){
         LOGGER.info("Begginning handleIncident()");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI003SDI.fxml"));
@@ -220,6 +235,7 @@ public class GUI006Controller {
             controller.setStage(gui003Stage);
             controller.setUser(user);
             controller.initStage(root);
+            gui003Stage.show();
             stage.hide();
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "An input-output error in handleIncident()",
@@ -230,6 +246,10 @@ public class GUI006Controller {
         }
     }
     
+    /**
+     * Load the view when the corresponding menu item is clicked
+     * @param event 
+     */
     public void handleTownhall(ActionEvent event){
         LOGGER.info("Begginning handleTownhall()");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI007SDTH.fxml"));
@@ -241,6 +261,7 @@ public class GUI006Controller {
             controller.setStage(gui007Stage);
             controller.setUser(user);
             controller.initStage(root);
+            gui007Stage.show();
             stage.hide();
         }catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "An input-output error in handleTownhall()",
@@ -251,6 +272,10 @@ public class GUI006Controller {
         }
     }
     
+    /**
+     * Load the view when the corresponding menu item is clicked
+     * @param event 
+     */
     public void handleFile(ActionEvent event){
         LOGGER.info("Begginning handleFile()");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI005CRUDF.fxml"));
@@ -262,6 +287,7 @@ public class GUI006Controller {
             controller.setStage(gui005Stage);
             controller.setUser(user);
             controller.initStage(root);
+            gui005Stage.show();
             stage.hide();
         }catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "An input-output error in handleFile()",
@@ -272,11 +298,20 @@ public class GUI006Controller {
         }
     }
     
+    /**
+     * Shows the error alert with the given message
+     * @param message message that will be shown in the alert
+     * @return alert
+     */
     public ButtonType getAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK, ButtonType.CANCEL);
         return alert.showAndWait().get();
     }
     
+    /**
+     * In case that the user wants to exit the application
+     * @param event 
+     */
     public void handleLogOut(ActionEvent event){
         LOGGER.info("Begginning handleLogOut()");
         if(getAlert("Do you want to exit the application?").equals(ButtonType.OK)){
@@ -286,7 +321,12 @@ public class GUI006Controller {
     }
     
     /**
-     * 
+     * Method that first checks if all the fields are filled. Then checks if the
+     * email has the corresponding format. Also distinguish if the password will
+     * be changed or not. In case that it will be changed, modifys the user's
+     * data and opens the 006_2 window. If it itsn't changed, modifys the users
+     * data and shows an alert informing the user. It will also show an alert
+     * in case that something is missing
      * @param event 
      */
     public void handleUpdate(ActionEvent event){
@@ -336,8 +376,9 @@ public class GUI006Controller {
     } 
      
     /**
-     * 
-     * @return 
+     * Checks if all the fields have information, in case it doesn't, it will
+     * show an alert
+     * @return boolean filled indicating if the fields are filled or not
      */
     public boolean fieldsAreFilled(){
         boolean filled = true;
@@ -349,6 +390,11 @@ public class GUI006Controller {
         return filled;
     }
     
+    /**
+     * Checks if the email has the corresponding format
+     * @param email that will be checked
+     * @return boolean check indicating if it has the given format
+     */
     public boolean checkEmail(String email){
         boolean check = true;
         if(!email.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+(.[a-zA-Z]{2,})$")){
@@ -358,8 +404,8 @@ public class GUI006Controller {
     }
     
     /**
-     * 
-     * @return 
+     * Checks if the password's length is higher than 4
+     * @return boolean pass indicating if it is higher
      */
     public boolean handlePassword(){
         boolean pass = true;
@@ -371,6 +417,9 @@ public class GUI006Controller {
         return pass;
     }
     
+    /**
+     * Opens a new window where the current user's password will be asked
+     */
     public void confirmPassword(){
         LOGGER.info("Begginning confirmPassword()");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/GUI006_2MD.fxml"));
@@ -398,9 +447,9 @@ public class GUI006Controller {
     }
     
     /**
-     * 
-     * @param password
-     * @return 
+     * Take the password in raw and return it chyper with rsa algorithm
+     * @param password he password in raw that is going to be encrypted
+     * @return the password encrypted
      */
     private byte[] cypherPass(String password) {
         LOGGER.info("Beginning cypherPass");

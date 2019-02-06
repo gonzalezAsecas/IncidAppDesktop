@@ -38,7 +38,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.ws.rs.ClientErrorException;
 
 /**
- *
+ * Checks if its the real user asking for its current password
  * @author Lander Lluvia
  */
 public class GUI006_2Controller {
@@ -55,16 +55,28 @@ public class GUI006_2Controller {
     protected iUser userImpl = LogicFactory.getiUser();
     
     protected Stage stage;
+    /**
+     * The setter of the stage
+     * @param stage 
+     */
     public void setStage(Stage stage){
         this.stage = stage;
     }
     
     protected UserBean user;
+    /**
+     * The setter of the logged user
+     * @param user 
+     */
     public void setUser(UserBean user){
         this.user = user;
     }
     
     protected String newPass;
+    /**
+     * The setter of the new password
+     * @param newPass 
+     */
     public void setNewPass(String newPass){
         this.newPass = newPass;
     }
@@ -77,6 +89,10 @@ public class GUI006_2Controller {
         return pass;
     }
     
+    /**
+     * Set and initialize the stage and its properties.
+     * @param root 
+     */
     public void initStage(Parent root){
         LOGGER.info("Initializing GUI006_2 stage");
         Scene scene = new Scene(root);
@@ -87,6 +103,10 @@ public class GUI006_2Controller {
         btnCancel.setOnAction((event) -> handleCancel(event));
     }
     
+    /**
+     * Enables or disables some elements of the window and set the mnemonics
+     * @param event 
+     */
     public void OnShowingHandler(WindowEvent event){
         LOGGER.info("Begginning OnShowingHandler()");
         btnConfirm.setMnemonicParsing(true);
@@ -94,6 +114,11 @@ public class GUI006_2Controller {
         LOGGER.info("Ending OnShowingHandler()");
     }
     
+    /**
+     * Checks if the textField is filled. Also cheks if that the current user
+     * password and if the new password and the old one aren't the same
+     * @param event 
+     */
     public void handleConfirm(ActionEvent event){
         LOGGER.info("Begginning handleConfirm()");
         if(txtFConfirmPass.getText().trim().isEmpty()){
@@ -122,6 +147,13 @@ public class GUI006_2Controller {
         }
     }
     
+    /**
+     * Checks when the textFields exceeds the maximum of characters allowed
+     * and shows and alert indicating that the password is too long
+     * @param observable
+     * @param oldValue
+     * @param newValue 
+     */
     public void textChanged(ObservableValue observable, String oldValue,
             String newValue){
          if(txtFConfirmPass.getLength() == 256){
@@ -131,10 +163,19 @@ public class GUI006_2Controller {
         }
     }
     
+    /**
+     * Close the window in case that the Cancel button is clicked
+     * @param event 
+     */
     public void handleCancel(ActionEvent event){
         stage.close();
     }
     
+    /**
+     * Take the password in raw and return it chyper with rsa algorithm
+     * @param password the password in raw that is going to be encrypted
+     * @return the password encrypted
+     */
     private byte[] cypherPass(String password) {
         LOGGER.info("Beginning cypherPass");
         FileInputStream fispublic;

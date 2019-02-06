@@ -25,14 +25,14 @@ public class MongoImplementation implements iMongo{
     private static MongoDatabase database;
     private static MongoCollection<Document> collection;
     private ResourceBundle properties = ResourceBundle
-                    .getBundle("properties/ftpClientProperties");
+                    .getBundle("properties/Properties");
 
     @Override
     public void loginUser(String login) {
         client = MongoClients.create(properties.getString("mongo_url"));
         database = client.getDatabase(properties.getString("mongo_database"));
         collection = database.getCollection(properties.getString("mongo_collection"));
-        if(collection.find(Filters.eq("login", login))!=null){
+        if(collection.find(Filters.eq("login", login)).first()!=null){
             Document doc = new Document("$set", new Document("login_date", LocalDate.now()));
             collection.updateOne(Filters.eq("login", login), doc);
         }else{
@@ -51,6 +51,5 @@ public class MongoImplementation implements iMongo{
         collection = database.getCollection(properties.getString("mongo_collection"));
         collection.deleteOne(Filters.eq("login", login));
         client.close();
-    }
-    
+    }  
 }

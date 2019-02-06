@@ -38,7 +38,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * FXML Controller class
+ * Show the data from all the townhall in a table. Allows the user to add, 
+ * modify or delete townhalls.
  *
  * @author Lander Lluvia
  */
@@ -249,12 +250,17 @@ public class GUI007Controller extends AdminGenericController {
     }
     
     private void handleReport(ActionEvent event) {
-        /*JasperReport report = JasperCompileManager.compileReport("/reports/townhallreport.jasper");
-        JRBeanCollectionDataSource dataItems = 
-                new JRBeanCollectionDataSource((Collection<TownHallBean>)this.tableTownhalls.getItems());
-        Map<String,Object> parameters = new HashMap<>();
-        JasperPrint jasperPrint = JasperFillManager.fillReport(report,parameters,dataItems);
-        JasperViewer jasperViewer = new JasperViewer(jasperPrint);
-        jasperViewer.setVisible(true);*/
+    /*    try{ 
+            JasperReport report = JasperCompileManager.compileReport("src/reports/townhallreport.jrxml");
+            JRBeanCollectionDataSource dataItems = 
+                    new JRBeanCollectionDataSource((Collection<TownHallBean>)this.tableTownhalls.getItems());
+            Map<String,Object> parameters = new HashMap<>();
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report,parameters,dataItems);
+            JasperViewer jasperViewer = new JasperViewer(jasperPrint);
+            jasperViewer.setVisible(true);
+        }catch(JRException ex){
+            LOGGER.log(Level.SEVERE, "An error ocurred in handleReport()",
+                        ex.getMessage());
+        }*/
     }
 }

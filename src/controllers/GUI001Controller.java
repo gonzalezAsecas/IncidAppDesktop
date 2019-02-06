@@ -7,6 +7,8 @@ package controllers;
 
 import exceptions.ReadException;
 import factories.LogicFactory;
+import factories.MongoFactory;
+import interfaces.iMongo;
 import interfaces.iUser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -64,6 +66,13 @@ public class GUI001Controller{
     private Hyperlink hlPasswordForget;
     
     /**
+     * the user interface
+     */
+    iUser iuser= LogicFactory.getiUser();
+    
+    iMongo imongo = MongoFactory.getIMongo();
+    
+    /**
      * The logger for the desktop app
      */
     protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
@@ -80,11 +89,6 @@ public class GUI001Controller{
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    
-    /**
-     * the user interface
-     */
-    iUser iuser= LogicFactory.getiUser();
     
     /**
      * The user that is login or logged in the application
@@ -234,6 +238,7 @@ public class GUI001Controller{
             //information and receive the user that it's login, 
             //with all infomation
             user = iuser.findUserbyLogin(user);
+            imongo.loginUser(user.getLogin());
             switch (user.getPrivilege()) {
                 //if the user is an admin do this
                 case ADMIN:

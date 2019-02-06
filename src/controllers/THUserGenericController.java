@@ -50,21 +50,28 @@ public class THUserGenericController {
     
     
     /**
-     * user
+     * The user that is login or logged in the application
      */
     protected UserBean user;
     /**
-     * The setter of the user
-     * @param user The user of the application
+     * the setter for the town hall user
+     * @param user the object for the user
      */
     public void setUser(UserBean user) {
         this.user = user;
-    }
+    } 
+    
     /**
      * The business logic object
      */
     protected iUser userManager = LogicFactory.getiUser();
-    
+    /**
+     * The setter of the userManager
+     * @param userManager The userManager of the application
+     */
+    public void setUserManager(iUser userManager) {
+        this.userManager = userManager;
+    }
     
     /**
      * incident
@@ -77,28 +84,54 @@ public class THUserGenericController {
     public void setIncident(IncidentBean incident) {
         this.incident = incident;
     }
+    
     /**
      * The business logic object
      */
     protected iIncident incidentManager = LogicFactory.getiIncident();
-    
+    /**
+     * The setter of the incidentManager
+     * @param incidentManager The incidentManager of the application
+     */
+    public void setIncidentManager(iIncident incidentManager) {
+        this.incidentManager = incidentManager;
+    }
     
     /**
      * The business logic object
      */
     protected iType typeManager = LogicFactory.getiType();
-    
+    /**
+     * The setter of the typeManager
+     * @param typeManager The typeManager of the application
+     */
+    public void setTypeManager(iType typeManager) {
+        this.typeManager = typeManager;
+    }
     
     /**
      * The business logic object
      */
     protected iTownHall townHallManager = LogicFactory.getiTownHall();
-    
+    /**
+     * The setter of the townHallManager
+     * @param townHallManager The townHallManager of the application
+     */
+    public void setTownHallManager(iTownHall townHallManager) {
+        this.townHallManager = townHallManager;
+    }
     
     /**
      * The business logic object
      */
     protected iLocation locationManager = LogicFactory.getiLocation();
+    /**
+     * The setter of the locationManager
+     * @param locationManager The locationManager of the application
+     */
+    public void setLocationManager(iLocation locationManager) {
+        this.locationManager = locationManager;
+    }
     
     
     /**
@@ -254,11 +287,11 @@ public class THUserGenericController {
             stage.hide();
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "An input-output error loading GUI005Controller.", 
-                    ex.getMessage());
+                    ex);
             this.getAlert("A error have ocurred loading the GUI005Controller.");
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "An error loading GUI005Controller.", 
-                    ex.getMessage());
+                    ex);
             this.getAlert("A error have ocurred loading the GUI005Controller.");
         }
     }
@@ -303,8 +336,10 @@ public class THUserGenericController {
      * @param event 
      */
     public void handleLogOut(ActionEvent event){
-        if(getAlertConfirmation("Do you want to exit the application?").equals(ButtonType.OK)){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Do you want to exit the application?", ButtonType.OK, ButtonType.CANCEL);
+        if(alert.showAndWait().get().equals(ButtonType.OK)){
             stage.close();
         }
-    }
+    } 
 }

@@ -90,7 +90,6 @@ public class GUI004Controller extends THUserGenericController {
         txtADescription.textProperty().addListener(this::textChanged);
         txtAComment.textProperty().addListener(this::textChanged);
         txtFStreet.textProperty().addListener(this::textChanged);
-        btnPhoto.setOnAction((event) -> handlePhoto(event));
         btnAccept.setOnAction((event) -> handleAccept(event));
         btnCancel.setOnAction((event) -> handleCancel(event));
         btnSignature.setOnAction((event) -> handleSignature(event));
@@ -190,16 +189,7 @@ public class GUI004Controller extends THUserGenericController {
             txtFStreet.setText(txtFStreet.getText().substring(0,45));
             new Alert(AlertType.INFORMATION,"Street too long",ButtonType.OK).show();
          }
-     }
-     
-     
-    /**
-     * 
-     * @param event 
-     */
-    public void handlePhoto(ActionEvent event){
-        //TODO
-    } 
+     } 
     
     /**
      * 
@@ -305,7 +295,7 @@ public class GUI004Controller extends THUserGenericController {
         stage.hide();
         LOGGER.info("Ending handleCancel");
     }
-    
+
     /**
      * 
      * @param event 
