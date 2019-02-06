@@ -6,8 +6,6 @@
 package controllers;
 
 
-import static controllers.GUI009Controller.LOGGER;
-import exceptions.CreateException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
 import factories.LogicFactory;
@@ -26,9 +24,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.Privilege;
-import javabeans.Status;
 import javabeans.TownHallBean;
-
 import javabeans.UserBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -224,7 +220,6 @@ public class GUI006Controller {
             controller.setStage(gui003Stage);
             controller.setUser(user);
             controller.initStage(root);
-            gui003Stage.show();
             stage.hide();
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "An input-output error in handleIncident()",
@@ -246,7 +241,6 @@ public class GUI006Controller {
             controller.setStage(gui007Stage);
             controller.setUser(user);
             controller.initStage(root);
-            gui007Stage.show();
             stage.hide();
         }catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "An input-output error in handleTownhall()",
@@ -268,7 +262,6 @@ public class GUI006Controller {
             controller.setStage(gui005Stage);
             controller.setUser(user);
             controller.initStage(root);
-            gui005Stage.show();
             stage.hide();
         }catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "An input-output error in handleFile()",
