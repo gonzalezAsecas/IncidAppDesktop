@@ -242,7 +242,11 @@ public class GUI001Controller{
             //information and receive the user that it's login, 
             //with all infomation
             user = iuser.findUserbyLogin(user);
-            imongo.loginUser(user.getLogin());
+            try{
+                imongo.loginUser(user.getLogin());
+            }catch(Exception e){
+                LOGGER.log(Level.SEVERE, "GUI001Controller: An error has ocurred with the mongoDB", e);
+            }
             switch (user.getPrivilege()) {
                 //if the user is an admin do this
                 case ADMIN:

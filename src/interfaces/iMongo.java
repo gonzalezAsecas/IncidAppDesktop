@@ -10,6 +10,6 @@ package interfaces;
  * @author Jon Gonzalez
  */
 public interface iMongo {
-    public void loginUser(String login);
-    public void deleteUser(String login);
+    public void loginUser(String login) throws Exception;
+    public void deleteUser(String login)throws Exception;
 }
