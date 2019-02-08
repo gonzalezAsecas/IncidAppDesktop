@@ -66,8 +66,12 @@ public class GUI005Controller extends THUserGenericController{
     private Button btnDownload;
     @FXML
     private TextField txtFNameDirectory;
+    @FXML
+    private TextField txtFServer;
+    @FXML
+    private TextField txtFDirectory;
     
-    public GUI005Controller() {}
+    public GUI005Controller(){}
     
     /**
      * the file is going to be loaded in the FTP server
@@ -223,6 +227,7 @@ public class GUI005Controller extends THUserGenericController{
                 
             }
             treeFTP = new TreeView<FTPFileTV>(root);
+            file=null;
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "An error have ocurred loading of root", ex);
         }
@@ -292,10 +297,21 @@ public class GUI005Controller extends THUserGenericController{
      */
     public void handleDownload(ActionEvent event){
         try {
+            //Create the filechooser
+            FileChooser filechooser = new FileChooser();
+            //Set title
+            filechooser.setTitle("Searching file for load in the FTP server");
+            filechooser.setInitialDirectory(
+                    new File(System.getProperty("user.home")));
             //get the value of the treeitem selected and download it
-            FTP.downloadFile(tiselected.getValue());
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "File downloaded.", ButtonType.OK);
-            alert.showAndWait();
+            //save the path of the file
+            file = filechooser.showOpenDialog(stage);
+            if(file!=null){
+                FTP.downloadFile(tiselected.getValue());
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "File downloaded.", ButtonType.OK);
+                alert.showAndWait();
+            }
+            file=null;
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error downloading file", ex);
             super.getAlert("An error had ocurred downloading the file.");
@@ -316,6 +332,7 @@ public class GUI005Controller extends THUserGenericController{
             LOGGER.log(Level.SEVERE, "Error making the directory", ex);
             super.getAlert("An error had ocurred making the directory.");
         }
+        treeFTP.refresh();
     }
     
     //Test It
@@ -326,9 +343,11 @@ public class GUI005Controller extends THUserGenericController{
     public void handleDelete(ActionEvent event){
         try {
             //send the selected item value for delete it
-            FTP.delete(dirPath + "/" + tiselected.getValue().getName());
-            tiselected.getParent().getChildren().remove(tiselected);
-            treeFTP.refresh();
+            if(super.getAlert("You are going to delete this file, it´s ok?").equals(ButtonType.OK)){
+                FTP.delete(dirPath + "/" + tiselected.getValue().getName());
+                tiselected.getParent().getChildren().remove(tiselected);
+                treeFTP.refresh();
+            }
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error deleting the file", ex);
             super.getAlert("An error had ocurred deleting the file.");
