@@ -27,7 +27,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * FXML Controller class
+ * Modal window that allow to introduce new/modifed data for the new/modified
+ * townhall
  *
  * @author Lander Lluvia
  */
@@ -57,14 +58,26 @@ public class GUI009Controller {
     }
     
     protected TownHallBean th;
+    /**
+     * Setter of the townhall
+     * @param th 
+     */
     public void setTownHall(TownHallBean th){
         this.th = th;
     }
+    /**
+     * Return the townhall
+     * @return TownHallBean that will be sent
+     */
     public TownHallBean getTownHall(){
         return th;
     }
     
     protected boolean edit = false;
+    /**
+     * Setter that checks if its a new townhall or it is going to be modified
+     * @param bool 
+     */
     public void setEdit(boolean bool){
         edit = bool;
     }
@@ -104,6 +117,13 @@ public class GUI009Controller {
         btnCancel.setText("_Cancel");
     }
     
+    /**
+     * Checks if the textfield exceeded the maximum of characters and warn the 
+     * users with an alert
+     * @param observable
+     * @param oldValue
+     * @param newValue 
+     */
     public void textChanged(ObservableValue observable, String oldValue,
             String newValue){
         if(txtFName.getLength() == 256){
@@ -127,28 +147,34 @@ public class GUI009Controller {
     }
     
     /**
-     * Checks if the fields are filled, and
+     * Checks if the fields are filled, if the townhall with that name already
+     * exists and ifthe email has the right format. In case it does so, it edit/
+     * creates the new townhall
      * @param event 
      */
     public void handleAccept(ActionEvent event) {
         try{
             if(fieldsAreFilled()){
-                townHallImpl.townHallAlreadyExists(txtFName.getText().trim());
-                if(checkEmail(txtFEmail.getText().trim())){
-                    if(edit){
-                        th.setLocality(txtFName.getText().trim());
-                        th.setEmail(txtFEmail.getText().trim());
-                        th.setTelephoneNumber(txtFPhone.getText().trim());
-                        townHallImpl.editTownHall(th);
-                        stage.close();
+                try{
+                    townHallImpl.townHallAlreadyExists(txtFName.getText().trim());
+                } catch (ReadException ex) {
+                    LOGGER.info("The townhall doesn´t exist.");
+                    if(checkEmail(txtFEmail.getText().trim())){
+                        if(edit){
+                            th.setLocality(txtFName.getText().trim());
+                            th.setEmail(txtFEmail.getText().trim());
+                            th.setTelephoneNumber(txtFPhone.getText().trim());
+                            townHallImpl.editTownHall(th);
+                            stage.close();
+                        }else{
+                            th = new TownHallBean(txtFName.getText().trim(), txtFEmail.getText().trim(), txtFPhone.getText().trim());
+                            townHallImpl.createTownHall(th);
+                            stage.close();
+                        }
                     }else{
-                        th = new TownHallBean(txtFName.getText().trim(), txtFEmail.getText().trim(), txtFPhone.getText().trim());
-                        townHallImpl.createTownHall(th);
-                        stage.close();
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "The email must have the format: email@email.example", ButtonType.OK);
+                        alert.showAndWait();
                     }
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "The email must have the format: email@email.example", ButtonType.OK);
-                    alert.showAndWait();
                 }
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "All the fields must have information", ButtonType.OK);
@@ -158,8 +184,6 @@ public class GUI009Controller {
             LOGGER.log(Level.SEVERE, "Error creating a townhall");
         }catch (UpdateException ex) {
             LOGGER.log(Level.SEVERE, "Error updating a townhall");
-        } catch (ReadException ex) {
-            Logger.getLogger(GUI009Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -175,6 +199,11 @@ public class GUI009Controller {
         return filled;
     }
     
+     /**
+     * Checks if the email follows the format
+     * @param email that will be checked
+     * @return boolean check that is true in caso that it has the right format
+     */
     public boolean checkEmail(String email){
         boolean check = true;
         if(!email.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+(.[a-zA-Z]{2,})$")){
@@ -185,8 +214,8 @@ public class GUI009Controller {
         
     
     /**
-     * 
-     * @param message
+     * Shows an alert with the given message
+     * @param message that will be shown
      * @return 
      */
     public ButtonType getAlert(String message){
@@ -195,7 +224,7 @@ public class GUI009Controller {
     }
     
     /**
-     * 
+     * Close the window
      * @param event 
      */
     public void handleCancel(ActionEvent event) {

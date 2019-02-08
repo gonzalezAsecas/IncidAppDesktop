@@ -7,17 +7,30 @@ package controllers;
 
 import exceptions.ReadException;
 import factories.LogicFactory;
+import factories.MongoFactory;
+import interfaces.iMongo;
 import interfaces.iUser;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import javabeans.UserBean;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -25,15 +38,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * GUI001 FXML Controller class, in this window you can connect to the main 
- * application of the admin and the town hall user or go to the sign up window. 
+ * application of the admin and the town hall user or recover your password.
  * The application begin in this window
  * @author Jon Gonzalez
- * @version 1.0
+ * @version 2.0
  */
-public class GUI001Controller extends THUserGenericController{
+public class GUI001Controller{
 
     @FXML
     private Label lblUser;
@@ -47,6 +64,55 @@ public class GUI001Controller extends THUserGenericController{
     private Button btnLogIn;
     @FXML
     private Hyperlink hlPasswordForget;
+    
+    /**
+     * the user interface
+     */
+    iUser iuser= LogicFactory.getiUser();
+    
+    iMongo imongo = MongoFactory.getIMongo();
+    
+    /**
+     * The logger for the desktop app
+     */
+    protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
+    
+    /**
+     * The stage for the scene
+     */
+    protected Stage stage;
+    
+    /**
+     * The setter of the stage
+     * @param stage The stage of the application
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+    
+    /**
+     * The user that is login or logged in the application
+     */
+    protected UserBean user = new UserBean();
+    
+    
+    /**
+     * the setter for the user
+     * @param user the object for the user
+     */
+    public void setUser(UserBean user) {
+        this.user = user;
+    }
+    
+    /**
+     * The method for get a customized alert sending the message for the user
+     * @param message the message that the user is going to read 
+     * @return the type of the button clicked
+     */
+    public ButtonType getAlert(String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK, ButtonType.CANCEL);
+        return alert.showAndWait().get();
+    }
     
     /**
      * Set and initialize the stage and its properties.
@@ -86,13 +152,6 @@ public class GUI001Controller extends THUserGenericController{
         //Set the mnemonic character and the text
         btnLogIn.setText("_Login");
         hlPasswordForget.setText("_Click here");
-        /*
-        stage.addEventHandler(KeyEvent.KEY_PRESSED, ev ->{
-            if(ev.getCode()==KeyCode.ENTER){
-                logIn();
-            }
-        });
-        */
         LOGGER.info("Ending handleWindowShowing");
     }
     
@@ -119,21 +178,19 @@ public class GUI001Controller extends THUserGenericController{
             String login = txtFUser.getText();
             login = login.substring(0, login.length()-1);
             txtFUser.setText(login);
-            super.getAlert(
-                    "The login can´t had more than twenty characters.");
+            getAlert("The login can´t had more than twenty characters.");
             txtFUser.requestFocus();
-        }else if(pwPassword.getText().length()>16){
+        }else if(pwPassword.getText().length()>15){
             String password= pwPassword.getText();
             password = password.substring(0, password.length()-1);
             pwPassword.setText(password);
-            super.getAlert( 
-                    "The password can´t had more than sixteen characters.");
+            getAlert("The password can´t had more than sixteen characters.");
             pwPassword.requestFocus();
         }
     }
     
     /**
-     * Verify that the textfields are filled and send to the server to verify 
+     * Verify that the textfield is filled and send to the server to verify 
      * that the login exist and the password isn't the same. If the login don't 
      * exist or the login exist but the password is the same that he has, 
      * notify to the user.
@@ -143,39 +200,22 @@ public class GUI001Controller extends THUserGenericController{
         LOGGER.info("Beginning handleRecoverPassword");
         //Verify that the login textfield isn't empty
         if(txtFUser.getText().isEmpty()){
-            super.getAlert("You need to put the login in the user field");
+            getAlert("You need to put the login in the user field");
             txtFUser.requestFocus();
-            //Verify that the password textfield isn't empty
-        }else if(pwPassword.getText().isEmpty()){
-            super.getAlert("You need to put the new password for change it");
-            pwPassword.requestFocus();
         }else{
             //get the implementation of the iUser interface
             iUser iuser= LogicFactory.getiUser();
             //get the user wrote
             user.setLogin(txtFUser.getText());
-            //get the password wrote
-            //user.setPassword(pwPassword.getText());//Encriptar
             try {
-                //send the password and the login for the password change
+                //send the login for the password change
                 iuser.findUserToChangePassword(user);
             } catch (ReadException ex) {
-                //Run when the login don't exist
-                /*if(ex.getWhy().equals("login")){
-                    LOGGER.log(Level.SEVERE,"The user don´t exist",ex);
-                    super.getAlert("This user don´t exist.");
-                    txtFUser.requestFocus();
-                    lblUser.setTextFill(Color.web("#ff0000"));
-                    lblPass.setTextFill(Color.web("#237bf7"));
-                //Run when the login is correct and the password is the same
-                //that is trying to change
-                }else if(ex.getWhy().equals("password")){
-                    LOGGER.log(Level.SEVERE, "GUI001Controller: Exception with the password", ex);
-                    lblUser.setTextFill(Color.web("#237bf7"));
-                    lblPass.setTextFill(Color.web("#ff0000"));
-                    pwPassword.requestFocus();
-                    super.getAlert("The password is the same.");
-                }*/
+                LOGGER.log(Level.SEVERE,"The user don´t exist",ex);
+                getAlert("This user don´t exist.");
+                txtFUser.requestFocus();
+                lblUser.setTextFill(Color.web("#ff0000"));
+                lblPass.setTextFill(Color.web("#237bf7"));
             }
         }
         LOGGER.info("Ending handleRecoverPassword");
@@ -183,22 +223,22 @@ public class GUI001Controller extends THUserGenericController{
     
     /**
      * Send the user that it's write in the text fields to the logic a receive
-     * the answer in form of or the user with all the information or 
+     * the answer in form of the user with all the information or 
      * an exception saying the problem 
      * @param event
      */
     public void handleLogIn(ActionEvent event) {
         LOGGER.info("Beginning handleLogIn");
-        iUser iuser= LogicFactory.getiUser();
         //Get the username and the password
         user=new UserBean();
         user.setLogin(txtFUser.getText());
-        //user.setPassword(pwPassword.getText());// TODO: Sacar el hash!!!!
+        user.setPassword(cypherPass(pwPassword.getText()));
         try{
             //Send the user to compare the infomation with the database 
             //information and receive the user that it's login, 
             //with all infomation
             user = iuser.findUserbyLogin(user);
+            imongo.loginUser(user.getLogin());
             switch (user.getPrivilege()) {
                 //if the user is an admin do this
                 case ADMIN:
@@ -210,25 +250,22 @@ public class GUI001Controller extends THUserGenericController{
                     break;
                 //else if the user is a simple user do this
                 case USER:
-                    super.getAlert("You don't have permissions for enter in this application.");
+                    getAlert("You don't have permissions for enter "
+                            + "in this application.");
                     break;
             }
         }catch(ReadException e1){
-            //Run when the login isn't in the database
-            /*if(e1.getWhy().equals("login")){
-                LOGGER.log(Level.SEVERE, "GUI001Controller: Exception with the login", e1);
-                lblUser.setTextFill(Color.web("#ff0000"));
-                lblPass.setTextFill(Color.web("#237bf7"));
-                txtFUser.requestFocus();
-                super.getAlert("The user doesn't exist.");
-            //Run when the login is correct but the password no
-            }else if(e1.getWhy().equals("password")){
-                LOGGER.log(Level.SEVERE, "GUI001Controller: Exception with the password", e1);
-                lblUser.setTextFill(Color.web("#237bf7"));
-                lblPass.setTextFill(Color.web("#ff0000"));
-                pwPassword.requestFocus();
-                super.getAlert("The password is wrong.");
-            }*/
+            LOGGER.log(Level.SEVERE,
+                    "GUI001Controller: Exception with the login", e1);
+            lblUser.setTextFill(Color.web("#ff0000"));
+            lblPass.setTextFill(Color.web("#237bf7"));
+            txtFUser.requestFocus();
+            getAlert("The user or the password are incorrect.");
+        }catch(Exception e3){
+            LOGGER.log(Level.SEVERE, e3.getMessage(), e3);
+            lblUser.setTextFill(Color.web("#237bf7"));
+            lblPass.setTextFill(Color.web("#237bf7"));
+            getAlert("An error with the program has ocurred.");
         }
         LOGGER.info("Ending handleLogIn");
     }
@@ -241,7 +278,7 @@ public class GUI001Controller extends THUserGenericController{
         LOGGER.info("Beginning adminLogin");
         //Create the loader for the xml
         FXMLLoader loader=new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI007.fxml"));
+                .getResource("/fxmls/GUI007SDTH.fxml"));
         //Create the parent and load the tree
         Parent root;
         try{
@@ -259,14 +296,14 @@ public class GUI001Controller extends THUserGenericController{
             //Hide this stage
             stage.hide();
         }catch(IOException ex){
-            LOGGER.log(Level.SEVERE, "An input-output error in the logOut loader.", 
-                    ex.getMessage());
-            super.getAlert("A error have ocurred in the login.");
+            LOGGER.log(Level.SEVERE,
+                    "An input-output error in the logOut loader.", ex.getMessage());
+            getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "An error in the logOut loader.", 
                     ex.getMessage());
-            super.getAlert("A error have ocurred in the login.");
+            getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }
         
@@ -281,7 +318,7 @@ public class GUI001Controller extends THUserGenericController{
         LOGGER.info("Beginning townHallUserLogin");
         //Create the loader for the xml
         FXMLLoader loader=new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI003.fxml"));
+                .getResource("/fxmls/GUI003SDI.fxml"));
         //Create the parent and load the tree
         Parent root;
         try{
@@ -301,14 +338,56 @@ public class GUI001Controller extends THUserGenericController{
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, "An input-output error in the logOut loader.", 
                     ex.getMessage());
-            super.getAlert("A error have ocurred in the login.");
+            getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "An error in the logOut loader.", 
                     ex.getMessage());
-            super.getAlert("A error have ocurred in the login.");
+            getAlert("A error have ocurred in the login.");
             txtFUser.requestFocus();
         }
         LOGGER.info("Ending townHallUserLogin");
+    }
+    
+    /**
+     * Take the password in raw and return it chyper with rsa algorithm
+     * @param password the password in raw that is going to be encrypted
+     * @return the password encrypted
+     */
+    private byte[] cypherPass(String password) {
+        LOGGER.info("Beginning cypherPass");
+        FileInputStream fispublic;
+        byte[] key;
+        KeyFactory keyFactory;
+        PublicKey publicKey;
+        Cipher cipher;
+        try{
+            //open the stream for read the public key file 
+            fispublic = new FileInputStream("public.key");
+            //set the size for the byte array
+            key = new byte[fispublic.available()];
+            //read the file
+            fispublic.read(key);
+            //close the stream
+            fispublic.close();
+            //instance the factory with the rsa algorithm
+            keyFactory = KeyFactory.getInstance("RSA");
+            //generate the public key from the information of the file
+            publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(key));
+            //instance the cipher object with the algorithm rsa
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            //intialize the cipher object for the encrypt mode with the public key
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+            LOGGER.info("Ending cypherPass");
+            return cipher.doFinal(password.getBytes());
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.SEVERE, "Exception reading the file", ex);
+        } catch (IOException | NoSuchAlgorithmException | 
+                InvalidKeySpecException | NoSuchPaddingException | 
+                InvalidKeyException | IllegalBlockSizeException | 
+                BadPaddingException ex) {
+            LOGGER.log(Level.SEVERE, "Exception excrypting the password", ex);
+        }
+        return null;
     }
 }

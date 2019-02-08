@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.TownHallBean;
-import javabeans.UserBean;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.GenericType;
 import restfuls.TownHallRestFul;
@@ -36,8 +35,8 @@ public class TownHallImplementation implements iTownHall{
     }
 
     /**
-     * 
-     * @param townhall
+     * Creates a new given townhall
+     * @param townhall that will be created
      * @throws CreateException 
      */
     @Override
@@ -53,8 +52,8 @@ public class TownHallImplementation implements iTownHall{
     }
 
     /**
-     * 
-     * @param townhall
+     * Updates a given townhall
+     * @param townhall that will be updated
      * @throws UpdateException 
      */
     @Override
@@ -70,8 +69,8 @@ public class TownHallImplementation implements iTownHall{
     }
     
     /**
-     * 
-     * @param townhall
+     * Deletes the given townhall
+     * @param townhall that will be deleted 
      * @throws DeleteException 
      */
     @Override
@@ -87,9 +86,9 @@ public class TownHallImplementation implements iTownHall{
     }
 
     /**
-     * 
-     * @param townhall
-     * @return
+     * Find a townhall with the given id
+     * @param townhall where we get the id
+     * @return TownHallBean with the given id
      * @throws ReadException 
      */
     @Override
@@ -106,6 +105,12 @@ public class TownHallImplementation implements iTownHall{
         return th;
     }
     
+    /**
+     * Find a townhall given the name
+     * @param townhall where we get the name
+     * @return TownHallBean with the given name
+     * @throws ReadException 
+     */
     @Override
     public TownHallBean findTownHallByName(TownHallBean townhall) throws ReadException {
         TownHallBean th = null;
@@ -121,8 +126,8 @@ public class TownHallImplementation implements iTownHall{
     }
 
     /**
-     * 
-     * @return
+     * Find all townhalls
+     * @return List<TownHallBean> with all the townhalls
      * @throws ReadException 
      */
     @Override
@@ -141,13 +146,13 @@ public class TownHallImplementation implements iTownHall{
     }
 
     /**
-     * 
+     * Checks if a townhall already exists with the given name
      */
     @Override
     public void townHallAlreadyExists(String name) throws ReadException {
         try{
             if(this.webClient.findbyName(TownHallBean.class, name) != null){
-                //throw new TownhallExistsException("Theres already a townhall with this name");
+                throw new Exception("Theres already a townhall with this name");
             }
         }catch(NotFoundException ex){
             //Do nothing

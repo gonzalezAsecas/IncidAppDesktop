@@ -6,7 +6,7 @@
 package interfaces;
 
 import exceptions.ReadException;
-import java.util.List;
+import java.util.Collection;
 import javabeans.TypeBean;
 
 /**
@@ -14,5 +14,7 @@ import javabeans.TypeBean;
  * @author Jon Gonzalez
  */
 public interface iType {
-    public List<TypeBean> findAllTypes() throws ReadException;
+    public TypeBean findTypeByName(TypeBean type) throws ReadException;
+    
+    public Collection<TypeBean> findAllTypes() throws ReadException;
 }

@@ -16,8 +16,9 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 /**
- *
+ * The java class for initialize the application
  * @author Jon Gonzalez
+ * @version 2.0
  */
 public class Application extends javafx.application.Application{
     
@@ -37,7 +38,6 @@ public class Application extends javafx.application.Application{
     /**
      * The start method all the fx applications needs for work 
      * @param stage the stage of the aplication
-     * @throws Exception 
      */
     @Override
     public void start(Stage stage){

@@ -6,9 +6,7 @@
 package controllers;
 
 import factories.LogicFactory;
-import interfaces.iLocation;
 import interfaces.iTownHall;
-import interfaces.iUser;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +20,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 /**
- *
+ * Controller that should be used by the controller where the admin has access
  * @author Lander Lluvia
  */
 public class AdminGenericController {
@@ -30,7 +28,7 @@ public class AdminGenericController {
     
     protected Stage stage;
     /**
-     * 
+     * The setter of the stage
      * @param stage 
      */
     public void setStage(Stage stage){
@@ -39,20 +37,18 @@ public class AdminGenericController {
     
     protected UserBean user;
     /**
-     * 
+     * The setter of the logged user
      * @param user 
      */
     public void setUser(UserBean user) {
         this.user = user;
     }
     
-    protected iUser userImpl = LogicFactory.getiUser();
-    protected iLocation locationImpl = LogicFactory.getiLocation();
     protected iTownHall townHallImpl = LogicFactory.getiTownHall();
     
     protected TownHallBean townhall;
     /**
-     * 
+     * The setter of the townhall
      * @param townhall 
      */
     public void setTownHall(TownHallBean townhall) {
@@ -60,7 +56,7 @@ public class AdminGenericController {
     }
     
     /**
-     * 
+     * Load the window clicked in the menu item
      * @param event 
      */
     public void handleTownHalls(ActionEvent event){
@@ -87,7 +83,7 @@ public class AdminGenericController {
     }
     
     /**
-     * 
+     * Load the window clicked in the menu item
      * @param event 
      */
     public void handleUsers(ActionEvent event) {
@@ -98,10 +94,9 @@ public class AdminGenericController {
             root = (Parent)loader.load();
             Stage gui008Stage = new Stage();
             GUI008Controller controller = loader.getController();
-            //Los metodos dan error ya que el controller GUI008 no esta hecho
-            //controller.setStage(gui008Stage);
-            //controller.setUser(user);
-            //controller.initStage(root);
+            controller.setStage(gui008Stage);
+            controller.setUser(user);
+            controller.initStage(root);
             gui008Stage.show();
             stage.hide();
         }catch(IOException ex){
@@ -115,7 +110,7 @@ public class AdminGenericController {
     }
     
     /**
-     * 
+     * Load the window clicked in the menu item
      * @param event 
      */
     public void handleInformation(ActionEvent event){
@@ -152,7 +147,7 @@ public class AdminGenericController {
     }
     
     /**
-     * 
+     * Ask the user if he really want to exit and finish the application
      * @param event 
      */
     public void handleLogOut(ActionEvent event){

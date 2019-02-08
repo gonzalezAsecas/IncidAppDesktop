@@ -7,19 +7,14 @@ package controllers;
 
 import exceptions.DeleteException;
 import exceptions.ReadException;
-import exceptions.UpdateException;
-import implementations.LocationImplementation;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javabeans.LocationBean;
 import javabeans.TownHallBean;
-import javabeans.UserBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,7 +45,8 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
- * FXML Controller class
+ * Show the data from all the townhall in a table. Allows the user to add, 
+ * modify or delete townhalls.
  *
  * @author Lander Lluvia
  */
@@ -232,21 +228,6 @@ public class GUI007Controller extends AdminGenericController {
             Optional<ButtonType> result = alert.showAndWait();
             if(result.isPresent() && result.get() == ButtonType.OK){
                 TownHallBean selectedth = (TownHallBean)tableTownhalls.getSelectionModel().getSelectedItem();
-                List<UserBean> users = userImpl.findAllUsers();
-                for(int i = 0; i < users.size(); i++){
-                    UserBean user = users.get(i);
-                    if(user.getTH().equals(selectedth)){
-                        user.setTH(null);
-                        userImpl.editUser(user);
-                    }
-                }
-                Collection<LocationBean> locations = locationImpl.findAllLocations();
-                for(LocationBean location : locations){
-                    if(location.getTownHall().equals(selectedth)){
-                        location.setTownHall(null);
-                        locationImpl.editLocation(location);
-                    }
-                }
                 townHallImpl.removeTownHall(selectedth);
                 tableTownhalls.getItems().remove(tableTownhalls.getSelectionModel().getSelectedItem());
                 tableTownhalls.refresh();
@@ -254,10 +235,6 @@ public class GUI007Controller extends AdminGenericController {
         } catch (DeleteException ex) {
             LOGGER.log(Level.SEVERE, "An error ocurred in handleDelete()",
                     ex.getMessage());
-        } catch (ReadException ex) {
-            Logger.getLogger(GUI007Controller.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UpdateException ex) {
-            Logger.getLogger(GUI007Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
         LOGGER.info("Ending handleDelete()");
     }
@@ -280,7 +257,7 @@ public class GUI007Controller extends AdminGenericController {
     }
     
     private void handleReport(ActionEvent event) {
-        try{
+        try{ 
             JasperReport report = JasperCompileManager.compileReport("src/reports/townhallreport.jrxml");
             JRBeanCollectionDataSource dataItems = 
                     new JRBeanCollectionDataSource((Collection<TownHallBean>)this.tableTownhalls.getItems());
@@ -288,8 +265,9 @@ public class GUI007Controller extends AdminGenericController {
             JasperPrint jasperPrint = JasperFillManager.fillReport(report,parameters,dataItems);
             JasperViewer jasperViewer = new JasperViewer(jasperPrint);
             jasperViewer.setVisible(true);
-        } catch (JRException ex) {
-            Logger.getLogger(GUI007Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(JRException ex){
+            LOGGER.log(Level.SEVERE, "An error ocurred in handleReport()",
+                        ex.getMessage());
         }
     }
 }

@@ -6,9 +6,7 @@
 package implementations;
 
 import exceptions.CreateException;
-//import static implementations.FTPCliente.LOGGER;
 import exceptions.ReadException;
-import exceptions.UpdateException;
 import interfaces.iLocation;
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javabeans.LocationBean;
 import javax.ws.rs.core.GenericType;
-import restfuls.LocationRestFulClient;
+import restfuls.LocationRestFul;
 
 /**
  *
@@ -25,11 +23,12 @@ import restfuls.LocationRestFulClient;
 public class LocationImplementation implements iLocation{
     
     //REST incident web client
-    private LocationRestFulClient webClient;
+    private LocationRestFul webClient;
+    
     protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
 
     public LocationImplementation() {
-        webClient = new LocationRestFulClient();
+        webClient = new LocationRestFul();
     }
     
     /**
@@ -40,11 +39,11 @@ public class LocationImplementation implements iLocation{
     @Override
     public void createLocation(LocationBean location) throws CreateException {
         try{
-        //    LOGGER.info("Creating location");
+            LOGGER.info("Creating location");
             webClient.create(location);
         }catch(Exception ex){
-        //    LOGGER.log(Level.SEVERE,
-                 //   "Exception creating location",ex.getMessage());
+            LOGGER.log(Level.SEVERE,
+                    "Exception creating location",ex.getMessage());
             throw new CreateException("Error creating location:\n"+ex.getMessage());
         }
     }
@@ -60,23 +59,11 @@ public class LocationImplementation implements iLocation{
         try{
             locations = webClient.findAll(new GenericType<List<LocationBean>>() {});
         }catch(Exception ex){
-          //  LOGGER.log(Level.SEVERE,
-               // "Exception finding all types",ex.getMessage());
+            LOGGER.log(Level.SEVERE,
+                "Exception finding all types",ex.getMessage());
             throw new ReadException("Error finding all types:\n"+ex.getMessage());
         }
         return locations;
-    }
-    
-    @Override
-    public void editLocation(LocationBean location) throws UpdateException {
-        try{
-            LOGGER.info("LocationImplementation: Editing a location from REST service.");
-            webClient.edit(location);
-        }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "LocationImplementation: Exception editing a location",
-                    ex.getMessage());
-            throw new UpdateException("Error editing a townhall");
-        }
     }
     
     /**
@@ -100,8 +87,8 @@ public class LocationImplementation implements iLocation{
                 }
             }
         }catch(Exception ex){
-            //LOGGER.log(Level.SEVERE,
-               // "Exception finding location",ex.getMessage());
+            LOGGER.log(Level.SEVERE,
+                "Exception finding location",ex.getMessage());
             throw new ReadException("Error finding location:\n"+ex.getMessage());
         }
         return loc;

@@ -60,11 +60,11 @@ public class UserImplementation implements iUser{
      * @throws UpdateException if there is any problem modifying the user
      */
     @Override
-    public void editUser(UserBean user) throws UpdateException {
+    public void editUser(UserBean user, Boolean pass) throws UpdateException {
         LOGGER.info("UserImplementation: Beginning the modification of the user.");
         try{
             //modify the user
-            userRest.edit(user);
+            userRest.edit(user, pass.toString());
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception modifing the user.", ex);
             throw new UpdateException("");
