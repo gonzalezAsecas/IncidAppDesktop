@@ -24,6 +24,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.WindowEvent;
@@ -284,6 +285,8 @@ public class GUI005Controller extends THUserGenericController{
             treeFTP.refresh();
             //load the file in the FTPServer
             FTP.loadFile(dirPath, file);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "File uploaded.", ButtonType.OK);
+            alert.showAndWait();
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "Error loading file", ex);
             super.getAlert("An error had ocurred loading the file.");
@@ -298,16 +301,16 @@ public class GUI005Controller extends THUserGenericController{
     public void handleDownload(ActionEvent event){
         try {
             //Create the filechooser
-            FileChooser filechooser = new FileChooser();
+            DirectoryChooser directorychooser = new DirectoryChooser();
             //Set title
-            filechooser.setTitle("Searching file for load in the FTP server");
-            filechooser.setInitialDirectory(
+            directorychooser.setTitle("Searching file for load in the FTP server");
+            directorychooser.setInitialDirectory(
                     new File(System.getProperty("user.home")));
             //get the value of the treeitem selected and download it
             //save the path of the file
-            file = filechooser.showOpenDialog(stage);
+            file = directorychooser.showDialog(stage);
             if(file!=null){
-                FTP.downloadFile(tiselected.getValue());
+                FTP.downloadFile(tiselected.getValue(), file);
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "File downloaded.", ButtonType.OK);
                 alert.showAndWait();
             }

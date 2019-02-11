@@ -57,7 +57,7 @@ public interface iFTP {
      * @param file the file is going to downloaded
      * @throws Exception if there is any problem downloading the file
      */
-    public void downloadFile(FTPFileTV file) throws Exception;
+    public void downloadFile(FTPFileTV file, File dir) throws Exception;
     
     /**
      * delete the file selected from the ftp server
