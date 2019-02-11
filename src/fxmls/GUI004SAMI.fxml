@@ -42,8 +42,8 @@
             <ComboBox fx:id="chcEstate" layoutX="176.0" layoutY="332.0" prefHeight="25.0" prefWidth="150.0" AnchorPane.leftAnchor="176.0" AnchorPane.rightAnchor="10.0" />
             <Button fx:id="btnAccept" layoutX="200.0" layoutY="515.0" mnemonicParsing="false" text="Accept" AnchorPane.leftAnchor="201.0" />
             <Button fx:id="btnCancel" layoutX="270.0" layoutY="515.0" mnemonicParsing="false" text="Cancel" AnchorPane.leftAnchor="270.0" />
-            <Button fx:id="btnSignature" layoutX="55.0" layoutY="515.0" mnemonicParsing="false" prefWidth="53.0" text="Sign it" />
-            <Label fx:id="lblSignature" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="519.0" prefHeight="17.0" prefWidth="29.0" text="0" />
+            <Label layoutX="10.0" layoutY="519.0" text="Number of votes:" />
+            <Label fx:id="lblSignature" alignment="CENTER_RIGHT" layoutX="110.0" layoutY="519.0" prefHeight="17.0" prefWidth="29.0" text="0" />
             <ComboBox fx:id="chcLocality" layoutX="10.0" layoutY="400.0" prefHeight="25.0" prefWidth="316.0" />
          </children>
          <HBox.margin>

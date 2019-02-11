@@ -12,7 +12,7 @@ import javabeans.LocationBean;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Gorka Redondo
  */
 public interface iLocation {
     public void createLocation(LocationBean location) throws CreateException;

@@ -15,7 +15,7 @@ import javabeans.UserBean;
 
 /**
  *
- * @author Jon Gonzalez
+ * @author Gorka Redondo
  */
 public interface iIncident {
     public void createIncident(IncidentBean incident) throws CreateException;

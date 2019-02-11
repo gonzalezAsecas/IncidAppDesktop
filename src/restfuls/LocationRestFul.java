@@ -21,7 +21,7 @@ import javax.ws.rs.core.GenericType;
         client.close();
  </pre>
  *
- * @author Jon Gonzalez
+ * @author Gorka Redondo
  */
 public class LocationRestFul {
 
