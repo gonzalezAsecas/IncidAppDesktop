@@ -20,10 +20,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -67,6 +70,12 @@ public class GUI003Controller extends THUserGenericController {
     
     private ObservableList<IncidentBean> incidents = null;
     private ObservableList<IncidentBean> incidentsMyZone = null;
+    @FXML
+    private Label lblFind;
+    @FXML
+    private ToggleGroup filter;
+    @FXML
+    private MenuItem mFTP;
     
     
     /**

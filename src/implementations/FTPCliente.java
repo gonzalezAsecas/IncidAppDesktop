@@ -127,7 +127,7 @@ public class FTPCliente implements iFTP{
             //set the stream for load the files
             buffIn = new BufferedInputStream(new FileInputStream(file.getPath()));
             //store the file in the ftp server
-            ftpclient.storeFile(file.getName(), buffIn);
+            ftpclient.storeFile(dir + "/" + file.getName(), buffIn);
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE,
                     "FTPClient: An error have ocurred loading the file." , ex.getCause());

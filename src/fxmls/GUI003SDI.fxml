@@ -26,7 +26,7 @@
             </Menu>
             <Menu fx:id="mFiles" mnemonicParsing="false" text="Files">
               <items>
-                <MenuItem mnemonicParsing="false" text="FTP" />
+                <MenuItem fx:id="mFTP" mnemonicParsing="false" text="FTP" />
               </items>
             </Menu>
             <Menu fx:id="mUserInfo" mnemonicParsing="false" text="User information">

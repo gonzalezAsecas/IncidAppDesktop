@@ -6,8 +6,11 @@
 package controllers;
 
 import java.io.File;
+import java.util.List;
+import javabeans.FTPFileTV;
 import javafx.event.ActionEvent;
-import javafx.scene.input.KeyCode;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
@@ -41,6 +44,11 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Test
     public void test1_InitStage() {
+        clickOn("#txtFUser");
+        write("jonth");
+        clickOn("#pwPassword");
+        write("1234");
+        clickOn("mFiles");
         verifyThat("#btnSearch", isEnabled());
         verifyThat("#btnMakeDirectory", isDisabled());
         verifyThat("#btnLoad", isDisabled());
@@ -100,14 +108,32 @@ public class GUI005ControllerIT extends ApplicationTest{
     /**
      * Test of handleDownload method, of class GUI005Controller.
      */
-    @Ignore
     @Test
     public void testHandleDownload() {
-        doubleClickOn("ADT libro");
-        clickOn("adt tema 0.pdf");
+        clickOn("#txtFUser");
+        write("jonth");
+        clickOn("#pwPassword");
+        write("1234");
+        clickOn("mFiles");
+        TreeView<FTPFileTV> tree = lookup("tree").query();
+        TreeItem<FTPFileTV> item;
+        List<TreeItem<FTPFileTV>> items;
+        tree.getSelectionModel().select(0);
+        item = (TreeItem) tree.getSelectionModel().getSelectedItem();
+        items = item.getChildren();
+        for(TreeItem<FTPFileTV> it : items){
+            if(!it.getValue().isDirectory()){
+                tree.getSelectionModel().select(it);
+                break;
+            }
+        }
+        verifyThat("#btnDownload", isEnabled());
         clickOn("#btnDownload");
-        verifyThat("File downloaded.", isVisible());
-        push(KeyCode.ENTER);
+        //doubleClickOn("ADT libro");
+        //clickOn("adt tema 0.pdf");
+        //clickOn("#btnDownload");
+        //verifyThat("File downloaded.", isVisible());
+        //push(KeyCode.ENTER);
     }
 
     /**

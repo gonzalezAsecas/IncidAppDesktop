@@ -9,6 +9,7 @@ import factories.FTPFactory;
 import interfaces.iFTP;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javabeans.FTPFileTV;
 import javafx.beans.value.ObservableValue;
@@ -99,6 +100,9 @@ public class GUI005Controller extends THUserGenericController{
     
     private TreeItem<FTPFileTV> tiselected;
     
+    ResourceBundle properties = ResourceBundle
+            .getBundle("properties/ftpClientProperties");
+    
     /**
      * GUI005 FXML Controller class, this is the window for connect and do all
      * with the ftpsserver
@@ -126,6 +130,8 @@ public class GUI005Controller extends THUserGenericController{
         txtFNameDirectory.textProperty().addListener(this::handleTextChanged);
         //Load the files of the FTP server in the treeItem and make the listener
         //for the click event
+        txtFServer.setText(properties.getString("ftpServer"));
+        txtFDirectory.setText(properties.getString("ftpRootDirectory"));
         try {
             treeFTP.getSelectionModel().selectedItemProperty()
                     .addListener(this::handleClickFile);
@@ -427,5 +433,6 @@ public class GUI005Controller extends THUserGenericController{
             btnDownload.setDisable(true);
             btnLoad.setDisable(true);
         }
+        txtFDirectory.setText(dirPath);
     }
 }
