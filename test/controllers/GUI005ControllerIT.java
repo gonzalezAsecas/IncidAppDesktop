@@ -44,11 +44,7 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Test
     public void test1_InitStage() {
-        clickOn("#txtFUser");
-        write("jonth");
-        clickOn("#pwPassword");
-        write("1234");
-        clickOn("mFiles");
+        login();
         verifyThat("#btnSearch", isEnabled());
         verifyThat("#btnMakeDirectory", isDisabled());
         verifyThat("#btnLoad", isDisabled());
@@ -63,6 +59,7 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Test
     public void test2_handleTextChanged(){
+        login();
         clickOn("#txtFNameDirectory");
         write("directory1");
         verifyThat("#btnMakeDirectory", isEnabled());
@@ -83,14 +80,12 @@ public class GUI005ControllerIT extends ApplicationTest{
     /**
      * Test of loadRoot and loadFiles method, of class GUI005Controller.
      */
-    @Ignore
     @Test
     public void test4_LoadRootAndLoadFiles() {
-        //hacer un set con el controlador de file para poder añadir un file 
-        //directamente en vez de usar el filechooser
-        verifyThat("ADT libro", isVisible());
-        doubleClickOn("ADT libro");
-        verifyThat("DFSFB", isVisible());
+        login();
+        TreeView<FTPFileTV> tree = lookup("tree").query();
+        TreeItem<FTPFileTV> item = tree.getTreeItem(0);
+        //VerifyThat(item, isNotNull);
     }
 
     /**
@@ -98,7 +93,7 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Ignore
     @Test
-    public void testHandleLoad() {
+    public void test5_HandleLoad() {
         GUI005Controller controller = new GUI005Controller();
         controller.setFile(new File("hello.txt"));
         controller.setDirPath("/");
@@ -108,8 +103,9 @@ public class GUI005ControllerIT extends ApplicationTest{
     /**
      * Test of handleDownload method, of class GUI005Controller.
      */
+    @Ignore
     @Test
-    public void testHandleDownload() {
+    public void test6_HandleDownload() {
         clickOn("#txtFUser");
         write("jonth");
         clickOn("#pwPassword");
@@ -139,37 +135,33 @@ public class GUI005ControllerIT extends ApplicationTest{
     /**
      * Test of handleMakeDir method, of class GUI005Controller.
      */
-    @Ignore
     @Test
-    public void testHandleMakeDir() {
-        
+    public void test7_HandleMakeDir() {
+        login();
     }
 
     /**
      * Test of handleDelete method, of class GUI005Controller.
      */
-    @Ignore
     @Test
-    public void testHandleDelete() {
-        
+    public void test8_HandleDelete() {
+        login();
     }
 
     /**
      * Test of handleIncidentsFTP method, of class GUI005Controller.
      */
-    @Ignore
     @Test
-    public void testHandleIncidentsFTP() {
-        
+    public void test9_HandleIncidentsFTP() {
+        login();
     }
 
     /**
      * Test of handleInfoFTP method, of class GUI005Controller.
      */
-    @Ignore
     @Test
-    public void testHandleInfoFTP() {
-        
+    public void test91_HandleInfoFTP() {
+        login();
     }
 
     /**
@@ -177,17 +169,25 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Ignore
     @Test
-    public void testHandleLogOutFTP() {
+    public void test92_HandleLogOutFTP() {
         
     }
 
     /**
      * Test of handleClickFile method, of class GUI005Controller.
      */
-    @Ignore
     @Test
-    public void testHandleClickFile() {
-        
+    public void test93_HandleClickFile() {
+        login();
     }
     
+    public void login(){
+        clickOn("#txtFUser");
+        write("jonth");
+        clickOn("#pwPassword");
+        write("1234");
+        clickOn("#btnLogIn");
+        clickOn("#mFiles");
+        clickOn("#mFTP");
+    }
 }

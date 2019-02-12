@@ -224,11 +224,11 @@ public class GUI005Controller extends THUserGenericController{
             files = FTP.showFiles(dir.getPath());
             treeFTP.setRoot(root);
             root.setExpanded(true);
-            for(FTPFileTV file: files){
-                item = new TreeItem<FTPFileTV>(file);
-                if(file.isDirectory()){
+            for(FTPFileTV filee: files){
+                item = new TreeItem<FTPFileTV>(filee);
+                if(filee.isDirectory()){
                     item.getChildren().addAll(
-                            loadFiles(file.getPath() + file.getName()));
+                            loadFiles(filee.getPath() + filee.getName()));
                 }
                 root.getChildren().add(item);
                 
@@ -282,6 +282,8 @@ public class GUI005Controller extends THUserGenericController{
         TreeItem<FTPFileTV> ti;
         FTPFileTV filetv = new FTPFileTV();
         try{
+            //load the file in the FTPServer
+            FTP.loadFile(dirPath, file);
             //set the FTPFileTV for know what is de directory for the file
             filetv.setName(file.getName());
             filetv.setPath(dirPath);
@@ -289,9 +291,7 @@ public class GUI005Controller extends THUserGenericController{
             ti = new TreeItem<FTPFileTV>(filetv);
             tiselected.getParent().getChildren().add(ti);
             treeFTP.refresh();
-            //load the file in the FTPServer
-            FTP.loadFile(dirPath, file);
-            Alert alert = new Alert(Alert.AlertType.ERROR, "File uploaded.", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "File uploaded.", ButtonType.OK);
             alert.showAndWait();
         }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "Error loading file", ex);
@@ -333,15 +333,22 @@ public class GUI005Controller extends THUserGenericController{
      * @param event 
      */
     public void handleMakeDir(ActionEvent event){
+        FTPFileTV filetv = new FTPFileTV();
+        TreeItem<FTPFileTV> ti;
         try {
             //get the name for the directory and the directory path and make 
             //this directory in the ftpserver 
             FTP.makeDirectory(dirPath, txtFNameDirectory.getText());
+            filetv.setName(txtFNameDirectory.getText());
+            filetv.setPath(dirPath);
+            filetv.setDirectory(true);
+            ti = new TreeItem<FTPFileTV>(filetv);
+            tiselected.getParent().getChildren().add(ti);
+            treeFTP.refresh();
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error making the directory", ex);
             super.getAlert("An error had ocurred making the directory.");
         }
-        treeFTP.refresh();
     }
     
     //Test It
@@ -417,7 +424,11 @@ public class GUI005Controller extends THUserGenericController{
             //check it type
             if(tiselected.getValue().isDirectory()){
                 //get her path with her name if it's a directory
-                dirPath = tiselected.getValue().getPath() + "/" + tiselected.getValue().getName();
+                if(tiselected.getValue().getPath().equals("/")){
+                    dirPath = tiselected.getValue().getPath() + tiselected.getValue().getName();
+                }else{
+                    dirPath = tiselected.getValue().getPath() + "/" + tiselected.getValue().getName();
+                }
                 if(tiselected.getChildren()==null){
                     btnDelete.setDisable(false);
                 }else{
@@ -425,6 +436,7 @@ public class GUI005Controller extends THUserGenericController{
                 }
                 btnDownload.setDisable(true);
             }else{
+                dirPath = tiselected.getValue().getPath();
                 btnDelete.setDisable(false);
                 btnDownload.setDisable(false);
             }
