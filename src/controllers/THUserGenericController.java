@@ -301,7 +301,7 @@ public class THUserGenericController {
     public void handleInfo(ActionEvent event){
         //Create the loader for the xml
         FXMLLoader loader=new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI006.fxml"));
+                .getResource("/fxmls/GUI006MD.fxml"));
         //Create the parent and load the tree
         Parent root;
         try{
