@@ -127,7 +127,7 @@ public class FTPCliente implements iFTP{
             //set the stream for load the files
             buffIn = new BufferedInputStream(new FileInputStream(file.getPath()));
             //store the file in the ftp server
-            ftpclient.storeFile(file.getName(), buffIn);
+            ftpclient.storeFile(dir + "/" + file.getName(), buffIn);
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE,
                     "FTPClient: An error have ocurred loading the file." , ex.getCause());
@@ -162,11 +162,11 @@ public class FTPCliente implements iFTP{
      * @throws Exception if there is any problem downloading the file
      */
     @Override
-    public void downloadFile(FTPFileTV file) throws Exception {
+    public void downloadFile(FTPFileTV file, File dir) throws Exception {
         BufferedOutputStream out;
         try{
             //set the directory for the file downloaded
-            out = new BufferedOutputStream(new FileOutputStream(new File(file.getName())));
+            out = new BufferedOutputStream(new FileOutputStream(new File(dir.getAbsolutePath()+"/"+file.getName())));
             //download the file
             ftpclient.retrieveFile(file.getPath() + "/" + file.getName(), out);
             //close the stream
@@ -184,12 +184,16 @@ public class FTPCliente implements iFTP{
      * @throws Exception if there is any problem deleting the file
      */
     @Override
-    public void delete(String file) throws Exception {
+    public void delete(String file, Boolean isDirectory) throws Exception {
         try{
             //delete the file
-            ftpclient.deleteFile(file);
+            if(isDirectory){
+                ftpclient.removeDirectory(file);
+            }else{
+                ftpclient.deleteFile(file);
+            }
         }catch(IOException ex){
-           LOGGER.log(Level.SEVERE, "", ex);
+           LOGGER.log(Level.SEVERE, "FTPClient: An error have ocurred deleting the file", ex);
            ex.printStackTrace();
            throw new Exception(ex);
         }

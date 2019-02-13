@@ -8,6 +8,8 @@ package controllers;
 import exceptions.DeleteException;
 import exceptions.ReadException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -36,6 +39,13 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  * Show the data from all the townhall in a table. Allows the user to add, 
@@ -79,6 +89,8 @@ public class GUI007Controller extends AdminGenericController {
     private Button btnReport;
     @FXML
     private TableView tableTownhalls;
+    @FXML
+    private DatePicker datePToday; 
     
     /**
      * Contains all the Townhalls to show them in the tableview
@@ -112,10 +124,19 @@ public class GUI007Controller extends AdminGenericController {
             btnReport.setOnAction((event) -> handleReport(event));
             tableTownhalls.getSelectionModel().selectedItemProperty()
                     .addListener(this::handleTownhallsTable);
+            datePToday.setDisable(true);
+            datePToday.setValue(formatDate(LocalDate.now()));
             stage.show();
         } catch (ReadException ex) {
             Logger.getLogger(GUI007Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public LocalDate formatDate(LocalDate today){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String date = today.format(formatter);
+        LocalDate parsedDate = LocalDate.parse(date, formatter);
+        return parsedDate;
     }
     
     /**
@@ -250,8 +271,8 @@ public class GUI007Controller extends AdminGenericController {
     }
     
     private void handleReport(ActionEvent event) {
-    /*    try{ 
-            JasperReport report = JasperCompileManager.compileReport("src/reports/townhallreport.jrxml");
+        try{ 
+            JasperReport report = JasperCompileManager.compileReport("reports/townhallreport.jrxml");
             JRBeanCollectionDataSource dataItems = 
                     new JRBeanCollectionDataSource((Collection<TownHallBean>)this.tableTownhalls.getItems());
             Map<String,Object> parameters = new HashMap<>();
@@ -261,6 +282,6 @@ public class GUI007Controller extends AdminGenericController {
         }catch(JRException ex){
             LOGGER.log(Level.SEVERE, "An error ocurred in handleReport()",
                         ex.getMessage());
-        }*/
+        }
     }
 }

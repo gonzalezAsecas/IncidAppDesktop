@@ -127,7 +127,7 @@ public class TownHallImplementation implements iTownHall{
 
     /**
      * Find all townhalls
-     * @return List<TownHallBean> with all the townhalls
+     * @return a list of all the townhalls
      * @throws ReadException 
      */
     @Override

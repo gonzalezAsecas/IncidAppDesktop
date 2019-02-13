@@ -5,10 +5,21 @@
  */
 package controllers;
 
+import factories.FTPFactory;
+import interfaces.iFTP;
+import java.io.File;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javabeans.FTPFileTV;
+import javafx.event.ActionEvent;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
+import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
@@ -23,6 +34,8 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GUI005ControllerIT extends ApplicationTest{
+    
+    protected static final Logger LOGGER = Logger.getLogger("incidappdesktop");
     
     /**
      *
@@ -39,6 +52,7 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Test
     public void test1_InitStage() {
+        login();
         verifyThat("#btnSearch", isEnabled());
         verifyThat("#btnMakeDirectory", isDisabled());
         verifyThat("#btnLoad", isDisabled());
@@ -46,6 +60,8 @@ public class GUI005ControllerIT extends ApplicationTest{
         verifyThat("#btnDownload", isDisabled());
         verifyThat("#txtFNameDirectory", isEnabled());
         verifyThat("#txtFSearch", isDisabled());
+        verifyThat("#txtFServer", isDisabled());
+        verifyThat("#txtFDirectory", isDisabled());
     }
     
     /**
@@ -53,6 +69,8 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Test
     public void test2_handleTextChanged(){
+        login();
+        verifyThat("#btnMakeDirectory", isDisabled());
         clickOn("#txtFNameDirectory");
         write("directory1");
         verifyThat("#btnMakeDirectory", isEnabled());
@@ -67,20 +85,24 @@ public class GUI005ControllerIT extends ApplicationTest{
     @Test
     public void test3_HandleSearch() {
         clickOn("#btnSearch");
-        verifyThat("Searching file for load in the FTP server", isVisible());//no vale
+        verifyThat("Searching file for load in the FTP server", isVisible());
     }
 
     /**
      * Test of loadRoot and loadFiles method, of class GUI005Controller.
      */
-    @Ignore
     @Test
     public void test4_LoadRootAndLoadFiles() {
-        //hacer un set con el controlador de file para poder añadir un file 
-        //directamente en vez de usar el filechooser
-        verifyThat("ADT libro", isVisible());
-        doubleClickOn("ADT libro");
-        verifyThat("DFSFB", isVisible());
+        try {
+            login();
+            iFTP ftp = FTPFactory.getiFTP();
+            TreeView<FTPFileTV> tree = lookup("#tree").query();
+            TreeItem<FTPFileTV> item = tree.getTreeItem(0);
+            FTPFileTV[] files = ftp.showFiles("/");
+            assertEquals(item.getValue().getPath(), files[0].getPath());
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "", ex);
+        }
     }
 
     /**
@@ -88,15 +110,11 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Ignore
     @Test
-    public void testHandleLoad() {
-        clickOn("#btnSearch");
-        doubleClickOn("Escritorio");
-        clickOn("MongoDBEjercicio");
-        clickOn("Abrir");
-        clickOn("ADT libro");
-        clickOn("#btnLoad");
-        doubleClickOn("ADT libro");
-        verifyThat("MongoDBEjercicio", isVisible());
+    public void test5_HandleLoad() {
+        GUI005Controller controller = new GUI005Controller();
+        controller.setFile(new File("hello.txt"));
+        controller.setDirPath("/");
+        controller.handleLoad(new ActionEvent());
     }
 
     /**
@@ -104,12 +122,31 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Ignore
     @Test
-    public void testHandleDownload() {
-        doubleClickOn("ADT libro");
-        clickOn("adt tema 0.pdf");
+    public void test6_HandleDownload() {
+        clickOn("#txtFUser");
+        write("jonth");
+        clickOn("#pwPassword");
+        write("1234");
+        clickOn("mFiles");
+        TreeView<FTPFileTV> tree = lookup("#tree").query();
+        TreeItem<FTPFileTV> item;
+        List<TreeItem<FTPFileTV>> items;
+        tree.getSelectionModel().select(tree.getRoot());
+        item = (TreeItem) tree.getSelectionModel().getSelectedItem();
+        items = item.getChildren();
+        for(TreeItem<FTPFileTV> it : items){
+            if(!it.getValue().isDirectory()){
+                tree.getSelectionModel().select(it);
+                break;
+            }
+        }
+        verifyThat("#btnDownload", isEnabled());
         clickOn("#btnDownload");
-        verifyThat("File downloaded.", isVisible());
-        push(KeyCode.ENTER);
+        //doubleClickOn("ADT libro");
+        //clickOn("adt tema 0.pdf");
+        //clickOn("#btnDownload");
+        //verifyThat("File downloaded.", isVisible());
+        //push(KeyCode.ENTER);
     }
 
     /**
@@ -117,35 +154,93 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Ignore
     @Test
-    public void testHandleMakeDir() {
-        
+    public void test7_HandleMakeDir() {
+        try {
+            Boolean is = false;
+            login();
+            clickOn("#txtFNameDirectory");
+            write("testDir");
+            clickOn("#btnMakeDirectory");
+            sleep(200);
+            TreeView<FTPFileTV> tree = lookup("#tree").query();
+            List<TreeItem<FTPFileTV>> items = tree.getRoot().getChildren();
+            FTPFileTV file = new FTPFileTV();
+            for(TreeItem<FTPFileTV> item: items){
+                if(item.getValue().getName().equals("testDir")){
+                    file = item.getValue();
+                    assertEquals(item.getValue().getName(), "testDir");
+                    is=true;
+                    break;
+                }
+            }
+            if(!is){
+                assertEquals(tree.getTreeItem(0).getValue(),file);
+            }
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "GUI005ControllerIT: An error have ocurred testing the making directory", ex);
+        }
     }
 
     /**
      * Test of handleDelete method, of class GUI005Controller.
      */
-    @Ignore
     @Test
-    public void testHandleDelete() {
-        
+    public void test8_HandleDelete() {
+        try {
+            Boolean is = false;
+            login();
+            TreeView<FTPFileTV> tree = lookup("#tree").query();
+            List<TreeItem<FTPFileTV>> items = tree.getRoot().getChildren();
+            for(TreeItem<FTPFileTV> item: items){
+                if(!item.getValue().isDirectory()){
+                    tree.getSelectionModel().select(tree.getRoot().getChildren().get(0));
+                    clickOn("#btnDelete");
+                    verifyThat("You are going to delete this file, it´s ok?", isVisible());
+                    push(KeyCode.ENTER);
+                    is = true ;
+                    break;
+                }
+            }
+            if(!is){
+                verifyThat("#btnDelete", isDisabled());
+            }else{
+                for(TreeItem<FTPFileTV> item: items){
+                    if(item.getValue().getName().equals("testDir")){
+                        assertEquals(item.getValue().getName(), "testDir");
+                        is=true;
+                        break;
+                    }
+                }
+                if(is){
+                    verifyThat("#btnDelete", isDisabled());
+                }
+            }
+            
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "GUI005ControllerIT: An error have ocurred testing the making directory", ex);
+        }
     }
 
     /**
      * Test of handleIncidentsFTP method, of class GUI005Controller.
      */
-    @Ignore
     @Test
-    public void testHandleIncidentsFTP() {
-        
+    public void test9_HandleIncidentsFTP() {
+        login();
+        clickOn("#mIncidents");
+        clickOn("#mIIncidentList");
+        verifyThat("#btnModifyIncident", isDisabled());
     }
 
     /**
      * Test of handleInfoFTP method, of class GUI005Controller.
      */
-    @Ignore
     @Test
-    public void testHandleInfoFTP() {
-        
+    public void test91_HandleInfoFTP() {
+        login();
+        clickOn("#mUserInfo");
+        clickOn("#mISetting");
+        verifyThat("#btnUpdate", isEnabled());
     }
 
     /**
@@ -153,7 +248,7 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Ignore
     @Test
-    public void testHandleLogOutFTP() {
+    public void test92_HandleLogOutFTP() {
         
     }
 
@@ -162,8 +257,17 @@ public class GUI005ControllerIT extends ApplicationTest{
      */
     @Ignore
     @Test
-    public void testHandleClickFile() {
-        
+    public void test93_HandleClickFile() {
+        login();
     }
     
+    public void login(){
+        clickOn("#txtFUser");
+        write("jonth");
+        clickOn("#pwPassword");
+        write("1234");
+        clickOn("#btnLogIn");
+        clickOn("#mFiles");
+        clickOn("#mFTP");
+    }
 }

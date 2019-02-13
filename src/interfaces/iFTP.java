@@ -57,12 +57,12 @@ public interface iFTP {
      * @param file the file is going to downloaded
      * @throws Exception if there is any problem downloading the file
      */
-    public void downloadFile(FTPFileTV file) throws Exception;
+    public void downloadFile(FTPFileTV file, File dir) throws Exception;
     
     /**
      * delete the file selected from the ftp server
      * @param file the file is going to be deteled
      * @throws Exception if there is any problem deleting the file
      */
-    public void delete(String file) throws Exception;
+    public void delete(String file, Boolean isDirectory) throws Exception;
 }

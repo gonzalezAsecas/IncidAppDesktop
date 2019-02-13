@@ -160,16 +160,21 @@ public class GUI009Controller {
                 } catch (ReadException ex) {
                     LOGGER.info("The townhall doesn´t exist.");
                     if(checkEmail(txtFEmail.getText().trim())){
-                        if(edit){
-                            th.setLocality(txtFName.getText().trim());
-                            th.setEmail(txtFEmail.getText().trim());
-                            th.setTelephoneNumber(txtFPhone.getText().trim());
-                            townHallImpl.editTownHall(th);
-                            stage.close();
+                        if(checkTlf(txtFPhone.getText().trim())){
+                            if(edit){
+                                th.setLocality(txtFName.getText().trim());
+                                th.setEmail(txtFEmail.getText().trim());
+                                th.setTelephoneNumber(txtFPhone.getText().trim());
+                                townHallImpl.editTownHall(th);
+                                stage.close();
+                            }else{
+                                th = new TownHallBean(txtFName.getText().trim(), txtFEmail.getText().trim(), txtFPhone.getText().trim());
+                                townHallImpl.createTownHall(th);
+                                stage.close();
+                            }
                         }else{
-                            th = new TownHallBean(txtFName.getText().trim(), txtFEmail.getText().trim(), txtFPhone.getText().trim());
-                            townHallImpl.createTownHall(th);
-                            stage.close();
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION, "The telephone must have the format: 123456789", ButtonType.OK);
+                            alert.showAndWait();
                         }
                     }else{
                         Alert alert = new Alert(Alert.AlertType.INFORMATION, "The email must have the format: email@email.example", ButtonType.OK);
@@ -207,6 +212,14 @@ public class GUI009Controller {
     public boolean checkEmail(String email){
         boolean check = true;
         if(!email.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+(.[a-zA-Z]{2,})$")){
+            check = false;
+        }
+        return check;
+    }
+    
+    public boolean checkTlf(String tlf){
+        boolean check = true;
+        if(!tlf.matches("^[0-9]{9}$")){
             check = false;
         }
         return check;

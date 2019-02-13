@@ -80,7 +80,7 @@
             <Pane prefWidth="10.0" />
             <VBox>
                <children>
-                  <Pane prefHeight="80.0" />
+                  <Pane prefHeight="42.0" />
                   <Button fx:id="btnAddIncident" mnemonicParsing="false" prefWidth="120.0" text="Add new incident">
                      <VBox.margin>
                         <Insets />
@@ -96,6 +96,8 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   </Button>
+                  <Pane prefHeight="80.0" />
+                  <Button fx:id="btnReport" mnemonicParsing="false" prefWidth="120.0" text="Print report" />
                </children>
                <HBox.margin>
                   <Insets />

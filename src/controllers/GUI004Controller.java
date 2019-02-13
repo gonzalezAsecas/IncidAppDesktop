@@ -9,16 +9,13 @@ import static controllers.THUserGenericController.LOGGER;
 import exceptions.CreateException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import javabeans.Estate;
 import javabeans.IncidentBean;
 import javabeans.LocationBean;
 import javabeans.TownHallBean;
 import javabeans.TypeBean;
-import javabeans.UserBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -67,8 +64,6 @@ public class GUI004Controller extends THUserGenericController {
     private Button btnCancel;
     @FXML
     private Label lblSignature;
-    @FXML
-    private Button btnSignature;
      
     /**
      * 
@@ -92,7 +87,6 @@ public class GUI004Controller extends THUserGenericController {
         txtFStreet.textProperty().addListener(this::textChanged);
         btnAccept.setOnAction((event) -> handleAccept(event));
         btnCancel.setOnAction((event) -> handleCancel(event));
-        btnSignature.setOnAction((event) -> handleSignature(event));
         //load the all data
         loadData();
         //Show the LogIn window
@@ -106,9 +100,10 @@ public class GUI004Controller extends THUserGenericController {
                 .observableArrayList(typeManager.findAllTypes());
             chcType.setItems(types);
             chcType.setValue(types.get(0));
-            chcEstate.setItems(FXCollections.observableArrayList(Estate.values()));
-            chcEstate.setValue(FXCollections.observableArrayList(Estate.values())
-                .get(0));
+            ObservableList<Estate> estates = FXCollections
+                .observableArrayList(Estate.values());
+            chcEstate.setItems(estates);
+            chcEstate.setValue(estates.get(0));
             ObservableList<TownHallBean> ths = FXCollections
                 .observableArrayList(townHallManager.findAllTownHalls());
             chcLocality.setItems(ths);
@@ -126,9 +121,6 @@ public class GUI004Controller extends THUserGenericController {
      */
     public void OnShowingHandler(WindowEvent event) {
         LOGGER.info("Beginning OnShowingHandler");
-        btnSignature.setMnemonicParsing(true);
-        btnSignature.setText("_Sign it");
-        btnSignature.setDisable(true);
         btnAccept.setMnemonicParsing(true);
         btnAccept.setText("_Accept");
         btnAccept.setDisable(true);
@@ -137,7 +129,6 @@ public class GUI004Controller extends THUserGenericController {
         txtAComment.setDisable(true);
         lblSignature.setText("0");
         if(incident != null) {
-            btnSignature.setDisable(false);
             btnAccept.setDisable(false);
             txtAComment.setDisable(false);
             txtFTitle.setText(incident.getTitle());
@@ -257,8 +248,6 @@ public class GUI004Controller extends THUserGenericController {
             if(isInsert) {
                 try {
                     incidentManager.createIncident(incidentInStage);
-                    new Alert(AlertType.INFORMATION,"Incident added successfully"
-                        ,ButtonType.OK).showAndWait();
                     handleIncidents(event);
                     stage.hide();
                 } catch (CreateException ex) {
@@ -271,8 +260,6 @@ public class GUI004Controller extends THUserGenericController {
                 }
                 try {
                     incidentManager.editIncident(incidentInStage);
-                    new Alert(AlertType.INFORMATION,"Incident updated successfully"
-                        ,ButtonType.OK).showAndWait();
                     handleIncidents(event);
                     stage.hide();
                 } catch (UpdateException ex) {
@@ -294,48 +281,5 @@ public class GUI004Controller extends THUserGenericController {
         handleIncidents(event);
         stage.hide();
         LOGGER.info("Ending handleCancel");
-    }
-
-    /**
-     * 
-     * @param event 
-     */
-    public void handleSignature(ActionEvent event) {
-        LOGGER.info("Beginning handleSignature");
-        List<UserBean> users = null;
-        boolean hay = false;
-        int x = 1;
-        if(incident.getUsers() == null) {
-            users = new ArrayList<>();
-            users.add(user);
-        }else {
-            for(UserBean u : incident.getUsers()){
-                if(u.getId().toString().equalsIgnoreCase(user.getId().toString())) {
-                    hay = true;
-                    new Alert(AlertType.INFORMATION,"You have already signatured "
-                        + "this incident",ButtonType.OK).show();
-                    break;
-                }
-            }
-            if(!hay){
-                users = incident.getUsers();
-                users.add(user);
-                x = users.size();
-            }
-        }
-        if(!hay){
-            incident.setUsers(users);
-            try {
-                incidentManager.editIncident(incident);
-                lblSignature.setText(String.valueOf(x));
-                LOGGER.info("Incident signatured successfuly");
-                new Alert(AlertType.INFORMATION,"Incident signatured successfuly"
-                    ,ButtonType.OK).show();
-            } catch (UpdateException ex) {
-                LOGGER.log(Level.SEVERE,"IncidentRestFul: Exception "
-                    + "editting the incident.", ex.getMessage());
-            }
-        }
-        LOGGER.info("Ending handleSignature");
     }
 }
