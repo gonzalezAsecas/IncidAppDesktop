@@ -9,16 +9,13 @@ import static controllers.THUserGenericController.LOGGER;
 import exceptions.CreateException;
 import exceptions.ReadException;
 import exceptions.UpdateException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import javabeans.Estate;
 import javabeans.IncidentBean;
 import javabeans.LocationBean;
 import javabeans.TownHallBean;
 import javabeans.TypeBean;
-import javabeans.UserBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -103,9 +100,10 @@ public class GUI004Controller extends THUserGenericController {
                 .observableArrayList(typeManager.findAllTypes());
             chcType.setItems(types);
             chcType.setValue(types.get(0));
-            chcEstate.setItems(FXCollections.observableArrayList(Estate.values()));
-            chcEstate.setValue(FXCollections.observableArrayList(Estate.values())
-                .get(0));
+            ObservableList<Estate> estates = FXCollections
+                .observableArrayList(Estate.values());
+            chcEstate.setItems(estates);
+            chcEstate.setValue(estates.get(0));
             ObservableList<TownHallBean> ths = FXCollections
                 .observableArrayList(townHallManager.findAllTownHalls());
             chcLocality.setItems(ths);
@@ -250,8 +248,6 @@ public class GUI004Controller extends THUserGenericController {
             if(isInsert) {
                 try {
                     incidentManager.createIncident(incidentInStage);
-                    new Alert(AlertType.INFORMATION,"Incident added successfully"
-                        ,ButtonType.OK).showAndWait();
                     handleIncidents(event);
                     stage.hide();
                 } catch (CreateException ex) {
@@ -264,8 +260,6 @@ public class GUI004Controller extends THUserGenericController {
                 }
                 try {
                     incidentManager.editIncident(incidentInStage);
-                    new Alert(AlertType.INFORMATION,"Incident updated successfully"
-                        ,ButtonType.OK).showAndWait();
                     handleIncidents(event);
                     stage.hide();
                 } catch (UpdateException ex) {

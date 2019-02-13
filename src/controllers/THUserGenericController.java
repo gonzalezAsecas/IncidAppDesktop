@@ -192,8 +192,9 @@ public class THUserGenericController {
     /**
      * Load the GUI004 xml and pass the control to it controller 
      * @param event
+     * @param x
      */
-    public void handleIncidentsEmpty(ActionEvent event) {
+    public void handleIncidents2(ActionEvent event, int x) {
         //Create the loader for the xml
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxmls/GUI004SAMI.fxml"));
@@ -209,43 +210,10 @@ public class THUserGenericController {
             controller.setStage(gui004Stage);
             //Pass the user to the next window
             controller.setUser(user);
-            //Pass the control to the controller
-            controller.initStage(root);
-            //Hide this stage
-            stage.hide();
-        }catch(IOException ex) {
-            LOGGER.log(Level.SEVERE, "An input-output error loading GUI004Controller.", 
-                    ex.getMessage());
-            this.getAlert("A error have ocurred loading the GUI004Controller.");
-        }catch(Exception ex){
-            LOGGER.log(Level.SEVERE, "An error loading GUI004Controller.", 
-                    ex.getMessage());
-            this.getAlert("A error have ocurred loading the GUI004Controller.");
-        }
-    }
-    
-    /**
-     * Load the GUI004 xml and pass the control to it controller 
-     * @param event
-     */
-    public void handleIncidentsFull(ActionEvent event) {
-        //Create the loader for the xml
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxmls/GUI004SAMI.fxml"));
-        //Create the parent and load the tree
-        Parent root;
-        try{
-            root = (Parent) loader.load();
-            //Create the Stage
-            Stage gui004Stage = new Stage();
-            //Load de controller
-            GUI004Controller controller = loader.getController();
-            //Set the new stage
-            controller.setStage(gui004Stage);
-            //Pass the user to the next window
-            controller.setUser(user);
-            //Pass the incident to the next window
-            controller.setIncident(incident);
+            if(x == 2){
+                //Pass the incident to the next window
+                controller.setIncident(incident);
+            }
             //Pass the control to the controller
             controller.initStage(root);
             //Hide this stage

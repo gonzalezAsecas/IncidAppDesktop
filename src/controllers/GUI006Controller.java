@@ -235,7 +235,6 @@ public class GUI006Controller {
             controller.setStage(gui003Stage);
             controller.setUser(user);
             controller.initStage(root);
-            gui003Stage.show();
             stage.hide();
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "An input-output error in handleIncident()",
@@ -261,7 +260,6 @@ public class GUI006Controller {
             controller.setStage(gui007Stage);
             controller.setUser(user);
             controller.initStage(root);
-            gui007Stage.show();
             stage.hide();
         }catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "An input-output error in handleTownhall()",
@@ -287,7 +285,6 @@ public class GUI006Controller {
             controller.setStage(gui005Stage);
             controller.setUser(user);
             controller.initStage(root);
-            gui005Stage.show();
             stage.hide();
         }catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "An input-output error in handleFile()",
