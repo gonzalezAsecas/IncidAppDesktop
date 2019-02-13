@@ -64,5 +64,5 @@ public interface iFTP {
      * @param file the file is going to be deteled
      * @throws Exception if there is any problem deleting the file
      */
-    public void delete(String file) throws Exception;
+    public void delete(String file, Boolean isDirectory) throws Exception;
 }

@@ -166,7 +166,7 @@ public class FTPCliente implements iFTP{
         BufferedOutputStream out;
         try{
             //set the directory for the file downloaded
-            out = new BufferedOutputStream(new FileOutputStream(new File(dir+"/"+file.getName())));
+            out = new BufferedOutputStream(new FileOutputStream(new File(dir.getAbsolutePath()+"/"+file.getName())));
             //download the file
             ftpclient.retrieveFile(file.getPath() + "/" + file.getName(), out);
             //close the stream
@@ -184,10 +184,14 @@ public class FTPCliente implements iFTP{
      * @throws Exception if there is any problem deleting the file
      */
     @Override
-    public void delete(String file) throws Exception {
+    public void delete(String file, Boolean isDirectory) throws Exception {
         try{
             //delete the file
-            ftpclient.deleteFile(file);
+            if(isDirectory){
+                ftpclient.removeDirectory(file);
+            }else{
+                ftpclient.deleteFile(file);
+            }
         }catch(IOException ex){
            LOGGER.log(Level.SEVERE, "FTPClient: An error have ocurred deleting the file", ex);
            ex.printStackTrace();

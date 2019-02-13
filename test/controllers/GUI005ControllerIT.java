@@ -70,6 +70,7 @@ public class GUI005ControllerIT extends ApplicationTest{
     @Test
     public void test2_handleTextChanged(){
         login();
+        verifyThat("#btnMakeDirectory", isDisabled());
         clickOn("#txtFNameDirectory");
         write("directory1");
         verifyThat("#btnMakeDirectory", isEnabled());
@@ -95,10 +96,10 @@ public class GUI005ControllerIT extends ApplicationTest{
         try {
             login();
             iFTP ftp = FTPFactory.getiFTP();
-            TreeView<FTPFileTV> tree = lookup("tree").query();
-            TreeItem<FTPFileTV> item = tree.getTreeItem(0).getChildren().get(0);
+            TreeView<FTPFileTV> tree = lookup("#tree").query();
+            TreeItem<FTPFileTV> item = tree.getTreeItem(0);
             FTPFileTV[] files = ftp.showFiles("/");
-            assertEquals(item, files[0]);
+            assertEquals(item.getValue().getPath(), files[0].getPath());
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "", ex);
         }
@@ -127,10 +128,10 @@ public class GUI005ControllerIT extends ApplicationTest{
         clickOn("#pwPassword");
         write("1234");
         clickOn("mFiles");
-        TreeView<FTPFileTV> tree = lookup("tree").query();
+        TreeView<FTPFileTV> tree = lookup("#tree").query();
         TreeItem<FTPFileTV> item;
         List<TreeItem<FTPFileTV>> items;
-        tree.getSelectionModel().select(0);
+        tree.getSelectionModel().select(tree.getRoot());
         item = (TreeItem) tree.getSelectionModel().getSelectedItem();
         items = item.getChildren();
         for(TreeItem<FTPFileTV> it : items){
@@ -151,6 +152,7 @@ public class GUI005ControllerIT extends ApplicationTest{
     /**
      * Test of handleMakeDir method, of class GUI005Controller.
      */
+    @Ignore
     @Test
     public void test7_HandleMakeDir() {
         try {
@@ -158,11 +160,10 @@ public class GUI005ControllerIT extends ApplicationTest{
             login();
             clickOn("#txtFNameDirectory");
             write("testDir");
-            verifyThat("#btnMakeDirectory", isEnabled());
             clickOn("#btnMakeDirectory");
             sleep(200);
-            TreeView<FTPFileTV> tree = lookup("tree").query();
-            List<TreeItem<FTPFileTV>> items = tree.getTreeItem(0).getChildren();
+            TreeView<FTPFileTV> tree = lookup("#tree").query();
+            List<TreeItem<FTPFileTV>> items = tree.getRoot().getChildren();
             FTPFileTV file = new FTPFileTV();
             for(TreeItem<FTPFileTV> item: items){
                 if(item.getValue().getName().equals("testDir")){
@@ -188,8 +189,8 @@ public class GUI005ControllerIT extends ApplicationTest{
         try {
             Boolean is = false;
             login();
-            TreeView<FTPFileTV> tree = lookup("tree").query();
-            List<TreeItem<FTPFileTV>> items = tree.getTreeItem(0).getChildren();
+            TreeView<FTPFileTV> tree = lookup("#tree").query();
+            List<TreeItem<FTPFileTV>> items = tree.getRoot().getChildren();
             for(TreeItem<FTPFileTV> item: items){
                 if(!item.getValue().isDirectory()){
                     tree.getSelectionModel().select(tree.getRoot().getChildren().get(0));

@@ -130,7 +130,7 @@ public class GUI005Controller extends THUserGenericController{
         txtFNameDirectory.textProperty().addListener(this::handleTextChanged);
         //Load the files of the FTP server in the treeItem and make the listener
         //for the click event
-        txtFServer.setText(properties.getString("ftpServer"));
+        txtFServer.setText(properties.getString("ftpServer") + ":" + properties.getString("ftpServerPort"));
         txtFDirectory.setText(properties.getString("ftpRootDirectory"));
         try {
             treeFTP.getSelectionModel().selectedItemProperty()
@@ -157,7 +157,7 @@ public class GUI005Controller extends THUserGenericController{
         btnSearch.setMnemonicParsing(true);
         btnSearch.setText("_Search file");
         btnLoad.setMnemonicParsing(true);
-        btnLoad.setText("_Load file");
+        btnLoad.setText("_Upload file");
         btnDownload.setMnemonicParsing(true);
         btnDownload.setText("Do_wnload file");
         btnMakeDirectory.setMnemonicParsing(true);
@@ -360,7 +360,7 @@ public class GUI005Controller extends THUserGenericController{
         try {
             //send the selected item value for delete it
             if(super.getAlert("You are going to delete this file, it´s ok?").equals(ButtonType.OK)){
-                FTP.delete(dirPath + "/" + tiselected.getValue().getName());
+                FTP.delete(dirPath + "/" + tiselected.getValue().getName(), tiselected.getValue().isDirectory());
                 tiselected.getParent().getChildren().remove(tiselected);
                 treeFTP.refresh();
             }
@@ -429,7 +429,7 @@ public class GUI005Controller extends THUserGenericController{
                 }else{
                     dirPath = tiselected.getValue().getPath() + "/" + tiselected.getValue().getName();
                 }
-                if(tiselected.getChildren()==null){
+                if(tiselected.getChildren().isEmpty()){
                     btnDelete.setDisable(false);
                 }else{
                     btnDelete.setDisable(true);

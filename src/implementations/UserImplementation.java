@@ -147,7 +147,7 @@ public class UserImplementation implements iUser{
                     DatatypeConverter.printHexBinary(user.getPassword()));
             LOGGER.info("UserImplementation: ");
             return user;
-        }catch(ClientErrorException ex){
+        }catch(Exception ex){
             LOGGER.log(Level.SEVERE, "UserImplementation: Exception finding the user by login.", ex);
             throw new ReadException();
         }

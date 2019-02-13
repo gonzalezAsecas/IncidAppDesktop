@@ -268,7 +268,7 @@ public class GUI001Controller{
             }
         }catch(ReadException e1){
             LOGGER.log(Level.SEVERE,
-                    "GUI001Controller: Exception with the login", e1);
+                    "GUI001Controller: Exception with the login or password.", e1);
             lblUser.setTextFill(Color.web("#ff0000"));
             lblPass.setTextFill(Color.web("#237bf7"));
             txtFUser.requestFocus();
