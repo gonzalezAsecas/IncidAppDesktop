@@ -8,9 +8,11 @@ package controllers;
 import static controllers.THUserGenericController.LOGGER;
 import exceptions.DeleteException;
 import exceptions.ReadException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import javabeans.IncidentBean;
-import javabeans.UserBean;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,16 +22,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  * GUI003 FXML Controller class, in this window you can see the list of 
@@ -60,6 +66,8 @@ public class GUI003Controller extends THUserGenericController {
     @FXML
     private Button btnDelete;
     @FXML
+    private Button btnReport;
+    @FXML
     private Menu mIncidents;
     @FXML
     private Menu mFiles;
@@ -70,12 +78,6 @@ public class GUI003Controller extends THUserGenericController {
     
     private ObservableList<IncidentBean> incidents = null;
     private ObservableList<IncidentBean> incidentsMyZone = null;
-    @FXML
-    private Label lblFind;
-    @FXML
-    private ToggleGroup filter;
-    @FXML
-    private MenuItem mFTP;
     
     
     /**
@@ -100,9 +102,10 @@ public class GUI003Controller extends THUserGenericController {
         mLogOut.setOnAction((event) -> handleLogOut(event));
         rbtnAll.setOnAction((event) -> handleFilter(event));
         rbtnMyZone.setOnAction((event) -> handleFilter(event));
-        btnAddIncident.setOnAction((event) -> handleIncidentsEmpty(event));
-        btnModifyIncident.setOnAction((event) -> handleIncidentsFull(event));
+        btnAddIncident.setOnAction((event) -> handleIncidents2(event,1));
+        btnModifyIncident.setOnAction((event) -> handleIncidents2(event,2));
         btnDelete.setOnAction((event) -> handleDelete(event));
+        btnReport.setOnAction((event) -> handleReport(event));
         tbIncidents.getSelectionModel().selectedItemProperty()
             .addListener(this::handleIncidentsTableSelectionChanged);
         //load the all data
@@ -119,11 +122,9 @@ public class GUI003Controller extends THUserGenericController {
         try {
             incidents = FXCollections
                 .observableArrayList(incidentManager.findAllIncidents());
-            incidentsMyZone = FXCollections
-                .observableArrayList(incidentManager.findIncidentsByUser(user));
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE,
-                "Exception finding all or my zone incidents",ex.getMessage());
+                "Exception finding all incidents",ex.getMessage());
         }
         tCTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         tCDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -152,14 +153,28 @@ public class GUI003Controller extends THUserGenericController {
     }
     
     /**
-     * filter the list of incidents by the text of the textfield
+     * filter the list of incidents by all or my zone
      * @param event 
      */
     public void handleFilter(ActionEvent event){
         LOGGER.info("Beginning handleFilter");
         if(rbtnMyZone.isSelected()) {
+            try {
+                incidentsMyZone = FXCollections
+                    .observableArrayList(incidentManager.findIncidentsByUser(user));
+            } catch (ReadException ex) {
+                LOGGER.log(Level.SEVERE,
+                    "Exception finding my zone incidents",ex.getMessage());
+            }
             tbIncidents.setItems(incidentsMyZone);
         } else {
+            try {
+                incidents = FXCollections
+                    .observableArrayList(incidentManager.findAllIncidents());
+            } catch (ReadException ex) {
+                LOGGER.log(Level.SEVERE,
+                    "Exception finding all incidents",ex.getMessage());
+            }
             tbIncidents.setItems(incidents);
         }
         tbIncidents.refresh();
@@ -167,7 +182,7 @@ public class GUI003Controller extends THUserGenericController {
     }
     
     /**
-     * 
+     * delete an incident
      * @param event 
      */
     public void handleDelete(ActionEvent event){
@@ -183,6 +198,26 @@ public class GUI003Controller extends THUserGenericController {
             }
         }
         LOGGER.info("Ending handleDelete");
+    }
+    
+    /**
+     * do an incident report
+     * @param event 
+     */
+    private void handleReport(ActionEvent event) {
+        LOGGER.info("Beginning handleReport");
+        try{ 
+            JasperReport report = JasperCompileManager.compileReport("src/reports/incidentreport.jrxml");
+            JRBeanCollectionDataSource dataItems = new JRBeanCollectionDataSource((Collection<IncidentBean>)this.tbIncidents.getItems());
+            Map<String,Object> parameters = new HashMap<>();
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report,parameters,dataItems);
+            JasperViewer jasperViewer = new JasperViewer(jasperPrint);
+            jasperViewer.setVisible(true);
+        }catch(JRException ex){
+            LOGGER.log(Level.SEVERE, "An error ocurred in handleReport()",
+                        ex.getMessage());
+        }
+        LOGGER.info("Ending handleReport");
     }
     
     /**

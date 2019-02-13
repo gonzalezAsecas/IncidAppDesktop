@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5cc131c4-113d-42d9-93b0-a177dbbec3b7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="title" class="java.lang.String"/>
+	<field name="location.street" class="java.lang.String"/>
+	<field name="type.name" class="java.lang.String"/>
+	<field name="estate" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="190" y="20" width="200" height="34" uuid="757121b1-75b3-435c-ae81-13873f9cfb4f"/>
+				<textElement textAlignment="Center">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incidents report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="300" y="15" width="120" height="23" uuid="e3b9810c-7b08-4ed3-a85b-6cabaf69c8b3"/>
+				<textElement textAlignment="Left">
+					<font size="18" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="15" width="100" height="23" uuid="b2c02984-f62b-4114-a17e-30d6a7b985d4"/>
+				<textElement textAlignment="Left">
+					<font size="18" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Estate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="15" width="120" height="23" uuid="4dbebd7e-ae6d-4068-aaab-6313807cc37c"/>
+				<textElement textAlignment="Left">
+					<font size="18" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="15" width="120" height="23" uuid="c650276e-a030-4be6-be89-9025bdc0868a"/>
+				<textElement textAlignment="Left">
+					<font size="18" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Location]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="45" width="120" height="20" uuid="8d588836-d411-4e79-ab53-405cfa3012d0"/>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="45" width="120" height="20" uuid="476efadb-1914-4a4d-bb4c-57e816d2527e"/>
+				<textFieldExpression><![CDATA[$F{location.street}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="45" width="120" height="20" uuid="450dd33b-d5e5-4af2-8033-617d41cd048c"/>
+				<textFieldExpression><![CDATA[$F{type.name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="45" width="100" height="20" uuid="256caf31-f762-4dae-969f-11c67308a1e7"/>
+				<textFieldExpression><![CDATA[$F{estate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

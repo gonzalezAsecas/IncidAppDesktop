@@ -51,15 +51,15 @@
 	<detail>
 		<band height="125" splitType="Stretch">
 			<textField>
-				<reportElement x="29" y="49" width="69" height="20" uuid="df61f6ee-3de4-4251-89e3-edd3bc339121"/>
+				<reportElement x="22" y="49" width="143" height="20" uuid="df61f6ee-3de4-4251-89e3-edd3bc339121"/>
 				<textFieldExpression><![CDATA[$F{locality}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="241" y="49" width="53" height="20" uuid="978104b3-f955-43d1-b0b0-453eaa2ece42"/>
+				<reportElement x="192" y="49" width="180" height="20" uuid="978104b3-f955-43d1-b0b0-453eaa2ece42"/>
 				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="425" y="49" width="103" height="20" uuid="04b3fda3-a693-4983-a2e3-15557d8866bd"/>
+				<reportElement x="403" y="49" width="132" height="20" uuid="04b3fda3-a693-4983-a2e3-15557d8866bd"/>
 				<textFieldExpression><![CDATA[$F{telephoneNumber}]]></textFieldExpression>
 			</textField>
 		</band>
